@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2025 at 06:46 PM
+-- Generation Time: Nov 20, 2025 at 08:28 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -286,10 +286,40 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllCategory` ()   BEGIN
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllReview` ()   BEGIN
+	
+    SELECT * FROM `review`
+    
+    WHERE`review`.`is_deleted`=0;
+    
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllUser` ()   BEGIN
 	SELECT * FROM `user`
     WHERE `user`.`is_deleted`=0
     ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getBrandById` (IN `brandIdIN` INT(11))   BEGIN
+	SELECT * FROM `brand`
+    WHERE `brand`.`id`=brandIdIN AND `brand`.`is_deleted`=0;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getReviewByProductId` (IN `productIdIN` INT(11))   BEGIN
+	SELECT * FROM `review`
+    WHERE `review`.`product_id`=productIdIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getReviewByProductIdAndByReviewStar` (IN `productIdIN` INT(11), IN `reviewStarIN` INT(1))   BEGIN
+	SELECT *FROM `review`
+    
+    WHERE `review`.`product_id`=productIdIN AND `review`.`review_star`=reviewStarIN
+    ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getReviewByUserId` (IN `userIdIN` INT(11))   BEGIN
+	SELECT * FROM `review`
+    WHERE `review`.`user_id`=userIdIN AND `review`.`is_deleted`=0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `emailIN` VARCHAR(200), IN `passwordIN` VARCHAR(200))   BEGIN
@@ -382,6 +412,16 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCategoryName` (IN `categoryId
         `category`.`is_deleted`=0,
         `category`.`deleted_at`= NULL
     WHERE `category`.`id`=categoryIdIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateReview` (IN `reviewIdIN` INT(11), IN `reviewStarIN` INT(1), IN `reviewTextIN` LONGTEXT)   BEGIN
+
+	UPDATE `review`
+    	SET `review`.`review_star`=reviewStarIN,
+        `review`.`review_text`=reviewTextIN,
+        `review`.`updated_at`=CURRENT_TIMESTAMP
+    WHERE `review`.`id`=reviewIdIN;
+
 END$$
 
 DELIMITER ;
@@ -799,29 +839,30 @@ CREATE TABLE `review` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `review_text` varchar(255) NOT NULL,
+  `review_text` longtext NOT NULL,
   `review_star` int(1) NOT NULL,
   `review_dateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0'
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `review`
 --
 
-INSERT INTO `review` (`id`, `product_id`, `user_id`, `review_text`, `review_star`, `review_dateTime`, `deleted_at`, `is_deleted`) VALUES
-(1, 1, 1, '(Teszt1)', 5, '2025-11-19 10:55:32', NULL, 0),
-(2, 2, 2, '(Teszt2)', 4, '2025-11-19 10:55:32', NULL, 0),
-(3, 3, 3, '(Teszt3)', 5, '2025-11-19 10:56:03', NULL, 0),
-(4, 4, 4, '(Teszt4)', 3, '2025-11-19 10:56:03', NULL, 0),
-(5, 5, 5, '(Teszt5)', 5, '2025-11-19 10:56:35', NULL, 0),
-(6, 6, 6, '(Teszt6)', 4, '2025-11-19 10:56:35', NULL, 0),
-(7, 7, 7, '(Teszt7)', 5, '2025-11-19 10:58:38', NULL, 0),
-(8, 8, 8, '(Teszt8)', 5, '2025-11-19 10:58:38', NULL, 0),
-(9, 9, 9, '(Teszt9)', 5, '2025-11-19 10:59:34', NULL, 0),
-(10, 9, 10, '(Teszt10)', 5, '2025-11-19 10:59:34', NULL, 0),
-(11, 3, 8, 'tessszt', 5, '2025-11-20 12:25:21', NULL, 0);
+INSERT INTO `review` (`id`, `product_id`, `user_id`, `review_text`, `review_star`, `review_dateTime`, `deleted_at`, `is_deleted`, `updated_at`) VALUES
+(1, 1, 1, 'Megint át lesz írva', 3, '2025-11-19 10:55:32', NULL, 0, '2025-11-20 20:01:24'),
+(2, 2, 2, '(Teszt2)', 4, '2025-11-19 10:55:32', NULL, 0, NULL),
+(3, 3, 3, '(Teszt3)', 5, '2025-11-19 10:56:03', NULL, 0, NULL),
+(4, 4, 4, '(Teszt4)', 3, '2025-11-19 10:56:03', NULL, 0, NULL),
+(5, 5, 5, '(Teszt5)', 5, '2025-11-19 10:56:35', NULL, 0, NULL),
+(6, 6, 6, '(Teszt6)', 4, '2025-11-19 10:56:35', NULL, 0, NULL),
+(7, 7, 7, '(Teszt7)', 5, '2025-11-19 10:58:38', NULL, 0, NULL),
+(8, 8, 8, '(Teszt8)', 5, '2025-11-19 10:58:38', NULL, 0, NULL),
+(9, 9, 9, '(Teszt9)', 5, '2025-11-19 10:59:34', NULL, 0, NULL),
+(10, 9, 10, '(Teszt10)', 5, '2025-11-19 10:59:34', NULL, 0, NULL),
+(11, 3, 8, 'tessszt', 5, '2025-11-20 12:25:21', NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
