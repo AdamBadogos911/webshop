@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2025 at 05:03 PM
+-- Generation Time: Nov 20, 2025 at 06:46 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -43,12 +43,35 @@ VALUES(
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addBrand` (IN `brandNameIN` VARCHAR(255))   BEGIN
+	INSERT INTO `brand`
+    (
+    	`brand`.`name`
+    )
+    VALUES
+    (
+    	brandNameIN
+    )
+    ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addCart` (IN `userIdIN` INT(11))   BEGIN
 	INSERT INTO `cart`(
     	`cart`.`user_id`
     )
     VALUES(
     	userIdIN
+    );
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addCategory` (IN `categoryNameIN` LONGTEXT)   BEGIN
+	INSERT INTO `category`
+    (
+    `category`.`name`
+    )
+    VALUES
+    (
+    categoryNameIN
     );
 END$$
 
@@ -183,6 +206,31 @@ WHERE `product`.`id` = productIdIN;
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteBrand` (IN `brandIdIN` INT(11))   BEGIN
+
+UPDATE `brand`
+SET `brand`.`deleted_at` = CURRENT_TIMESTAMP,
+	`brand`.`is_deleted` = 1
+WHERE `brand`.`id` = brandIdIN;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteCategory` (IN `categoryIdIN` INT(11))   BEGIN
+	
+    UPDATE `category`
+    	SET `category`.`is_deleted`=1,
+        	`category`.`deleted_at`=CURRENT_TIMESTAMP
+    WHERE `category`.`id`=categoryIdIN
+    ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePrimaryCategory` (IN `categoryIdIN` INT(11))   BEGIN
+	UPDATE `category`
+    SET `category`.`category_id` = NULL
+    WHERE `category`.`id `= categoryIdIN
+    ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteProduct` (IN `productIdIN` INT)   BEGIN
 	UPDATE `product`
 	SET `deleted_at` = CURRENT_TIMESTAMP,
@@ -218,6 +266,24 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAdress` ()   BEGIN
 	SELECT * FROM `address`
     WHERE `address`.`is_deleted`=0
     ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllBrand` ()   BEGIN
+
+SELECT * FROM `brand`
+	
+    WHERE `brand`.`is_deleted`=0
+    ;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllCategory` ()   BEGIN
+
+	SELECT * FROM `category`
+    
+    WHERE `category`.`is_deleted`=0
+    ;
+
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllUser` ()   BEGIN
@@ -291,6 +357,31 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `searchByProductSKU` (IN `Stock_Keeping_Unit` VARCHAR(255))   BEGIN
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateBrand` (IN `brandIdIN` INT(11), IN `brandNameIN` VARCHAR(255))  COMMENT 'végrehajtásnál kiveszi a törlést az adott dologról' BEGIN
+	UPDATE `brand`
+    SET `brand`.`name`=brandNameIN,
+    `brand`.`is_deleted`=0,
+    `brand`.`deleted_at`=NULL
+    	
+    WHERE `brand`.`id`=brandIdIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCategoryIntoSubcategory` (IN `categoryIdIN` INT(11), IN `primaryCategoryIdIN` INT(11))   BEGIN
+	UPDATE `category`
+    SET `category`.`category_id` = primaryCategoryIdIN
+    
+    WHERE `category`.`id` = categoryIdIN
+    ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCategoryName` (IN `categoryIdIN` INT(11), IN `categoryNameIN` LONGTEXT)   BEGIN
+	UPDATE `category`
+    	SET `category`.`name`=categoryNameIN,
+        `category`.`is_deleted`=0,
+        `category`.`deleted_at`= NULL
+    WHERE `category`.`id`=categoryIdIN;
 END$$
 
 DELIMITER ;
@@ -370,7 +461,7 @@ INSERT INTO `address_user` (`id`, `address_id`, `user_id`, `is_billing`, `is_del
 CREATE TABLE `brand` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `is_deleted` tinyint(4) DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -379,16 +470,17 @@ CREATE TABLE `brand` (
 --
 
 INSERT INTO `brand` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'TestBrand1', NULL, NULL),
-(2, 'TestBrand2', NULL, NULL),
-(3, 'TestBrand3', NULL, NULL),
-(4, 'TestBrand4', NULL, NULL),
-(5, 'TestBrand5', NULL, NULL),
-(6, 'TestBrand6', NULL, NULL),
-(7, 'TestBrand7', NULL, NULL),
-(8, 'TestBrand8', NULL, NULL),
-(9, 'TestBrand9', NULL, NULL),
-(10, 'TestBrand10', NULL, NULL);
+(1, 'TestBrand1', 0, NULL),
+(2, 'TestBrand2', 0, NULL),
+(3, 'TestBrand3', 0, NULL),
+(4, 'TestBrand4', 0, NULL),
+(5, 'TestBrand5', 0, NULL),
+(6, 'TestBrand6', 0, NULL),
+(7, 'TestBrand7', 0, NULL),
+(8, 'TestBrand8', 0, NULL),
+(9, 'TestBrand9', 0, NULL),
+(10, 'TestBrand10', 0, NULL),
+(11, 'TesztBrandWithAddProcedure', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -464,7 +556,7 @@ CREATE TABLE `category` (
   `id` int(11) NOT NULL,
   `name` longtext NOT NULL,
   `category_id` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(4) DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -473,16 +565,18 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Kalapács', NULL, NULL, NULL),
-(2, 'Dugókulcs', NULL, NULL, NULL),
-(3, 'Seprű', NULL, NULL, NULL),
-(4, 'Partvis', 3, NULL, NULL),
-(5, 'Gumikalapács', 1, NULL, NULL),
-(6, 'Colstok', 8, NULL, NULL),
-(7, 'Centi', 8, NULL, NULL),
-(8, 'Mérőegységek', NULL, NULL, NULL),
-(9, 'Vízmértékek', NULL, NULL, NULL),
-(10, 'Nyelek', NULL, NULL, NULL);
+(1, 'Kalapács', NULL, 0, NULL),
+(2, 'Dugókulcs', NULL, 0, NULL),
+(3, 'Seprű', NULL, 0, NULL),
+(4, 'Partvis', 3, 0, NULL),
+(5, 'Gumikalapács', 1, 0, NULL),
+(6, 'Colstok', 8, 0, NULL),
+(7, 'Centi', 8, 0, NULL),
+(8, 'Mérőegységek', NULL, 0, NULL),
+(9, 'Vízmértékek', NULL, 0, NULL),
+(10, 'Nyelek', NULL, 0, NULL),
+(11, 'Próba nem tudom', NULL, 0, NULL),
+(12, 'Al kategória lesz', 11, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -838,7 +932,8 @@ ALTER TABLE `cart_product`
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category_id` (`category_id`);
 
 --
 -- Indexes for table `details`
@@ -935,7 +1030,7 @@ ALTER TABLE `address_user`
 -- AUTO_INCREMENT for table `brand`
 --
 ALTER TABLE `brand`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `cart`
@@ -953,7 +1048,7 @@ ALTER TABLE `cart_product`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `details`
