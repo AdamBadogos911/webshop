@@ -1,9 +1,38 @@
-<nav class="navbar sticky-top">
-    <img class="navbar-brand" href="#" src="" alt="Logo">
+<nav class="navbar sticky-top navbar-expand-lg">
+  <div class="container-fluid">
+    <a href="" class="navbar-brand">
+      <img href="#" src="" alt="Logo">
+    </a>
     <form id="search" action="" role="search">
       <input class="form-control" type="search" placeholder="Keresés" aria-label="Keresés">
     </form>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a href="">Termékeink</a>
+        </li>
+        <li class="nav-item">
+          <a href="">Ajánlatok</a>
+        </li>
+        <li class="nav-item">
+          <a href="">Rólunk</a>
+        </li>
+      </ul>
+    </div>
+    <button class="icon-button">
+      <span class="material-symbols-outlined">
+        person
+      </span>
+    </button>
+    <button class="icon-button">
+      <span class="material-symbols-outlined">
+        shopping_cart
+      </span>
+    </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+  </div>
 </nav>

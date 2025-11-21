@@ -1,7 +1,42 @@
 nav {
   background-color: #B4B4B4;
+  padding: 0;
 }
 
 #search {
   text-align: left;
+  width: 150px;
+
+}
+
+.navbar-collapse {
+  margin: 10px;
+}
+
+li {
+  border: 1px solid black;
+  padding: 10px 50px;
+}
+
+li a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  align-items: first baseline;
+}
+
+li:hover {
+  text-decoration: underline;
+  cursor: pointer;
+
+}
+
+.material-symbols-outlined {
+  font-size: 40px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
