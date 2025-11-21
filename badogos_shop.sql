@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 21, 2025 at 08:07 AM
+-- Generation Time: Nov 21, 2025 at 09:58 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -167,6 +167,21 @@ INSERT INTO `cart_product` (
    );
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addProductXcategories` (IN `productIdIN` INT(11), IN `cartegoryIdIN` INT(11))   BEGIN
+
+	INSERT INTO `product_categories`
+    (
+    	`product_categories`.`product_id`,
+    	`product_categories`.`category_id`
+	)
+    VALUES
+    (
+    	productIdIN,
+        cartegoryIdIN
+    )
+    ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addReview` (IN `reviewTextIN` VARCHAR(255), IN `reviewstarIN` INT(1), IN `reviewerIdIN` INT(11), IN `reviewedProdIdIN` INT(11))   BEGIN
 	INSERT INTO `review`(
 		`review`.`product_id`,
@@ -274,6 +289,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteProduct` (IN `productIdIN` IN
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteProductXcategories` (IN `productXcategoriesIdIN` INT(11))   BEGIN
+	UPDATE `product_categories`
+    SET `product_categories`.`is_deleted`=1,
+    `product_categories`.`deleted_at`= CURRENT_TIMESTAMP
+    WHERE `product_categories`.`id`=productXcategoriesIdIN
+    ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteReview` (IN `reviewIdIN` INT(11), IN `reviewedProductIdIN` INT(11), IN `reviewerIdIN` INT(11))   BEGIN
 	UPDATE `review`
 	SET `review`.`deleted_at` = CURRENT_TIMESTAMP
@@ -331,6 +354,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllCategory` ()   BEGIN
     WHERE `category`.`is_deleted`=0
     ;
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllProductXcategories` ()   BEGIN
+	SELECT *from `product_categories`
+    WHERE `product_categories`.`is_deleted`=0
+    ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllReview` ()   BEGIN
@@ -480,6 +509,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCategoryName` (IN `categoryId
         `category`.`is_deleted`=0,
         `category`.`deleted_at`= NULL
     WHERE `category`.`id`=categoryIdIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateProductXcategories` (IN `productXcategoriesIdIN` INT(11), IN `productIdIN` INT(11), IN `categoryIdIN` INT(11))   BEGIN
+	UPDATE `product_categories`
+    SET `product_categories`.`id`=productIdIN,
+    `product_categories`.`id`=categoryIdIN
+    
+    WHERE `product_categories`.`id`=productXcategoriesIdIN
+    ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateReview` (IN `reviewIdIN` INT(11), IN `reviewStarIN` INT(1), IN `reviewTextIN` LONGTEXT)   BEGIN
@@ -851,24 +889,27 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 CREATE TABLE `product_categories` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL
+  `category_id` int(11) NOT NULL,
+  `is_deleted` tinyint(4) NOT NULL DEFAULT '0',
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `product_categories`
 --
 
-INSERT INTO `product_categories` (`id`, `product_id`, `category_id`) VALUES
-(1, 1, 1),
-(2, 2, 4),
-(3, 3, 5),
-(4, 4, 2),
-(5, 5, 9),
-(6, 6, 10),
-(7, 7, 9),
-(8, 8, 4),
-(9, 9, 6),
-(10, 1, 5);
+INSERT INTO `product_categories` (`id`, `product_id`, `category_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 1, 1, 0, NULL),
+(2, 2, 4, 0, NULL),
+(3, 3, 5, 0, NULL),
+(4, 4, 2, 0, NULL),
+(5, 5, 9, 0, NULL),
+(6, 6, 10, 0, NULL),
+(7, 7, 9, 0, NULL),
+(8, 8, 4, 0, NULL),
+(9, 9, 6, 0, NULL),
+(10, 1, 5, 0, NULL),
+(11, 2, 11, 1, '2025-11-21 08:26:15');
 
 -- --------------------------------------------------------
 
@@ -1195,7 +1236,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `product_categories`
 --
 ALTER TABLE `product_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `product_images`
