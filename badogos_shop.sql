@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2025 at 08:28 PM
+-- Generation Time: Nov 21, 2025 at 08:07 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -25,6 +25,24 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addAddressXUser` (IN `addressIdIN` INT(11), IN `userIdIN` INT(11), IN `is_billing` TINYINT(1), IN `is_delivery` TINYINT(1))   BEGIN
+	INSERT INTO `address_user`
+    (
+    	`address_user`.`address_id`,
+        `address_user`.`user_id`,
+        `address_user`.`is_billing`,
+        `address_user`.`is_delivery`
+    )
+    VALUES
+    (
+    	addressIdIN,
+        userIdIN,
+        is_billing,
+        is_delivery
+    )
+    ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addAdress` (IN `cityIN` VARCHAR(100), IN `postalCodeIN` INT(4), IN `nameOfPublicAreaIN` VARCHAR(100), IN `houseNumberIN` INT(4))   BEGIN
 
 INSERT INTO `address`(
@@ -206,6 +224,23 @@ WHERE `product`.`id` = productIdIN;
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteAddress` (IN `addressIdIN` INT(11))   BEGIN
+	UPDATE `address`
+    SET `address`.`is_deleted`=1,
+    `address`.`deleted_at`=CURRENT_TIMESTAMP
+    	
+    WHERE `address`.`id`= addressIdIN
+    ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteAddressXUser` (IN `addressXuserIdIN` INT(11))   BEGIN
+	UPDATE `address_user`
+    SET `address_user`.`is_deleted`=1,
+    `address_user`.`deleted_at`=CURRENT_TIMESTAMP
+    WHERE `address_user`.`id` = addressXuserIdIN
+    ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteBrand` (IN `brandIdIN` INT(11))   BEGIN
 
 UPDATE `brand`
@@ -227,7 +262,7 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePrimaryCategory` (IN `categoryIdIN` INT(11))   BEGIN
 	UPDATE `category`
     SET `category`.`category_id` = NULL
-    WHERE `category`.`id `= categoryIdIN
+    WHERE category.id = categoryIdIN
     ;
 END$$
 
@@ -259,6 +294,18 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAddressById` (IN `addressIdIN` INT(11))   BEGIN
 	SELECT * FROM `address`
     WHERE `address`.`is_deleted`=0 AND `address`.`id`= addressIdIN
+    ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAddressXuserById` (IN `AddressXuserIdIN` INT(11))   BEGIN
+	SELECT* FROM `address_user`
+    WHERE `address_user`.`is_deleted`=0 AND `address_user`.`id`=AddressXuserIdIN
+    ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAddressXuser` ()   BEGIN
+	SELECT*FROM`address_user`
+    WHERE `address_user`.`is_deleted`=0 
     ;
 END$$
 
@@ -389,6 +436,27 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `searchByProductSKU` (IN `Stock_Keep
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateAddress` (IN `addressIdIN` INT(11), IN `cityIN` VARCHAR(100), IN `postalCodeIN` INT(4), IN `nameOfPublicAreaIN` VARCHAR(100), IN `houseNumberIN` INT(4))   BEGIN
+	UPDATE `address`
+    SET `address`.`city`=cityIN,
+    `address`.`postal_code`=postalCodeIN,
+    `address`.`name_of_public_area`=nameOfPublicAreaIN,
+    `address`.`house_number`=houseNumberIN
+
+	WHERE `address`.`id`=addressIdIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateAddressXuser` (IN `addressXuserIdIN` INT(11), IN `isBillingChange` TINYINT, IN `isDeliveryChange` TINYINT)   BEGIN
+	UPDATE `address_user`
+    SET`address_user`.`is_billing`=isBillingChange,
+    `address_user`.`is_delivery`=isDeliveryChange,
+    `address_user`.`is_deleted`=NULL,
+    `address_user`.`deleted_at`=NULL
+    
+    WHERE `address_user`.`id`=addressXuserIdIN
+    ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateBrand` (IN `brandIdIN` INT(11), IN `brandNameIN` VARCHAR(255))  COMMENT 'végrehajtásnál kiveszi a törlést az adott dologról' BEGIN
 	UPDATE `brand`
     SET `brand`.`name`=brandNameIN,
@@ -458,7 +526,8 @@ INSERT INTO `address` (`id`, `country`, `city`, `postal_code`, `name_of_public_a
 (8, 'Magyarország', 'tesztFalu6', 6, 'teszt6', 6, 0, NULL),
 (9, 'Magyarország', 'tesztFalu7', 7, 'test7', 7, 0, NULL),
 (10, 'Magyarország', 'tesztFalu8', 8, 'test8', 8, 0, NULL),
-(11, 'Magyarország', 'tesztFalu9', 9, 'test9', 9, 0, NULL);
+(11, 'Magyarország', 'Updated Város', 1011, 'Updated Város', 1011, 0, NULL),
+(12, 'Magyarország', 'Törölt Város', 1001, 'TörlendöVáros', 1001, 1, '2025-11-21 07:23:05');
 
 -- --------------------------------------------------------
 
@@ -470,9 +539,9 @@ CREATE TABLE `address_user` (
   `id` int(11) NOT NULL,
   `address_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `is_billing` tinyint(4) DEFAULT NULL,
-  `is_delivery` tinyint(4) DEFAULT NULL,
-  `is_deleted` tinyint(4) DEFAULT NULL,
+  `is_billing` tinyint(4) NOT NULL DEFAULT '0',
+  `is_delivery` tinyint(4) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(4) DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -481,16 +550,17 @@ CREATE TABLE `address_user` (
 --
 
 INSERT INTO `address_user` (`id`, `address_id`, `user_id`, `is_billing`, `is_delivery`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 1, 1, 1, NULL, NULL),
-(2, 2, 2, 1, 0, NULL, NULL),
-(3, 3, 2, NULL, 1, NULL, NULL),
-(4, 4, 3, 1, 1, NULL, NULL),
-(5, 5, 4, 1, 1, NULL, NULL),
-(6, 6, 5, 1, 1, NULL, NULL),
-(7, 7, 6, 1, 1, NULL, NULL),
-(8, 8, 7, 1, 1, NULL, NULL),
-(9, 9, 8, 1, 1, NULL, NULL),
-(10, 10, 9, 1, 1, NULL, NULL);
+(1, 1, 1, 1, 1, 0, NULL),
+(2, 2, 2, 1, 0, 0, NULL),
+(3, 3, 2, 0, 1, 0, NULL),
+(4, 4, 3, 1, 1, 0, NULL),
+(5, 5, 4, 1, 1, 0, NULL),
+(6, 6, 5, 1, 1, 0, NULL),
+(7, 7, 6, 1, 1, 0, NULL),
+(8, 8, 7, 1, 1, 0, NULL),
+(9, 9, 8, 1, 1, 0, NULL),
+(10, 10, 9, 0, 1, 0, NULL),
+(11, 11, 8, 1, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -616,7 +686,7 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 (9, 'Vízmértékek', NULL, 0, NULL),
 (10, 'Nyelek', NULL, 0, NULL),
 (11, 'Próba nem tudom', NULL, 0, NULL),
-(12, 'Al kategória lesz', 11, 0, NULL);
+(12, 'Al kategória lesz', NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1059,13 +1129,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `address_user`
 --
 ALTER TABLE `address_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `brand`
