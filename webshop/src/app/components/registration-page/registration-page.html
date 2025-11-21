@@ -1,40 +1,64 @@
-<div id="register">
+<div id="register" class="container">
   <h1>Regisztráció</h1>
-  <form>
-    <div class="row align-items-center">
-      <div class="row">
+  <form class="container-fluid justify-content-center align-items-center">
+    <div class="row">
+      <div class="col-12">
         <label for="lastName">Vezetéknév</label>
       </div>
-      <div class="row">
-        <input type="text" id="lastName" name="lastName">
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input class="shadow" type="text" id="lastName" name="lastName" placeholder="Pl.: Kovács">
       </div>
+    </div>
 
-      <div class="row">
+    <div class="row">
+      <div class="col-12">
         <label for="firstName">Keresztnév</label>
       </div>
-      <div class="row">
-        <input type="text" id="firstName" name="firstName">
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input class="shadow" type="text" id="firstName" name="firstName" placeholder="Pl.: István">
       </div>
+    </div>
 
-      <div class="row">
+    <div class="row">
+      <div class="col-12">
         <label for="email">E-mail</label>
       </div>
-      <div class="row">
-        <input type="email" id="email" name="email">
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input class="shadow" type="email" id="email" name="email" placeholder="Pl.: kovacs.istvan123@gmail.com">
       </div>
+    </div>
 
-      <div class="row">
+    <div class="row">
+      <div class="col-12">
         <label for="password">Jelszó</label>
       </div>
-      <div class="row">
-        <input type="password" id="password" name="passwords">
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input class="shadow" type="password" id="password" name="passwords" placeholder="Jelszó">
       </div>
+    </div>
 
-      <div class="row">
+    <div class="row">
+      <div class="col-12">
         <label for="passwordAgain">Jelszó újra</label>
       </div>
-      <div class="row">
-        <input type="password" id="passwordAgain" name="passwordAgain">
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input class="shadow" type="password" id="passwordAgain" name="passwordAgain" placeholder="Jelszó újra">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center align-items-center">
+        <button class="shadow">Regisztráció</button>
       </div>
     </div>
   </form>

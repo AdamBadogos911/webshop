@@ -4,6 +4,7 @@
 }
 
 h1 {
+  margin: 20px;
   text-align: center;
 }
 
@@ -12,6 +13,17 @@ form {
   border-radius: 20px;
   margin: 10px auto;
   width: fit-content;
+  padding: 5px;
+}
+
+.row {
+  margin: 0 15px;
+}
+
+label {
+  font-size: large;
+  margin: 5px;
+  width: 150px;
 }
 
 input {
@@ -19,16 +31,17 @@ input {
   min-width: 300px;
   margin-bottom: 20px;
   width: 150px;
+  border: none;
+  padding: 5px 10px;
 }
 
-label {
-  font-size: large;
-  margin: 5px;
-  margin-left: 0;
+button {
+  background-color: #6BCBE8;
+  border-radius: 20px;
+  display: block;
+  margin: 10px auto;
+  padding: 5px;
   width: 150px;
+  border: none;
 }
 
-.row {
-  margin: 0 15px;
-  width: 350px;
-}
