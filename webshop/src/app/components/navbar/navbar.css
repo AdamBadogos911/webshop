@@ -1,3 +1,7 @@
+.container-fluid {
+  height: fit-content;
+}
+
 nav {
   background-color: #B4B4B4;
   padding: 0;
@@ -5,16 +9,15 @@ nav {
 
 #search {
   text-align: left;
-  width: 150px;
+  width: 250px;
 
 }
 
 .navbar-collapse {
-  margin: 10px;
+  margin: 0 10px;
 }
 
 li {
-  border: 1px solid black;
   padding: 10px 50px;
 }
 
@@ -39,4 +42,9 @@ li:hover {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+.icon-button span {
+  vertical-align: middle;
+  text-align: right
 }
