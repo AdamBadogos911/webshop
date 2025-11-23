@@ -1,0 +1,118 @@
+#register {
+  height: 100%;
+  padding: auto;
+}
+
+h1 {
+  margin: 20px;
+  text-align: center;
+}
+
+form {
+  background-color: #BFBFC0;
+  border-radius: 20px;
+  margin: 10px auto;
+  width: fit-content;
+  padding: 5px;
+}
+
+.row {
+  margin: 0 15px;
+}
+
+label {
+  font-size: large;
+  margin: 5px;
+  width: 150px;
+}
+
+input {
+  border-radius: 25px;
+  min-width: 300px;
+  margin-bottom: 20px;
+  width: 150px;
+  border: none;
+  padding: 5px 10px;
+}
+
+button {
+  background-color: #6BCBE8;
+  border-radius: 20px;
+  display: block;
+  margin: 10px auto;
+  padding: 5px;
+  width: 150px;
+  border: none;
+}
+
+#register {
+  height: 100%;
+  padding: auto;
+}
+
+h1 {
+  margin: 20px;
+  text-align: center;
+}
+
+form {
+  background-color: #BFBFC0;
+  border-radius: 20px;
+  margin: 10px auto;
+  width: fit-content;
+  padding: 5px;
+}
+
+.row {
+  margin: 0 15px;
+}
+
+label {
+  font-size: large;
+  margin: 5px;
+  width: 150px;
+}
+
+input {
+  border-radius: 25px;
+  min-width: 300px;
+  margin-bottom: 20px;
+  width: 150px;
+  border: none;
+  padding: 5px 10px;
+}
+
+button {
+  background-color: #6BCBE8;
+  border-radius: 20px;
+  display: block;
+  margin: 10px auto;
+  padding: 5px;
+  width: 150px;
+  border: none;
+}
+
+#password.shadow {
+  margin-bottom: 0;
+}
+
+#forgotPassword {
+  color: black;
+  text-decoration: underline;
+  font-size: smaller;
+  margin: 10px;
+}
+
+#forgotPassword:hover {
+  text-decoration: dotted underline;
+}
+
+#registerButton {
+  color: black;
+  text-decoration: underline;
+  font-size: medium;
+}
+
+#registerButton:hover {
+  text-decoration:dotted underline;
+}

@@ -45,3 +45,12 @@ button {
   border: none;
 }
 
+a {
+  color: black;
+  text-decoration: underline;
+  font-size: medium;
+}
+
+a:hover {
+  text-decoration:dotted underline;
+}
