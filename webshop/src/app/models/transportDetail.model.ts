@@ -1,15 +1,13 @@
 import { AddressType } from "./addressType.model";
 
-export class BillingDetail {
+export class TransportDetail {
   constructor(
-    public id: number,
+    public id: number | null,
     public postalCode: number,
     public town: string,
     public address: string,
     public houseNumber: number,
-    public companyName: string | null,
-    public taxNumber: string | null,
     public other: string | null,
-    public billingAddressType: AddressType
-  ){}
+    public transportAddressType: AddressType
+  ) {}
 }
