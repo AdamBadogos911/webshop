@@ -1,40 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { UserService } from '../../services/user-service';
+import { Router } from '@angular/router';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-registration-page',
-  imports: [],
+  standalone: true,
+  imports: [ ReactiveFormsModule ],
   templateUrl: './registration-page.html',
-  styleUrl: './registration-page.css',
+  styleUrls: ['./registration-page.css'],
 })
 export class RegistrationPage {
-  enteredLastName = '';
-  enteredFirstName = '';
-  enteredEmail = '';
-  enteredPassword = '';
-  enteredPasswordAgain = '';
+  private userService = inject(UserService)
+  private router = inject(Router)
+  registerForm!: FormGroup
 
-  onSubmit() {
-    if (
-      !this.enteredLastName ||
-      !this.enteredFirstName ||
-      !this.enteredEmail ||
-      !this.enteredPassword ||
-      !this.enteredPasswordAgain
-    ) {
-      alert('Kérem töltsön ki minden mezőt!');
-    } else if (
-      this.enteredEmail.includes('@') === false ||
-      this.enteredEmail.includes('.') === false
-    ) {
-      alert('Kérem érvényes email címet adjon meg!');
-    } else if (this.enteredPassword !== this.enteredPasswordAgain) {
-      alert('A jelszavak nem egyeznek!');
-    } else {
-      alert('Sikeres regisztráció!');
-      console.log(this.enteredLastName);
-      console.log(this.enteredFirstName);
-      console.log(this.enteredEmail);
-      console.log(this.enteredPassword);
-    }
+  ngOnInit(): void {
+    this.registerForm = new FormGroup({
+      firstName: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      lastName: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      passwordAgain: new FormControl('', [Validators.required, Validators.minLength(8)])
+    })
+  }
+
+  sendRegister() {
+    const newUser = new User(this.registerForm.controls["email"].value, this.registerForm.controls["password"].value, this.registerForm.controls["firstName"].value, this.registerForm.controls["lastName"].value)
+    this.userService.register(newUser).subscribe({
+      next: response => {
+        console.log(response)
+      },
+      error: error => console.log(error),
+      complete: () => {
+        this.router.navigate(["/login"])
+      }
+    })
   }
 }

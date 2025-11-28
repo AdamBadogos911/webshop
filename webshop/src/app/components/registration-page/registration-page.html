@@ -1,6 +1,6 @@
 <div id="register" class="container">
   <h1>Regisztráció</h1>
-  <form class="container-fluid justify-content-center align-items-center">
+  <form [formGroup]="registerForm" (ngSubmit)="sendRegister()" class="container-fluid justify-content-center align-items-center">
     <div class="row">
       <div class="col-12">
         <label for="lastName">Vezetéknév</label>
@@ -8,7 +8,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <input class="shadow" type="text" id="lastName" name="lastName" placeholder="Pl.: Kovács">
+        <input formControlName="lastName" class="shadow" type="text" id="lastName" name="lastName" placeholder="Pl.: Kovács">
       </div>
     </div>
 
@@ -19,7 +19,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <input class="shadow" type="text" id="firstName" name="firstName" placeholder="Pl.: István">
+        <input formControlName="firstName" class="shadow" type="text" id="firstName" name="firstName" placeholder="Pl.: István">
       </div>
     </div>
 
@@ -30,7 +30,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <input class="shadow" type="email" id="email" name="email" placeholder="Pl.: kovacs.istvan123@gmail.com">
+        <input formControlName="email" class="shadow" type="email" id="email" name="email" placeholder="Pl.: kovacs.istvan123@gmail.com">
       </div>
     </div>
 
@@ -41,7 +41,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <input class="shadow" type="password" id="password" name="passwords" placeholder="Jelszó">
+        <input formControlName="password" class="shadow" type="password" id="password" name="passwords" placeholder="Jelszó">
       </div>
     </div>
 
@@ -52,19 +52,19 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <input class="shadow" type="password" id="passwordAgain" name="passwordAgain" placeholder="Jelszó újra">
+        <input formControlName="passwordAgain" class="shadow" type="password" id="passwordAgain" name="passwordAgain" placeholder="Jelszó újra">
       </div>
     </div>
 
     <div class="row">
       <div class="col-12 d-flex justify-content-center align-items-center">
-        <button class="shadow">Regisztráció</button>
+        <button [disabled]="registerForm.invalid" class="shadow">Regisztráció</button>
       </div>
     </div>
 
     <div class="row">
       <div class="col-12 d-flex justify-content-center align-items-center">
-        <p>Van már fiókod? <a href="#login">Jelentkezz be!</a></p>
+        <p>Van már fiókod? <a routerLink="/login">Jelentkezz be!</a></p>
       </div>
     </div>
   </form>
