@@ -90,5 +90,5 @@ public class OrderHistory {
     @OneToMany(mappedBy = "orderHistory", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnoreProperties({"orderHistory"})
     private List<OrderProduct> products;
-    
+
 }
