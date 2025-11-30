@@ -1,5 +1,6 @@
 package com.example.badogosShop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,11 @@ public class CartProduct {
     @Column(name = "amount")
     @NotNull
     private Integer amount;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "product_id")
+    @JsonIgnoreProperties({"productReviewList"})
+    private Product cartProduct;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "cart_id")
