@@ -27,9 +27,9 @@ public class Details {
     @Null
     private Double weightInKg;
 
-    @Column(name = "species")
+    @Column(name = "material")
     @Null
-    private String species;
+    private String material;
 
     @Column(name = "length")
     @Null
