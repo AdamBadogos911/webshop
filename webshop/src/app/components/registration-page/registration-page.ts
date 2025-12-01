@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { UserService } from '../../services/user-service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-registration-page',
   standalone: true,
-  imports: [ ReactiveFormsModule ],
+  imports: [ ReactiveFormsModule, RouterModule ],
   templateUrl: './registration-page.html',
   styleUrls: ['./registration-page.css'],
 })
