@@ -1,6 +1,7 @@
 package com.example.badogosShop.controller;
 
 import com.example.badogosShop.entity.User;
+import com.example.badogosShop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
