@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 21, 2025 at 09:58 AM
+-- Generation Time: Dec 02, 2025 at 09:27 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -43,24 +43,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addAddressXUser` (IN `addressIdIN` 
     ;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addAdress` (IN `cityIN` VARCHAR(100), IN `postalCodeIN` INT(4), IN `nameOfPublicAreaIN` VARCHAR(100), IN `houseNumberIN` INT(4))   BEGIN
-
-INSERT INTO `address`(
-	`address`.`city`,
-    `address`.`postal_code`,
-    `address`.`name_of_public_area`,
-    `address`.`house_number`
-)
-VALUES(
-	cityIN,
-    postalCodeIN,
-    nameOfPublicAreaIN,
-    houseNumberIN
-);
-
-
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addBrand` (IN `brandNameIN` VARCHAR(255))   BEGIN
 	INSERT INTO `brand`
     (
@@ -93,11 +75,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addCategory` (IN `categoryNameIN` L
     );
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addDetail` (IN `weightIN` DOUBLE, IN `speciesIN` VARCHAR(255), IN `lengthIN` DOUBLE, IN `heightIN` INT, IN `widthIN` DOUBLE, IN `sizeIN` INT(11), IN `is_setIN` TINYINT(4))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addDetail` (IN `weightIN` DOUBLE, IN `materialIN` VARCHAR(255), IN `lengthIN` DOUBLE, IN `heightIN` INT, IN `widthIN` DOUBLE, IN `sizeIN` INT(11), IN `is_setIN` TINYINT(4))   BEGIN
 
  INSERT INTO `details`(
 	`details`.`weight`,
-    `details`.`species`,
+    `details`.`material`,
      `details`.`length`,
      `details`.`height`,
      `details`.`width`,
@@ -106,7 +88,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addDetail` (IN `weightIN` DOUBLE, I
     )
     VALUES(
 	weightIN,
-    speciesIN,
+    materialIN,
     lengthIN,
     heightIN,
     widthIN,
@@ -198,25 +180,23 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addReview` (IN `reviewTextIN` VARCH
 ;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser` (IN `firstNameIN` VARCHAR(100), IN `lastNameIN` VARCHAR(100), IN `emailIN` VARCHAR(200), IN `passwordIN` VARCHAR(255))   BEGIN
-	INSERT INTO `user`(
-	`user`.`first_name`,
-    `user`.`last_name`,
-    `user`.`email`,
-    `user`.`password`,
-    `user`.`auth_secret`,
-    `user`.`guid`,
-    `user`.`reg_token`
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addTransportDetail` (IN `townIN` VARCHAR(100), IN `postalCodeIN` INT(4), IN `addressIN` VARCHAR(100), IN `houseNumberIN` INT(3), IN `addressTypeIdIN` INT(11))   BEGIN
+
+INSERT INTO `transport_detail`(
+	`transport_detail`.`town`,
+    `transport_detail`.`post_code`,
+    `transport_detail`.`address_type_id`,
+    `transport_detail`.`address`,
+    `transport_detail`.`house_number`
 )
 VALUES(
-	firstNameIN,
-    lastNameIN,
-    emailIN,
-    SHA2(passwordIN,256),
-    "-",
-    UUID(),
-    UUID()
+	townIN,
+    postalCodeIN,
+    addressTypeIdIN,
+    addressIN,
+    houseNumberIN
 );
+
 
 END$$
 
@@ -245,14 +225,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteAddress` (IN `addressIdIN` IN
     `address`.`deleted_at`=CURRENT_TIMESTAMP
     	
     WHERE `address`.`id`= addressIdIN
-    ;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteAddressXUser` (IN `addressXuserIdIN` INT(11))   BEGIN
-	UPDATE `address_user`
-    SET `address_user`.`is_deleted`=1,
-    `address_user`.`deleted_at`=CURRENT_TIMESTAMP
-    WHERE `address_user`.`id` = addressXuserIdIN
     ;
 END$$
 
@@ -314,12 +286,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `userIdIN` INT(11))
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAddressById` (IN `addressIdIN` INT(11))   BEGIN
-	SELECT * FROM `address`
-    WHERE `address`.`is_deleted`=0 AND `address`.`id`= addressIdIN
-    ;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAddressXuserById` (IN `AddressXuserIdIN` INT(11))   BEGIN
 	SELECT* FROM `address_user`
     WHERE `address_user`.`is_deleted`=0 AND `address_user`.`id`=AddressXuserIdIN
@@ -329,12 +295,6 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAddressXuser` ()   BEGIN
 	SELECT*FROM`address_user`
     WHERE `address_user`.`is_deleted`=0 
-    ;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAdress` ()   BEGIN
-	SELECT * FROM `address`
-    WHERE `address`.`is_deleted`=0
     ;
 END$$
 
@@ -370,6 +330,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllReview` ()   BEGIN
     
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllTransportDetail` ()   BEGIN
+	SELECT * FROM transport_detail
+    
+    ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllUser` ()   BEGIN
 	SELECT * FROM `user`
     WHERE `user`.`is_deleted`=0
@@ -398,7 +364,21 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getReviewByUserId` (IN `userIdIN` I
     WHERE `review`.`user_id`=userIdIN AND `review`.`is_deleted`=0;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `emailIN` VARCHAR(200), IN `passwordIN` VARCHAR(200))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getTransportDetailsById` (IN `transportDetailsIdIN` INT(11))   BEGIN
+	SELECT * FROM transport_detail
+    WHERE transport_detail.id= transportDetailsIdIN
+    ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `emailIN` VARCHAR(255), IN `passwordIN` VARCHAR(255))   BEGIN 
+	SELECT * FROM user WHERE user.email = emailIN AND user.password = passwordIN;
+    
+    UPDATE user
+SET user.last_login=CURRENT_TIMESTAMP
+WHERE user.email= emailIN AND user.password = passwordIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `login1` (IN `emailIN` VARCHAR(200), IN `passwordIN` VARCHAR(200))   BEGIN
 SELECT
 	`user`.`id` AS "user_id",
     `user`.`first_name`,
@@ -511,6 +491,21 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCategoryName` (IN `categoryId
     WHERE `category`.`id`=categoryIdIN;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateDetails` (IN `detailIdIN` INT(11), IN `weightIN` DOUBLE, IN `materialIN` VARCHAR(255), IN `lengthIN` DOUBLE, IN `heightIN` DOUBLE, IN `widthIN` DOUBLE, IN `sizeIN` INT(11), IN `is_setIN` TINYINT(4))   BEGIN
+
+ UPDATE `details`
+	SET `details`.`weight`=weightIN,
+    `details`.`material`=materialIN,
+     `details`.`length`=lengthIN,
+     `details`.`height`=heightIN,
+     `details`.`width`=widthIN,
+     `details`.`size`=sizeIN,
+     `details`.`is_set`=is_setIN
+    
+
+WHERE details.id=detailIdIN;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateProductXcategories` (IN `productXcategoriesIdIN` INT(11), IN `productIdIN` INT(11), IN `categoryIdIN` INT(11))   BEGIN
 	UPDATE `product_categories`
     SET `product_categories`.`id`=productIdIN,
@@ -530,42 +525,372 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `updateReview` (IN `reviewIdIN` INT(
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTransportDetail` (IN `transportIdIN` INT(11), IN `postalCodeIN` INT(4), IN `townIN` VARCHAR(100), IN `addressIN` VARCHAR(100), IN `addressTypeIdIN` INT(11), IN `houseNumberIN` INT(3), IN `otherIN` LONGTEXT)   BEGIN
+	
+    UPDATE transport_detail
+	SET transport_detail.post_code=postalCodeIN,
+    transport_detail.town=townIN,
+    transport_detail.address=addressIN,
+    transport_detail.address_type_id=addressTypeIdIN,
+    transport_detail.house_number=houseNumberIN,
+    transport_detail.other=otherIN 
+    WHERE transport_detail.id=transportIdIN
+;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `address`
+-- Table structure for table `address_type`
 --
 
-CREATE TABLE `address` (
+CREATE TABLE `address_type` (
   `id` int(11) NOT NULL,
-  `country` varchar(100) NOT NULL DEFAULT 'Magyarország',
-  `city` varchar(100) NOT NULL,
-  `postal_code` int(4) NOT NULL,
-  `name_of_public_area` varchar(100) NOT NULL,
-  `house_number` int(4) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `address`
+-- Dumping data for table `address_type`
 --
 
-INSERT INTO `address` (`id`, `country`, `city`, `postal_code`, `name_of_public_area`, `house_number`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Magyarország', 'TesztVáros', 7357, 'utca', 7357, 0, NULL),
-(2, 'Magyarország', 'tesztFalu1', 0, 'test1', 0, 0, NULL),
-(3, 'Magyarország', 'tesztFalu2', 1, 'teszt1', 1, 0, NULL),
-(4, 'Magyarország', 'tesztFalu2', 2, 'test2', 2, 0, NULL),
-(5, 'Magyarország', 'tesztFalu3', 3, 'test3', 3, 0, NULL),
-(6, 'Magyarország', 'tesztFalu4', 4, 'test4', 4, 0, NULL),
-(7, 'Magyarország', 'tesztFalu5', 5, 'test5', 5, 0, NULL),
-(8, 'Magyarország', 'tesztFalu6', 6, 'teszt6', 6, 0, NULL),
-(9, 'Magyarország', 'tesztFalu7', 7, 'test7', 7, 0, NULL),
-(10, 'Magyarország', 'tesztFalu8', 8, 'test8', 8, 0, NULL),
-(11, 'Magyarország', 'Updated Város', 1011, 'Updated Város', 1011, 0, NULL),
-(12, 'Magyarország', 'Törölt Város', 1001, 'TörlendöVáros', 1001, 1, '2025-11-21 07:23:05');
+INSERT INTO `address_type` (`id`, `name`) VALUES
+(1, 'tér'),
+(2, 'utca'),
+(3, 'Út'),
+(4, 'Körút'),
+(5, 'akna'),
+(6, 'alja'),
+(7, 'almáskert'),
+(8, 'alsó'),
+(9, 'alsósor'),
+(10, 'aluljáró'),
+(11, 'autópálya'),
+(12, 'autóversenypálya'),
+(13, 'állomás'),
+(14, 'árok'),
+(15, 'átjáró'),
+(16, 'barakképület'),
+(17, 'bánya'),
+(18, 'bányatelep'),
+(19, 'bekötőút'),
+(20, 'benzinkút'),
+(21, 'bérc'),
+(22, 'bisztró'),
+(23, 'bokor'),
+(24, 'burgundia'),
+(25, 'büfé'),
+(26, 'camping'),
+(27, 'campingsor'),
+(28, 'centrum'),
+(29, 'célgazdaság'),
+(30, 'csapás'),
+(31, 'csarnok'),
+(32, 'csárda'),
+(33, 'cser'),
+(34, 'domb'),
+(35, 'dunapart'),
+(36, 'dunasor'),
+(37, 'dűlő'),
+(38, 'dűlője'),
+(39, 'dűlők'),
+(40, 'dűlőút'),
+(41, 'egyesület'),
+(42, 'egyéb'),
+(43, 'elágazás'),
+(44, 'erdészház'),
+(45, 'erdészlak'),
+(46, 'erdő'),
+(47, 'erdősarok'),
+(48, 'erdősor'),
+(49, 'épület'),
+(50, 'épületek'),
+(51, 'észak'),
+(52, 'étterem'),
+(53, 'falu'),
+(54, 'farm'),
+(55, 'fasor'),
+(56, 'fasora'),
+(57, 'feketeerdő'),
+(58, 'feketeföldek'),
+(59, 'felső'),
+(60, 'felsősor'),
+(61, 'fennsík'),
+(62, 'fogadó'),
+(63, 'fok'),
+(64, 'forduló'),
+(65, 'forrás'),
+(66, 'föld'),
+(67, 'földek'),
+(68, 'földje'),
+(69, 'főtér'),
+(70, 'főút'),
+(71, 'fürdő'),
+(72, 'fürdőhely'),
+(73, 'fürésztelepe'),
+(74, 'gazdaság'),
+(75, 'gát'),
+(76, 'gátőrház'),
+(77, 'gátsor'),
+(78, 'gimnázium'),
+(79, 'gödör'),
+(80, 'gulyakút'),
+(81, 'gyár'),
+(82, 'gyártelep'),
+(83, 'halom'),
+(84, 'határ'),
+(85, 'határátkelőhely'),
+(86, 'határrész'),
+(87, 'határsor'),
+(88, 'határút'),
+(89, 'hatházak'),
+(90, 'hát'),
+(91, 'ház'),
+(92, 'háza'),
+(93, 'házak'),
+(94, 'hegy'),
+(95, 'hegyhát'),
+(96, 'hegyhát dűlő'),
+(97, 'hely'),
+(98, 'hivatal'),
+(99, 'híd'),
+(100, 'hídfő'),
+(101, 'horgásztanya'),
+(102, 'hotel'),
+(103, 'I'),
+(104, 'I.'),
+(105, 'II.'),
+(106, 'III'),
+(107, 'III.'),
+(108, 'intézet'),
+(109, 'ipari park'),
+(110, 'ipartelep'),
+(111, 'iparterület'),
+(112, 'irodaház'),
+(113, 'iskola'),
+(114, 'IV'),
+(115, 'IV.'),
+(116, 'IX'),
+(117, 'jánoshegy'),
+(118, 'járás'),
+(119, 'juhászház'),
+(120, 'kapcsolóház'),
+(121, 'kapu'),
+(122, 'kastély'),
+(123, 'kálvária'),
+(124, 'kemping'),
+(125, 'kert'),
+(126, 'kertek'),
+(127, 'kertek-köze'),
+(128, 'kertsor'),
+(129, 'kertváros'),
+(130, 'kerület'),
+(131, 'kikötő'),
+(132, 'kilátó'),
+(133, 'kishajtás'),
+(134, 'kitérő'),
+(135, 'kocsiszín'),
+(136, 'kolónia'),
+(137, 'korzó'),
+(138, 'kórház'),
+(139, 'körönd'),
+(140, 'körtér'),
+(141, 'körútja'),
+(142, 'körvasútsor'),
+(143, 'körzet'),
+(144, 'köz'),
+(145, 'köze'),
+(146, 'középsor'),
+(147, 'központ'),
+(148, 'kút'),
+(149, 'kútház'),
+(150, 'Külkerület'),
+(151, 'kültelek'),
+(152, 'külterület'),
+(153, 'külterülete'),
+(154, 'lakás'),
+(155, 'lakások'),
+(156, 'lakóház'),
+(157, 'lakókert'),
+(158, 'lakónegyed'),
+(159, 'lakópark'),
+(160, 'lakótelep'),
+(161, 'laktanya'),
+(162, 'legelő'),
+(163, 'lejáró'),
+(164, 'lejtő'),
+(165, 'lépcső'),
+(166, 'liget'),
+(167, 'lovasiskola'),
+(168, 'magánút'),
+(169, 'major'),
+(170, 'malom'),
+(171, 'malomsor'),
+(172, 'megálló'),
+(173, 'mellékköz'),
+(174, 'mező'),
+(175, 'mélyút'),
+(176, 'munkásszálló'),
+(177, 'műút'),
+(178, 'nagymajor'),
+(179, 'nagyút'),
+(180, 'nádgazdaság'),
+(181, 'negyed'),
+(182, 'nyaraló'),
+(183, 'oldal'),
+(184, 'országút'),
+(185, 'otthon'),
+(186, 'otthona'),
+(187, 'öböl'),
+(188, 'öregszőlők'),
+(189, 'ösvény'),
+(190, 'ötház'),
+(191, 'övezet'),
+(192, 'őrház'),
+(193, 'őrházak'),
+(194, 'pagony'),
+(195, 'pallag'),
+(196, 'palota'),
+(197, 'park'),
+(198, 'parkfalu'),
+(199, 'parkja'),
+(200, 'parkoló'),
+(201, 'part'),
+(202, 'pavilonsor'),
+(203, 'pálya'),
+(204, 'pályafenntartás'),
+(205, 'pályaudvar'),
+(206, 'piac'),
+(207, 'pihenő'),
+(208, 'pihenőhely'),
+(209, 'pihenőpark'),
+(210, 'pince'),
+(211, 'pinceköz'),
+(212, 'pincesor'),
+(213, 'présházak'),
+(214, 'puszta'),
+(215, 'rakodó'),
+(216, 'rakpart'),
+(217, 'repülőtér'),
+(218, 'rész'),
+(219, 'rét'),
+(220, 'rétek'),
+(221, 'rév'),
+(222, 'ring'),
+(223, 'sarok'),
+(224, 'sertéstelep'),
+(225, 'sétatér'),
+(226, 'sétány'),
+(227, 'sikátor'),
+(228, 'sor'),
+(229, 'sora'),
+(230, 'sportpálya'),
+(231, 'sporttelep'),
+(232, 'stadion'),
+(233, 'strand'),
+(234, 'strandfürdő'),
+(235, 'sugárút'),
+(236, 'szakiskola'),
+(237, 'szállás'),
+(238, 'szálló'),
+(239, 'szárító'),
+(240, 'szárnyasliget'),
+(241, 'szektor'),
+(242, 'szer'),
+(243, 'szél'),
+(244, 'széle'),
+(245, 'sziget'),
+(246, 'szigete'),
+(247, 'szivattyútelep'),
+(248, 'szög'),
+(249, 'szőlő'),
+(250, 'szőlőhegy'),
+(251, 'szőlők'),
+(252, 'szőlőkert'),
+(253, 'szőlős'),
+(254, 'szőlősor'),
+(255, 'tag'),
+(256, 'tanya'),
+(257, 'tanyaközpont'),
+(258, 'tanyák'),
+(259, 'tavak'),
+(260, 'tábor'),
+(261, 'tároló'),
+(262, 'társasház'),
+(263, 'teherpályaudvar'),
+(264, 'telek'),
+(265, 'telep'),
+(266, 'telepek'),
+(267, 'település'),
+(268, 'temető'),
+(269, 'tere'),
+(270, 'terményraktár'),
+(271, 'terület'),
+(272, 'teteje'),
+(273, 'tető'),
+(274, 'téglagyár'),
+(275, 'tormás'),
+(276, 'torony'),
+(277, 'tó'),
+(278, 'tópart'),
+(279, 'tömb'),
+(280, 'TSZ'),
+(281, 'turistaház'),
+(282, 'udvar'),
+(283, 'udvara'),
+(284, 'utcája'),
+(285, 'újfalu'),
+(286, 'újsor'),
+(287, 'újtelep'),
+(288, 'útfél'),
+(289, 'útgyűrű'),
+(290, 'útja'),
+(291, 'üdülő'),
+(292, 'üdülő központ'),
+(293, 'üdülő park'),
+(294, 'üdülők'),
+(295, 'üdülőközpont'),
+(296, 'üdülőpart'),
+(297, 'üdülő-part'),
+(298, 'üdülősor'),
+(299, 'üdülő-sor'),
+(300, 'üdülőtelep'),
+(301, 'üdülő-telep'),
+(302, 'üdülőterület'),
+(303, 'üzem'),
+(304, 'üzletház'),
+(305, 'üzletsor'),
+(306, 'V'),
+(307, 'V.'),
+(308, 'vadászház'),
+(309, 'varroda'),
+(310, 'vasútállomás'),
+(311, 'vasúti megálló'),
+(312, 'vasúti őrház'),
+(313, 'vasútsor'),
+(314, 'vám'),
+(315, 'vár'),
+(316, 'város'),
+(317, 'vásártér'),
+(318, 'vendéglő'),
+(319, 'vég'),
+(320, 'VI'),
+(321, 'VI.'),
+(322, 'VII'),
+(323, 'VII.'),
+(324, 'VIII'),
+(325, 'VIII.'),
+(326, 'villa'),
+(327, 'villasor'),
+(328, 'vízmű'),
+(329, 'vízmű telep'),
+(330, 'víztároló'),
+(331, 'völgy'),
+(332, 'X'),
+(333, 'X.'),
+(334, 'zsilip'),
+(335, 'zug');
 
 -- --------------------------------------------------------
 
@@ -575,30 +900,62 @@ INSERT INTO `address` (`id`, `country`, `city`, `postal_code`, `name_of_public_a
 
 CREATE TABLE `address_user` (
   `id` int(11) NOT NULL,
-  `address_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `is_billing` tinyint(4) NOT NULL DEFAULT '0',
-  `is_delivery` tinyint(4) NOT NULL DEFAULT '0',
-  `is_deleted` tinyint(4) DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `billing_detail_id` int(11) NOT NULL,
+  `transport_detail_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `address_user`
 --
 
-INSERT INTO `address_user` (`id`, `address_id`, `user_id`, `is_billing`, `is_delivery`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 1, 1, 1, 0, NULL),
-(2, 2, 2, 1, 0, 0, NULL),
-(3, 3, 2, 0, 1, 0, NULL),
-(4, 4, 3, 1, 1, 0, NULL),
-(5, 5, 4, 1, 1, 0, NULL),
-(6, 6, 5, 1, 1, 0, NULL),
-(7, 7, 6, 1, 1, 0, NULL),
-(8, 8, 7, 1, 1, 0, NULL),
-(9, 9, 8, 1, 1, 0, NULL),
-(10, 10, 9, 0, 1, 0, NULL),
-(11, 11, 8, 1, 1, 0, NULL);
+INSERT INTO `address_user` (`id`, `billing_detail_id`, `transport_detail_id`, `user_id`) VALUES
+(1, 1, 1, 1),
+(2, 11, 5, 1),
+(3, 2, 2, 5),
+(4, 8, 1, 2),
+(5, 6, 6, 5),
+(6, 3, 9, 4),
+(7, 10, 7, 2),
+(8, 4, 8, 5),
+(9, 7, 9, 2),
+(10, 9, 10, 5),
+(11, 5, 4, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `billing_detail`
+--
+
+CREATE TABLE `billing_detail` (
+  `id` int(11) NOT NULL,
+  `post_code` int(4) NOT NULL,
+  `town` varchar(100) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `address_type_id` int(11) NOT NULL,
+  `house_number` int(3) NOT NULL,
+  `company_name` varchar(100) DEFAULT NULL,
+  `company_tax_number` int(11) DEFAULT NULL,
+  `other` longtext
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `billing_detail`
+--
+
+INSERT INTO `billing_detail` (`id`, `post_code`, `town`, `address`, `address_type_id`, `house_number`, `company_name`, `company_tax_number`, `other`) VALUES
+(1, 1000, 'a', 'a', 1, 1000, NULL, 1000, NULL),
+(2, 1001, 'b', 'b', 2, 1001, NULL, NULL, NULL),
+(3, 1002, 'c', 'c', 2, 1002, 'c', 1002, NULL),
+(4, 1003, 'd', 'd', 2, 1003, NULL, NULL, NULL),
+(5, 1004, 'e', 'e', 1, 1004, 'e', 1004, NULL),
+(6, 1005, 'f', 'f', 2, 1005, NULL, NULL, NULL),
+(7, 1006, 'g', 'g', 228, 1006, NULL, NULL, NULL),
+(8, 1007, 'h', 'h', 2, 1007, NULL, NULL, NULL),
+(9, 1008, 'i', 'i', 228, 1008, NULL, NULL, NULL),
+(10, 1009, 'j', 'j', 2, 1009, NULL, NULL, NULL),
+(11, 1010, 'k', 'k', 228, 1010, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -735,7 +1092,7 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 CREATE TABLE `details` (
   `id` int(11) NOT NULL,
   `weight` double DEFAULT NULL COMMENT 'kg-ban',
-  `species` varchar(255) DEFAULT NULL,
+  `material` varchar(255) DEFAULT NULL,
   `length` double DEFAULT NULL COMMENT 'cm',
   `height` double DEFAULT NULL COMMENT 'cm',
   `width` double DEFAULT NULL COMMENT 'cm',
@@ -747,7 +1104,7 @@ CREATE TABLE `details` (
 -- Dumping data for table `details`
 --
 
-INSERT INTO `details` (`id`, `weight`, `species`, `length`, `height`, `width`, `size`, `is_set`) VALUES
+INSERT INTO `details` (`id`, `weight`, `material`, `length`, `height`, `width`, `size`, `is_set`) VALUES
 (1, 2, '(Teszt)', 3, 2, 0, 0, NULL),
 (2, 2.3, '(Teszt)', 0, 0, 0, 0, NULL),
 (3, 0.1, 'műanyag(Teszt)', 100, 50, 100, NULL, NULL),
@@ -757,41 +1114,49 @@ INSERT INTO `details` (`id`, `weight`, `species`, `length`, `height`, `width`, `
 (7, 50, 'kő(Teszt)', 100, NULL, NULL, 3, NULL),
 (8, 1.5, 'fa(Teszt)', 150, 2.5, 5, 5, NULL),
 (9, 4.5, '(Teszt)', NULL, NULL, NULL, 5, NULL),
-(10, 0.025, '(Teszt)', 100, 100, 100, 10, 1);
+(10, 333, 'dasdsadsaads', 123123, 12313, 12313, 122, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders`
+-- Table structure for table `order_history`
 --
 
-CREATE TABLE `orders` (
+CREATE TABLE `order_history` (
   `id` int(11) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `phone` varchar(10) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `order_date` datetime NOT NULL,
-  `status_id` int(2) NOT NULL,
-  `address_user_id` int(11) NOT NULL,
+  `billing_detail_id` int(11) NOT NULL,
+  `transport_detail_id` int(11) NOT NULL,
   `payment_method_id` int(11) NOT NULL,
-  `order_id` int(8) NOT NULL COMMENT 'rendelés azonosító, 8 jegyű számsor, autómatikus generálással'
+  `status_id` int(2) NOT NULL,
+  `ordered_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `canceled_at` datetime DEFAULT NULL,
+  `is_canceled` tinyint(1) NOT NULL DEFAULT '0',
+  `canceler_user_id` int(11) DEFAULT NULL,
+  `order_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `orders`
+-- Dumping data for table `order_history`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `order_date`, `status_id`, `address_user_id`, `payment_method_id`, `order_id`) VALUES
-(1, 1, '2025-11-20 08:35:25', 7, 1, 1, 10000000),
-(2, 1, '2025-11-20 08:35:25', 1, 1, 1, 10000001),
-(3, 1, '2025-11-20 08:35:25', 6, 1, 1, 10000002),
-(4, 1, '2025-11-20 08:35:25', 2, 1, 1, 10000003),
-(5, 1, '2025-11-20 08:35:25', 5, 1, 1, 10000004),
-(6, 1, '2025-11-20 08:35:25', 3, 1, 1, 10000005),
-(7, 1, '2025-11-20 08:35:25', 3, 1, 1, 10000006),
-(8, 1, '2025-11-20 08:35:25', 4, 1, 1, 10000007),
-(9, 1, '2025-11-20 08:35:25', 7, 1, 1, 10000008),
-(10, 1, '2025-11-20 08:35:25', 6, 1, 1, 10000009),
-(11, 1, '2025-11-20 08:35:25', 6, 1, 1, 10000010),
-(12, 1, '2025-11-20 08:35:25', 1, 1, 1, 10000011);
+INSERT INTO `order_history` (`id`, `first_name`, `last_name`, `phone`, `email`, `user_id`, `billing_detail_id`, `transport_detail_id`, `payment_method_id`, `status_id`, `ordered_at`, `canceled_at`, `is_canceled`, `canceler_user_id`, `order_id`) VALUES
+(1, '', '', '', '', 1, 1, 1, 1, 7, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(2, '', '', '', '', 1, 1, 1, 1, 1, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(3, '', '', '', '', 1, 1, 1, 1, 6, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(4, '', '', '', '', 3, 1, 1, 1, 2, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(5, '', '', '', '', 1, 1, 1, 1, 5, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(6, '', '', '', '', 1, 1, 1, 1, 3, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(7, '', '', '', '', 1, 1, 1, 1, 3, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(8, '', '', '', '', 1, 1, 1, 1, 4, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(9, '', '', '', '', 1, 1, 1, 1, 7, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(10, '', '', '', '', 1, 1, 1, 1, 6, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(11, '', '', '', '', 1, 1, 1, 1, 6, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
+(12, '', '', '', '', 1, 1, 1, 1, 1, '2025-11-21 12:22:28', NULL, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -862,62 +1227,32 @@ CREATE TABLE `product` (
   `amount` int(100) NOT NULL,
   `detail_id` int(11) NOT NULL,
   `stock_keeping_unit` varchar(255) NOT NULL,
-  `brand_id` int(11) DEFAULT NULL
+  `brand_id` int(11) DEFAULT NULL,
+  `category_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `created_at`, `updated_at`, `deleted_at`, `is_deleted`, `amount`, `detail_id`, `stock_keeping_unit`, `brand_id`) VALUES
-(1, 'KalapácsTeszt', 'Kalapács teszt leírás', 50000, 0, '2025-10-22 09:44:26', NULL, '2025-10-22 10:14:21', 0, 500, 1, '888888881', NULL),
-(2, 'SeprűTeszt', 'Teszt Seprű', 20000, NULL, '2025-10-22 13:28:15', NULL, NULL, 0, 200000, 2, '888888882', NULL),
-(3, 'NemTudomCsakTeszt', 'NemTudomCsakTesztDesc', 100, NULL, '2025-10-22 13:58:03', NULL, NULL, 0, 10, 3, '888888883', NULL),
-(4, 'Teszt1', 'Nagyon sok szöveg 1', 100, NULL, '2025-11-19 10:07:05', NULL, NULL, 0, 100, 4, '888888884', NULL),
-(5, 'Teszt2', 'Nagyon sok szöveg 1', 200, NULL, '2025-11-19 10:07:05', NULL, NULL, 0, 0, 5, '888888885', NULL),
-(6, 'Teszt3', 'Nagyon sok szöveg 3', 300, NULL, '2025-11-19 10:09:07', NULL, NULL, 0, 300, 6, '888888886', NULL),
-(7, 'Teszt4', 'Nagyon sok szöveg 4', 400, NULL, '2025-11-19 10:09:07', NULL, NULL, 0, 0, 7, '888888887', NULL),
-(8, 'Teszt5', 'Nagyon sok szöveg 5', 500, NULL, '2025-11-19 10:10:55', NULL, NULL, 0, 110, 8, '888888888', NULL),
-(9, 'Teszt6', 'Nagyon sok szöveg 6', 600, NULL, '2025-11-19 10:10:55', NULL, NULL, 0, 10, 9, '888888889', NULL);
+INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `created_at`, `updated_at`, `deleted_at`, `is_deleted`, `amount`, `detail_id`, `stock_keeping_unit`, `brand_id`, `category_id`) VALUES
+(1, 'KalapácsTeszt', 'Kalapács teszt leírás', 50000, 0, '2025-10-22 09:44:26', NULL, '2025-10-22 10:14:21', 0, 500, 1, '888888881', NULL, 1),
+(2, 'SeprűTeszt', 'Teszt Seprű', 20000, NULL, '2025-10-22 13:28:15', NULL, NULL, 0, 200000, 2, '888888882', NULL, 3),
+(3, 'NemTudomCsakTeszt', 'NemTudomCsakTesztDesc', 100, NULL, '2025-10-22 13:58:03', NULL, NULL, 0, 10, 3, '888888883', NULL, 2),
+(4, 'Teszt1', 'Nagyon sok szöveg 1', 100, NULL, '2025-11-19 10:07:05', NULL, NULL, 0, 100, 4, '888888884', NULL, 4),
+(5, 'Teszt2', 'Nagyon sok szöveg 1', 200, NULL, '2025-11-19 10:07:05', NULL, NULL, 0, 0, 5, '888888885', NULL, 5),
+(6, 'Teszt3', 'Nagyon sok szöveg 3', 300, NULL, '2025-11-19 10:09:07', NULL, NULL, 0, 300, 6, '888888886', NULL, 6),
+(7, 'Teszt4', 'Nagyon sok szöveg 4', 400, NULL, '2025-11-19 10:09:07', NULL, NULL, 0, 0, 7, '888888887', NULL, 7),
+(8, 'Teszt5', 'Nagyon sok szöveg 5', 500, NULL, '2025-11-19 10:10:55', NULL, NULL, 0, 110, 8, '888888888', NULL, 2),
+(9, 'Teszt6', 'Nagyon sok szöveg 6', 600, NULL, '2025-11-19 10:10:55', NULL, NULL, 0, 10, 9, '888888889', NULL, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_categories`
+-- Table structure for table `product_image`
 --
 
-CREATE TABLE `product_categories` (
-  `id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
-  `is_deleted` tinyint(4) NOT NULL DEFAULT '0',
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `product_categories`
---
-
-INSERT INTO `product_categories` (`id`, `product_id`, `category_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 1, 0, NULL),
-(2, 2, 4, 0, NULL),
-(3, 3, 5, 0, NULL),
-(4, 4, 2, 0, NULL),
-(5, 5, 9, 0, NULL),
-(6, 6, 10, 0, NULL),
-(7, 7, 9, 0, NULL),
-(8, 8, 4, 0, NULL),
-(9, 9, 6, 0, NULL),
-(10, 1, 5, 0, NULL),
-(11, 2, 11, 1, '2025-11-21 08:26:15');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_images`
---
-
-CREATE TABLE `product_images` (
+CREATE TABLE `product_image` (
   `id` int(11) NOT NULL,
   `image_path` longtext NOT NULL,
   `placement` int(2) NOT NULL,
@@ -925,19 +1260,19 @@ CREATE TABLE `product_images` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `product_images`
+-- Dumping data for table `product_image`
 --
 
-INSERT INTO `product_images` (`id`, `image_path`, `placement`, `product_id`) VALUES
+INSERT INTO `product_image` (`id`, `image_path`, `placement`, `product_id`) VALUES
 (1, '', 1, 1),
-(2, '', 99, 7),
-(3, '', 2, 2),
-(4, '', 3, 3),
-(5, '', 4, 4),
-(6, '', 5, 5),
-(7, '', 6, 6),
-(8, '', 7, 7),
-(9, '', 8, 8),
+(2, '', 99, 2),
+(3, '', 2, 3),
+(4, '', 3, 4),
+(5, '', 4, 5),
+(6, '', 5, 6),
+(7, '', 6, 7),
+(8, '', 7, 8),
+(9, '', 8, 9),
 (10, '', 9, 9);
 
 -- --------------------------------------------------------
@@ -951,8 +1286,8 @@ CREATE TABLE `review` (
   `product_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `review_text` longtext NOT NULL,
-  `review_star` int(1) NOT NULL,
-  `review_dateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `rate` int(1) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `updated_at` timestamp NULL DEFAULT NULL
@@ -962,7 +1297,7 @@ CREATE TABLE `review` (
 -- Dumping data for table `review`
 --
 
-INSERT INTO `review` (`id`, `product_id`, `user_id`, `review_text`, `review_star`, `review_dateTime`, `deleted_at`, `is_deleted`, `updated_at`) VALUES
+INSERT INTO `review` (`id`, `product_id`, `user_id`, `review_text`, `rate`, `created_at`, `deleted_at`, `is_deleted`, `updated_at`) VALUES
 (1, 1, 1, 'Megint át lesz írva', 3, '2025-11-19 10:55:32', NULL, 0, '2025-11-20 20:01:24'),
 (2, 2, 2, '(Teszt2)', 4, '2025-11-19 10:55:32', NULL, 0, NULL),
 (3, 3, 3, '(Teszt3)', 5, '2025-11-19 10:56:03', NULL, 0, NULL),
@@ -1002,53 +1337,85 @@ INSERT INTO `status` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `transport_detail`
+--
+
+CREATE TABLE `transport_detail` (
+  `id` int(11) NOT NULL,
+  `post_code` int(4) NOT NULL,
+  `town` varchar(100) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `address_type_id` int(11) NOT NULL,
+  `house_number` int(3) NOT NULL,
+  `other` longtext
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `transport_detail`
+--
+
+INSERT INTO `transport_detail` (`id`, `post_code`, `town`, `address`, `address_type_id`, `house_number`, `other`) VALUES
+(1, 2000, 'asd', 'asdasd', 222, 222, ''),
+(2, 1001, 'b', 'b', 24, 1001, NULL),
+(3, 1002, 'c', 'c', 15, 1002, NULL),
+(4, 1003, 'd', 'd', 214, 1001, NULL),
+(5, 1002, 'e', 'e', 115, 1002, NULL),
+(6, 1003, 'd', 'd', 214, 1003, NULL),
+(7, 1004, 'e', 'e', 115, 1004, NULL),
+(8, 1005, 'f', 'f', 21, 1005, NULL),
+(9, 1006, 'g', 'g', 11, 1006, NULL),
+(10, 1007, 'h', 'h', 281, 1007, NULL),
+(11, 1008, 'i', 'i', 101, 1008, NULL),
+(12, 1009, 'j', 'j', 181, 1009, NULL),
+(13, 1010, 'k', 'k', 121, 1010, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` longtext NOT NULL,
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
-  `img` varchar(255) NOT NULL DEFAULT 'default_path',
   `phone_number` varchar(30) DEFAULT NULL,
-  `is_admin` tinyint(1) DEFAULT NULL,
+  `pfp_path` longtext NOT NULL,
+  `is_admin` tinyint(1) DEFAULT '0',
   `is_deleted` tinyint(1) DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL,
-  `auth_secret` varchar(16) NOT NULL,
-  `guid` varchar(128) DEFAULT NULL,
   `last_login` datetime DEFAULT NULL,
-  `register_finished_at` datetime DEFAULT NULL,
-  `reg_token` varchar(64) NOT NULL
+  `register_finished_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `img`, `phone_number`, `is_admin`, `is_deleted`, `deleted_at`, `auth_secret`, `guid`, `last_login`, `register_finished_at`, `reg_token`) VALUES
-(1, 'TesztElek@gmail.com', '248b646537648c1fbdeb42b56771dbdb42129e8bab527ff551a1f49ce499464f', 'Teszt', 'Elek', 'default_path', NULL, NULL, 0, NULL, '-', '6cf939c5-b89d-11f0-820d-047c16ad0c5a', NULL, NULL, '6cf939cc-b89d-11f0-820d-047c16ad0c5a'),
-(2, 'JánosTesztel@gmail.com', '248b646537648c1fbdeb42b56771dbdb42129e8bab527ff551a1f49ce499464f', 'Teszt', 'János', 'default_path', NULL, NULL, 0, NULL, '-', '3161c695-b89d-11f0-820d-047c16ad0c5a', NULL, NULL, '3161c6d3-b89d-11f0-820d-047c16ad0c5a'),
-(3, 'Email1@gmail.com', 'asd123', 'Teszt1', 'Teszt1', 'default_path', '+11111111111', NULL, 0, NULL, '', NULL, NULL, NULL, ''),
-(4, 'Email2@gmail.com', 'asd123', 'Teszt2', 'Teszt2', 'default_path', '+11111111112', NULL, 0, NULL, '', NULL, NULL, NULL, ''),
-(5, 'Email3@gmail.com', 'asd123', 'Teszt3', 'Teszt3', 'default_path', '+11111111113', NULL, 0, NULL, '', NULL, NULL, NULL, ''),
-(6, 'Email4@gmail.com', 'asd123', 'Teszt4', 'Teszt4', 'default_path', '+11111111114', NULL, 0, NULL, '', NULL, NULL, NULL, ''),
-(7, 'Email5@gmail.com', 'asd123', 'Teszt5', 'Teszt5', 'default_path', '+11111111115', NULL, 0, NULL, '', NULL, NULL, NULL, ''),
-(8, 'Email6@gmail.com', 'asd123', 'Teszt6', 'Teszt6', 'default_path', '+11111111116', NULL, 0, NULL, '', NULL, NULL, NULL, ''),
-(9, 'Email7@gmail.com', 'asd123', 'Teszt7', 'Teszt7', 'default_path', '+11111111117', NULL, 0, NULL, '', NULL, NULL, NULL, ''),
-(10, 'Email8@gmail.com', 'asd123', 'Teszt8', 'Teszt8', 'default_path', '+11111111118', NULL, 0, NULL, '', NULL, NULL, NULL, ''),
-(11, 'Email9@gmail.com', 'asd123', 'Teszt9', 'Teszt9', 'default_path', '+11111111119', NULL, 0, NULL, '', NULL, NULL, NULL, ''),
-(12, 'Email10@gmail.com', 'asd123', 'Teszt10', 'Teszt10', 'default_path', '+11111111110', NULL, 0, NULL, '', NULL, NULL, NULL, '');
+INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `is_admin`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`) VALUES
+(1, 'TesztElek@gmail.com', '248b646537648c1fbdeb42b56771dbdb42129e8bab527ff551a1f49ce499464f', 'Teszt', 'Elek', NULL, '', 0, 0, NULL, NULL, NULL),
+(2, 'JánosTesztel@gmail.com', '248b646537648c1fbdeb42b56771dbdb42129e8bab527ff551a1f49ce499464f', 'Teszt', 'János', NULL, '', 0, 0, NULL, NULL, NULL),
+(3, 'Email1@gmail.com', 'test5.As', 'Teszt1', 'Teszt1', '+11111111111', '', 0, 0, NULL, '2025-11-23 19:50:57', NULL),
+(4, 'Email2@gmail.com', 'asd123', 'Teszt2', 'Teszt2', '+11111111112', '', 0, 0, NULL, NULL, NULL),
+(5, 'Email3@gmail.com', 'asd123', 'Teszt3', 'Teszt3', '+11111111113', '', 0, 0, NULL, NULL, NULL),
+(6, 'Email4@gmail.com', 'asd123', 'Teszt4', 'Teszt4', '+11111111114', '', 0, 0, NULL, NULL, NULL),
+(7, 'Email5@gmail.com', 'asd123', 'Teszt5', 'Teszt5', '+11111111115', '', 0, 0, NULL, NULL, NULL),
+(8, 'Email6@gmail.com', 'asd123', 'Teszt6', 'Teszt6', '+11111111116', '', 0, 0, NULL, NULL, NULL),
+(9, 'Email7@gmail.com', 'asd123', 'Teszt7', 'Teszt7', '+11111111117', '', 0, 0, NULL, NULL, NULL),
+(10, 'Email8@gmail.com', 'asd123', 'Teszt8', 'Teszt8', '+11111111118', '', 0, 0, NULL, NULL, NULL),
+(11, 'Email9@gmail.com', 'asd123', 'Teszt9', 'Teszt9', '+11111111119', '', 0, 0, NULL, NULL, NULL),
+(12, 'Email10@gmail.com', 'asd123', 'Teszt10', 'Teszt10', '+11111111110', '', 0, 0, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `address`
+-- Indexes for table `address_type`
 --
-ALTER TABLE `address`
+ALTER TABLE `address_type`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1056,8 +1423,16 @@ ALTER TABLE `address`
 --
 ALTER TABLE `address_user`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `address_id` (`address_id`) USING BTREE,
-  ADD KEY `user_id` (`user_id`);
+  ADD UNIQUE KEY `address_id` (`billing_detail_id`) USING BTREE,
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `ad_transport` (`transport_detail_id`);
+
+--
+-- Indexes for table `billing_detail`
+--
+ALTER TABLE `billing_detail`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `a_type` (`address_type_id`);
 
 --
 -- Indexes for table `brand`
@@ -1094,15 +1469,15 @@ ALTER TABLE `details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `orders`
+-- Indexes for table `order_history`
 --
-ALTER TABLE `orders`
+ALTER TABLE `order_history`
   ADD PRIMARY KEY (`id`),
   ADD KEY `payment_method` (`payment_method_id`),
-  ADD KEY `billing_details` (`address_user_id`),
   ADD KEY `status` (`status_id`),
   ADD KEY `order_user` (`user_id`),
-  ADD KEY `address_user_id` (`address_user_id`) USING BTREE;
+  ADD KEY `history_billing` (`billing_detail_id`),
+  ADD KEY `history_transport` (`transport_detail_id`);
 
 --
 -- Indexes for table `order_product`
@@ -1124,22 +1499,15 @@ ALTER TABLE `payment_method`
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `detail` (`detail_id`) USING BTREE,
-  ADD KEY `brand` (`brand_id`);
+  ADD KEY `brand` (`brand_id`),
+  ADD KEY `category_id` (`category_id`);
 
 --
--- Indexes for table `product_categories`
+-- Indexes for table `product_image`
 --
-ALTER TABLE `product_categories`
+ALTER TABLE `product_image`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `category` (`category_id`),
-  ADD KEY `product_category_product` (`product_id`);
-
---
--- Indexes for table `product_images`
---
-ALTER TABLE `product_images`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `product_image_product` (`product_id`);
+  ADD KEY `product_image` (`product_id`);
 
 --
 -- Indexes for table `review`
@@ -1156,6 +1524,13 @@ ALTER TABLE `status`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `transport_detail`
+--
+ALTER TABLE `transport_detail`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `a_type2` (`address_type_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -1167,15 +1542,21 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `address`
+-- AUTO_INCREMENT for table `address_type`
 --
-ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+ALTER TABLE `address_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=336;
 
 --
 -- AUTO_INCREMENT for table `address_user`
 --
 ALTER TABLE `address_user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `billing_detail`
+--
+ALTER TABLE `billing_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
@@ -1209,9 +1590,9 @@ ALTER TABLE `details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `orders`
+-- AUTO_INCREMENT for table `order_history`
 --
-ALTER TABLE `orders`
+ALTER TABLE `order_history`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
@@ -1233,15 +1614,9 @@ ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `product_categories`
+-- AUTO_INCREMENT for table `product_image`
 --
-ALTER TABLE `product_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `product_images`
---
-ALTER TABLE `product_images`
+ALTER TABLE `product_image`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
@@ -1257,6 +1632,12 @@ ALTER TABLE `status`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `transport_detail`
+--
+ALTER TABLE `transport_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
@@ -1265,6 +1646,20 @@ ALTER TABLE `user`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `address_user`
+--
+ALTER TABLE `address_user`
+  ADD CONSTRAINT `ad_billing` FOREIGN KEY (`billing_detail_id`) REFERENCES `billing_detail` (`id`),
+  ADD CONSTRAINT `ad_transport` FOREIGN KEY (`transport_detail_id`) REFERENCES `transport_detail` (`id`),
+  ADD CONSTRAINT `ad_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `billing_detail`
+--
+ALTER TABLE `billing_detail`
+  ADD CONSTRAINT `a_type` FOREIGN KEY (`address_type_id`) REFERENCES `address_type` (`id`);
 
 --
 -- Constraints for table `cart`
@@ -1280,10 +1675,18 @@ ALTER TABLE `cart_product`
   ADD CONSTRAINT `product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
 --
--- Constraints for table `orders`
+-- Constraints for table `category`
 --
-ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+ALTER TABLE `category`
+  ADD CONSTRAINT `cat` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+
+--
+-- Constraints for table `order_history`
+--
+ALTER TABLE `order_history`
+  ADD CONSTRAINT `history_billing` FOREIGN KEY (`billing_detail_id`) REFERENCES `billing_detail` (`id`),
+  ADD CONSTRAINT `history_transport` FOREIGN KEY (`transport_detail_id`) REFERENCES `transport_detail` (`id`),
+  ADD CONSTRAINT `order_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `payment_method` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_method` (`id`),
   ADD CONSTRAINT `status` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
 
@@ -1291,7 +1694,7 @@ ALTER TABLE `orders`
 -- Constraints for table `order_product`
 --
 ALTER TABLE `order_product`
-  ADD CONSTRAINT `order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `order` FOREIGN KEY (`order_id`) REFERENCES `order_history` (`id`),
   ADD CONSTRAINT `order_product_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
 --
@@ -1299,20 +1702,14 @@ ALTER TABLE `order_product`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `brand` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`id`),
+  ADD CONSTRAINT `category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
   ADD CONSTRAINT `detail` FOREIGN KEY (`detail_id`) REFERENCES `details` (`id`);
 
 --
--- Constraints for table `product_categories`
+-- Constraints for table `product_image`
 --
-ALTER TABLE `product_categories`
-  ADD CONSTRAINT `category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
-  ADD CONSTRAINT `product_category_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-
---
--- Constraints for table `product_images`
---
-ALTER TABLE `product_images`
-  ADD CONSTRAINT `product_image_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+ALTER TABLE `product_image`
+  ADD CONSTRAINT `product_image` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
 --
 -- Constraints for table `review`
@@ -1320,6 +1717,12 @@ ALTER TABLE `product_images`
 ALTER TABLE `review`
   ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `review_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+
+--
+-- Constraints for table `transport_detail`
+--
+ALTER TABLE `transport_detail`
+  ADD CONSTRAINT `a_type2` FOREIGN KEY (`address_type_id`) REFERENCES `address_type` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
