@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 02, 2025 at 09:27 AM
+-- Generation Time: Dec 02, 2025 at 10:07 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1395,18 +1395,18 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `is_admin`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`) VALUES
-(1, 'TesztElek@gmail.com', '248b646537648c1fbdeb42b56771dbdb42129e8bab527ff551a1f49ce499464f', 'Teszt', 'Elek', NULL, '', 0, 0, NULL, NULL, NULL),
-(2, 'JánosTesztel@gmail.com', '248b646537648c1fbdeb42b56771dbdb42129e8bab527ff551a1f49ce499464f', 'Teszt', 'János', NULL, '', 0, 0, NULL, NULL, NULL),
-(3, 'Email1@gmail.com', 'test5.As', 'Teszt1', 'Teszt1', '+11111111111', '', 0, 0, NULL, '2025-11-23 19:50:57', NULL),
-(4, 'Email2@gmail.com', 'asd123', 'Teszt2', 'Teszt2', '+11111111112', '', 0, 0, NULL, NULL, NULL),
-(5, 'Email3@gmail.com', 'asd123', 'Teszt3', 'Teszt3', '+11111111113', '', 0, 0, NULL, NULL, NULL),
-(6, 'Email4@gmail.com', 'asd123', 'Teszt4', 'Teszt4', '+11111111114', '', 0, 0, NULL, NULL, NULL),
-(7, 'Email5@gmail.com', 'asd123', 'Teszt5', 'Teszt5', '+11111111115', '', 0, 0, NULL, NULL, NULL),
-(8, 'Email6@gmail.com', 'asd123', 'Teszt6', 'Teszt6', '+11111111116', '', 0, 0, NULL, NULL, NULL),
-(9, 'Email7@gmail.com', 'asd123', 'Teszt7', 'Teszt7', '+11111111117', '', 0, 0, NULL, NULL, NULL),
-(10, 'Email8@gmail.com', 'asd123', 'Teszt8', 'Teszt8', '+11111111118', '', 0, 0, NULL, NULL, NULL),
-(11, 'Email9@gmail.com', 'asd123', 'Teszt9', 'Teszt9', '+11111111119', '', 0, 0, NULL, NULL, NULL),
-(12, 'Email10@gmail.com', 'asd123', 'Teszt10', 'Teszt10', '+11111111110', '', 0, 0, NULL, NULL, NULL);
+(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, '', 0, 0, NULL, NULL, NULL),
+(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, '', 0, 0, NULL, NULL, NULL),
+(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', '', 0, 0, NULL, '2025-11-23 19:50:57', NULL),
+(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', '', 0, 0, NULL, NULL, NULL),
+(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', '', 0, 0, NULL, NULL, NULL),
+(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', '', 0, 0, NULL, NULL, NULL),
+(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', '', 0, 0, NULL, NULL, NULL),
+(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', '', 0, 0, NULL, NULL, NULL),
+(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', '', 0, 0, NULL, NULL, NULL),
+(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', '', 0, 0, NULL, NULL, NULL),
+(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', '', 0, 0, NULL, NULL, NULL),
+(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', '', 0, 0, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
