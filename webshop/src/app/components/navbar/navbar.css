@@ -9,7 +9,12 @@ nav {
 
 #search {
   text-align: left;
-  width: 250px;
+  max-width: 250px;
+}
+
+#search input {
+  border-radius: 30px;
+  border: none;
 
 }
 
