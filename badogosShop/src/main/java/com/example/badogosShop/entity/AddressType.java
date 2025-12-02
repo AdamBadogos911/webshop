@@ -30,7 +30,11 @@ public class AddressType {
         @Size(max = 100)
         private String name;
 
-        @OneToMany(mappedBy = "billingAddressType", fetch = FetchType.LAZY, cascade = {})
-        @JsonIgnore
-        private List<TransportDetail> transportDetails;
+    @OneToMany(mappedBy = "billingAddressType", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
+    private List<BillingDetail> billingDetails;
+
+    @OneToMany(mappedBy = "transportAddressType", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
+    private List<TransportDetail> transportDetails;
 }

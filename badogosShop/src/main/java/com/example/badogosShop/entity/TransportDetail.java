@@ -53,7 +53,7 @@ public class TransportDetail {
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "address_type_id")
-    private AddressType transportAddress;
+    private AddressType transportAddressType;
 
     @OneToMany(mappedBy = "orderTransportDetail", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnore
