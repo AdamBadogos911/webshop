@@ -24,9 +24,9 @@ export class LoginPage {
   login() {
     this.userService.login(this.loginForm.controls["email"].value, this.loginForm.controls["password"].value).subscribe({
       next: response => {
-        console.log(response)
+        this.userService.user = response;
       }, error: error => {
-
+        console.log(error)
       }, complete: () => {
         this.router.navigate(["/homePage"])
       }

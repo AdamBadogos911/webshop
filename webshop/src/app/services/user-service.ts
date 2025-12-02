@@ -8,7 +8,8 @@ import { User } from '../models/user.model';
 })
 export class UserService {
   private http = inject(HttpClient);
-  private baseURL = "hhtp://localhost:8080/user";
+  private baseURL = "http://localhost:8080/user";
+  user: User | null = null;
 
   login(email: string, password: string): Observable<User> {
     return this.http.post<User>(`${this.baseURL}/login`, {email: email, password: password});
