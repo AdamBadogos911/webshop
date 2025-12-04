@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 02, 2025 at 10:07 AM
+-- Generation Time: Dec 04, 2025 at 11:30 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -975,8 +975,8 @@ CREATE TABLE `brand` (
 --
 
 INSERT INTO `brand` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'TestBrand1', 0, NULL),
-(2, 'TestBrand2', 0, NULL),
+(1, 'Jobi', 0, NULL),
+(2, 'Honiton', 0, NULL),
 (3, 'TestBrand3', 0, NULL),
 (4, 'TestBrand4', 0, NULL),
 (5, 'TestBrand5', 0, NULL),
@@ -1070,11 +1070,11 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Kalapács', NULL, 0, NULL),
-(2, 'Dugókulcs', NULL, 0, NULL),
-(3, 'Seprű', NULL, 0, NULL),
-(4, 'Partvis', 3, 0, NULL),
-(5, 'Gumikalapács', 1, 0, NULL),
+(1, 'Racsni', NULL, 0, NULL),
+(2, 'Racsni toldók', 1, 0, NULL),
+(3, 'Racsni adapter', 1, 0, NULL),
+(4, 'Racsni csukló', 1, 0, NULL),
+(5, 'Racsni fix hajtószár', 1, 0, NULL),
 (6, 'Colstok', 8, 0, NULL),
 (7, 'Centi', 8, 0, NULL),
 (8, 'Mérőegységek', NULL, 0, NULL),
@@ -1096,25 +1096,26 @@ CREATE TABLE `details` (
   `length` double DEFAULT NULL COMMENT 'cm',
   `height` double DEFAULT NULL COMMENT 'cm',
   `width` double DEFAULT NULL COMMENT 'cm',
-  `size` int(11) DEFAULT NULL,
-  `is_set` tinyint(4) DEFAULT NULL COMMENT 'Szett-e (több dolog egyben)'
+  `size` varchar(11) DEFAULT NULL,
+  `is_set` tinyint(4) DEFAULT NULL COMMENT 'Szett-e (több dolog egyben)',
+  `color` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `details`
 --
 
-INSERT INTO `details` (`id`, `weight`, `material`, `length`, `height`, `width`, `size`, `is_set`) VALUES
-(1, 2, '(Teszt)', 3, 2, 0, 0, NULL),
-(2, 2.3, '(Teszt)', 0, 0, 0, 0, NULL),
-(3, 0.1, 'műanyag(Teszt)', 100, 50, 100, NULL, NULL),
-(4, 20, 'fém(Teszt)', 100, 100, 100, NULL, NULL),
-(5, 0.75, '(Teszt)', 1500, 20, 20, NULL, NULL),
-(6, 2.5, 'Fém(Teszt)', 23, 12.5, 10, NULL, NULL),
-(7, 50, 'kő(Teszt)', 100, NULL, NULL, 3, NULL),
-(8, 1.5, 'fa(Teszt)', 150, 2.5, 5, 5, NULL),
-(9, 4.5, '(Teszt)', NULL, NULL, NULL, 5, NULL),
-(10, 333, 'dasdsadsaads', 123123, 12313, 12313, 122, 1);
+INSERT INTO `details` (`id`, `weight`, `material`, `length`, `height`, `width`, `size`, `is_set`, `color`) VALUES
+(1, NULL, 'Króm', NULL, NULL, NULL, '1/4\"', NULL, 'Króm'),
+(2, NULL, 'Króm', NULL, NULL, NULL, '3/8\"', NULL, 'Króm'),
+(3, NULL, 'Króm', NULL, NULL, NULL, '1/2\"', NULL, 'Króm'),
+(4, NULL, 'Króm, gumi', NULL, NULL, NULL, '1/4\"', NULL, 'Fekete'),
+(5, NULL, 'Króm, gumi', NULL, NULL, NULL, '3/8\"', NULL, 'Fekete'),
+(6, NULL, 'Króm, gumi', NULL, NULL, NULL, '1/2\"', NULL, 'Fekete'),
+(7, 50, 'kő(Teszt)', 100, NULL, NULL, '3', NULL, NULL),
+(8, 1.5, 'fa(Teszt)', 150, 2.5, 5, '5', NULL, NULL),
+(9, 4.5, '(Teszt)', NULL, NULL, NULL, '5', NULL, NULL),
+(10, 333, 'dasdsadsaads', 123123, 12313, 12313, '122', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -1219,7 +1220,7 @@ CREATE TABLE `product` (
   `name` longtext NOT NULL,
   `description` longtext NOT NULL,
   `price` int(7) NOT NULL,
-  `discount` int(2) DEFAULT NULL,
+  `discount` int(2) DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
@@ -1236,15 +1237,15 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `created_at`, `updated_at`, `deleted_at`, `is_deleted`, `amount`, `detail_id`, `stock_keeping_unit`, `brand_id`, `category_id`) VALUES
-(1, 'KalapácsTeszt', 'Kalapács teszt leírás', 50000, 0, '2025-10-22 09:44:26', NULL, '2025-10-22 10:14:21', 0, 500, 1, '888888881', NULL, 1),
-(2, 'SeprűTeszt', 'Teszt Seprű', 20000, NULL, '2025-10-22 13:28:15', NULL, NULL, 0, 200000, 2, '888888882', NULL, 3),
-(3, 'NemTudomCsakTeszt', 'NemTudomCsakTesztDesc', 100, NULL, '2025-10-22 13:58:03', NULL, NULL, 0, 10, 3, '888888883', NULL, 2),
-(4, 'Teszt1', 'Nagyon sok szöveg 1', 100, NULL, '2025-11-19 10:07:05', NULL, NULL, 0, 100, 4, '888888884', NULL, 4),
-(5, 'Teszt2', 'Nagyon sok szöveg 1', 200, NULL, '2025-11-19 10:07:05', NULL, NULL, 0, 0, 5, '888888885', NULL, 5),
-(6, 'Teszt3', 'Nagyon sok szöveg 3', 300, NULL, '2025-11-19 10:09:07', NULL, NULL, 0, 300, 6, '888888886', NULL, 6),
-(7, 'Teszt4', 'Nagyon sok szöveg 4', 400, NULL, '2025-11-19 10:09:07', NULL, NULL, 0, 0, 7, '888888887', NULL, 7),
-(8, 'Teszt5', 'Nagyon sok szöveg 5', 500, NULL, '2025-11-19 10:10:55', NULL, NULL, 0, 110, 8, '888888888', NULL, 2),
-(9, 'Teszt6', 'Nagyon sok szöveg 6', 600, NULL, '2025-11-19 10:10:55', NULL, NULL, 0, 10, 9, '888888889', NULL, 1);
+(1, '1/4\" Racsni Króm', 'Pontos leírás a tárgyról amiről semmi információm nincs, ezért csak gépelek, és majd másolok :)', 3000, 0, '2025-10-22 09:44:26', '2025-12-04 10:12:09', NULL, 0, 500, 1, '888888881', NULL, 1),
+(2, '3/8\" Racsni Króm', '3/8\" Racsni Króm', 3200, 0, '2025-10-22 13:28:15', '2025-12-04 10:13:09', NULL, 0, 200000, 2, '888888882', NULL, 1),
+(3, '1/2\" Racsni Króm', '1/2\" Racsni Króm', 3600, 0, '2025-10-22 13:58:03', '2025-12-04 10:15:33', NULL, 0, 10, 3, '888888883', NULL, 1),
+(4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 10:07:05', '2025-12-04 10:34:05', NULL, 0, 100, 4, '888888884', NULL, 1),
+(5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 10:07:05', '2025-12-04 10:34:05', NULL, 0, 2, 5, '888888885', NULL, 1),
+(6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 10:09:07', '2025-12-04 10:34:05', NULL, 0, 300, 6, '888888886', NULL, 1),
+(7, 'Teszt4', 'Nagyon sok szöveg 4', 400, 0, '2025-11-19 10:09:07', NULL, NULL, 0, 0, 7, '888888887', NULL, 7),
+(8, 'Teszt5', 'Nagyon sok szöveg 5', 500, 0, '2025-11-19 10:10:55', NULL, NULL, 0, 110, 8, '888888888', NULL, 2),
+(9, 'Teszt6', 'Nagyon sok szöveg 6', 600, 0, '2025-11-19 10:10:55', NULL, NULL, 0, 10, 9, '888888889', NULL, 1);
 
 -- --------------------------------------------------------
 
