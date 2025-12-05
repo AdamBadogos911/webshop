@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, Output } from '@angular/core';
 import { UserService } from '../../services/user-service';
 import { Router, RouterModule } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +16,7 @@ export class RegistrationPage {
   private router = inject(Router)
   registerForm!: FormGroup
 
+
   ngOnInit(): void {
     this.registerForm = new FormGroup({
       firstName: new FormControl('', [Validators.required, Validators.maxLength(100)]),
@@ -31,6 +32,7 @@ export class RegistrationPage {
     this.userService.register(newUser).subscribe({
       next: response => {
         console.log(response)
+
       },
       error: error => console.log(error),
       complete: () => {
