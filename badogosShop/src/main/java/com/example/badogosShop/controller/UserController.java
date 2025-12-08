@@ -5,6 +5,7 @@ import com.example.badogosShop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Map;
 
@@ -18,8 +19,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody Map<String, String> body) {
-        return userService.login(body.get("email"), body.get("password"));
+    public ResponseEntity<Object> login(@RequestBody JsonNode body) {
+        return userService.login(body.get("email").asString(), body.get("password").asString());
     }
 
     @PostMapping("/register")
