@@ -4,10 +4,11 @@ import { Navbar } from "./components/navbar/navbar";
 import { LoginPage } from "./components/login-page/login-page";
 import { RouterOutlet } from "@angular/router";
 import { Footer } from "./components/footer/footer";
+import { ProductList } from "./components/product-list/product-list";
 
 @Component({
   selector: 'app-root',
-  imports: [RegistrationPage, Navbar, LoginPage, RouterOutlet, Footer],
+  imports: [RegistrationPage, Navbar, LoginPage, RouterOutlet, Footer, ProductList],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

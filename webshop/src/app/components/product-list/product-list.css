@@ -1,0 +1,9 @@
+.products {
+  background-color: black;
+  opacity: 50%;
+}
+
+div {
+  border: 1px solid red;
+  min-width: fit-content;
+}
