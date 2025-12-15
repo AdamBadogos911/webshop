@@ -29,6 +29,7 @@ export class RegistrationPage {
 
   sendRegister() {
     const newUser = new User(this.registerForm.controls["email"].value, this.registerForm.controls["password"].value, this.registerForm.controls["firstName"].value, this.registerForm.controls["lastName"].value)
+    console.log(newUser)
     this.userService.register(newUser).subscribe({
       next: response => {
         console.log(response)

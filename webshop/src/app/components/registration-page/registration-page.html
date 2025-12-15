@@ -1,6 +1,6 @@
 <div id="register" class="container">
   <h1>Regisztráció</h1>
-  <form [formGroup]="registerForm" (ngSubmit)="sendRegister()" class="container-fluid justify-content-center align-items-center">
+  <form [formGroup]="registerForm" class="container-fluid justify-content-center align-items-center">
     <div class="row">
       <div class="col-12">
         <label for="lastName">Vezetéknév</label>
@@ -58,7 +58,7 @@
 
     <div class="row">
       <div class="col-12 d-flex justify-content-center align-items-center">
-        <button [disabled]="registerForm.invalid" class="shadow" routerLink="/login">Regisztráció</button>
+        <button [disabled]="registerForm.invalid" (click)="sendRegister()" class="shadow" routerLink="/login">Regisztráció</button>
       </div>
     </div>
 

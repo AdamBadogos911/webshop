@@ -28,6 +28,7 @@ export class LoginPage {
       }, error: error => {
         console.log(error)
       }, complete: () => {
+        console.log(this.userService.user)
         this.router.navigate(["/homePage"])
       }
     })
