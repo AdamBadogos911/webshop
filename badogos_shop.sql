@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 04, 2025 at 11:30 AM
+-- Generation Time: Dec 22, 2025 at 08:12 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -370,15 +370,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getTransportDetailsById` (IN `trans
     ;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `emailIN` VARCHAR(255), IN `passwordIN` VARCHAR(255))   BEGIN 
-	SELECT * FROM user WHERE user.email = emailIN AND user.password = passwordIN;
-    
-    UPDATE user
-SET user.last_login=CURRENT_TIMESTAMP
-WHERE user.email= emailIN AND user.password = passwordIN;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `login1` (IN `emailIN` VARCHAR(200), IN `passwordIN` VARCHAR(200))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `emailIN` VARCHAR(200), IN `passwordIN` VARCHAR(200))   BEGIN
 SELECT
 	`user`.`id` AS "user_id",
     `user`.`first_name`,
@@ -1075,13 +1067,13 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 (3, 'Racsni adapter', 1, 0, NULL),
 (4, 'Racsni csukló', 1, 0, NULL),
 (5, 'Racsni fix hajtószár', 1, 0, NULL),
-(6, 'Colstok', 8, 0, NULL),
-(7, 'Centi', 8, 0, NULL),
-(8, 'Mérőegységek', NULL, 0, NULL),
-(9, 'Vízmértékek', NULL, 0, NULL),
+(6, 'Dugófejek', NULL, 0, NULL),
+(7, 'Damilok', NULL, 0, NULL),
+(8, 'Locsoló technika', NULL, 0, NULL),
+(9, 'Keztyűk', NULL, 0, NULL),
 (10, 'Nyelek', NULL, 0, NULL),
-(11, 'Próba nem tudom', NULL, 0, NULL),
-(12, 'Al kategória lesz', NULL, 0, NULL);
+(11, 'Korongok', NULL, 0, NULL),
+(12, 'Kerti eszközök', NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1112,10 +1104,15 @@ INSERT INTO `details` (`id`, `weight`, `material`, `length`, `height`, `width`, 
 (4, NULL, 'Króm, gumi', NULL, NULL, NULL, '1/4\"', NULL, 'Fekete'),
 (5, NULL, 'Króm, gumi', NULL, NULL, NULL, '3/8\"', NULL, 'Fekete'),
 (6, NULL, 'Króm, gumi', NULL, NULL, NULL, '1/2\"', NULL, 'Fekete'),
-(7, 50, 'kő(Teszt)', 100, NULL, NULL, '3', NULL, NULL),
-(8, 1.5, 'fa(Teszt)', 150, 2.5, 5, '5', NULL, NULL),
-(9, 4.5, '(Teszt)', NULL, NULL, NULL, '5', NULL, NULL),
-(10, 333, 'dasdsadsaads', 123123, 12313, 12313, '122', 1, NULL);
+(7, NULL, 'Acél', 5.5, NULL, NULL, '1/4\"', NULL, NULL),
+(8, NULL, 'Acél', 7.5, NULL, NULL, '1/4\"', NULL, NULL),
+(9, NULL, 'Acél', 10, NULL, NULL, '1/4\"', NULL, NULL),
+(10, NULL, 'Acél', 15, NULL, NULL, '1/4\"', NULL, NULL),
+(11, NULL, 'Acél', 23, NULL, NULL, '1/4\"', NULL, NULL),
+(12, NULL, 'Acél', 7.5, NULL, NULL, '3/8\"', NULL, NULL),
+(13, NULL, 'Acél', 12.5, NULL, NULL, '3/8\"', NULL, NULL),
+(14, NULL, 'Acél', 15, NULL, NULL, '3/8\"', NULL, NULL),
+(15, NULL, 'Acél', 20, NULL, NULL, '3/8\"', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1243,9 +1240,11 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 10:07:05', '2025-12-04 10:34:05', NULL, 0, 100, 4, '888888884', NULL, 1),
 (5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 10:07:05', '2025-12-04 10:34:05', NULL, 0, 2, 5, '888888885', NULL, 1),
 (6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 10:09:07', '2025-12-04 10:34:05', NULL, 0, 300, 6, '888888886', NULL, 1),
-(7, 'Teszt4', 'Nagyon sok szöveg 4', 400, 0, '2025-11-19 10:09:07', NULL, NULL, 0, 0, 7, '888888887', NULL, 7),
-(8, 'Teszt5', 'Nagyon sok szöveg 5', 500, 0, '2025-11-19 10:10:55', NULL, NULL, 0, 110, 8, '888888888', NULL, 2),
-(9, 'Teszt6', 'Nagyon sok szöveg 6', 600, 0, '2025-11-19 10:10:55', NULL, NULL, 0, 10, 9, '888888889', NULL, 1);
+(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 10:09:07', '2025-12-22 20:46:49', NULL, 0, 100, 7, '888888887', NULL, 2),
+(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 10:10:55', '2025-12-22 21:05:57', NULL, 0, 110, 8, '888888888', NULL, 2),
+(9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 10:10:55', '2025-12-22 21:07:32', NULL, 0, 10, 9, '888888889', NULL, 2),
+(10, '1/4\" 15 cm-es racsnitoldó', '1/4\" 15 cm-es racsnitoldó', 2100, 0, '2025-12-22 21:10:49', NULL, NULL, 0, 100, 10, '8888888810', NULL, 2),
+(11, '1/4\" 23 cm-es racsnitoldó', '1/4\" 23 cm-es racsnitoldó', 2300, 0, '2025-12-22 21:10:49', NULL, NULL, 0, 100, 11, '8888888811', NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -1588,7 +1587,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `details`
 --
 ALTER TABLE `details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `order_history`
@@ -1612,7 +1611,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `product_image`
