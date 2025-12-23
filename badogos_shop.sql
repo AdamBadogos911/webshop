@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 22, 2025 at 08:12 PM
+-- Generation Time: Dec 23, 2025 at 07:30 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1112,7 +1112,18 @@ INSERT INTO `details` (`id`, `weight`, `material`, `length`, `height`, `width`, 
 (12, NULL, 'Acél', 7.5, NULL, NULL, '3/8\"', NULL, NULL),
 (13, NULL, 'Acél', 12.5, NULL, NULL, '3/8\"', NULL, NULL),
 (14, NULL, 'Acél', 15, NULL, NULL, '3/8\"', NULL, NULL),
-(15, NULL, 'Acél', 20, NULL, NULL, '3/8\"', NULL, NULL);
+(15, NULL, 'Acél', 20, NULL, NULL, '3/8\"', NULL, NULL),
+(16, NULL, 'Acél', 10, NULL, NULL, '1/2\"', NULL, NULL),
+(17, NULL, 'Acél', 12.5, NULL, NULL, '1/2\"', NULL, NULL),
+(18, NULL, 'Acél', 20, NULL, NULL, '1/2\"', NULL, NULL),
+(19, NULL, 'Acél', 10, NULL, NULL, '3/4\"', NULL, NULL),
+(20, NULL, 'Acél', 20, NULL, NULL, '3/4\"', NULL, NULL),
+(21, NULL, 'Acél', 40, NULL, NULL, '3/4\"', NULL, NULL),
+(22, NULL, 'Acél', NULL, NULL, NULL, '1/4\"', NULL, NULL),
+(23, NULL, 'Acél', NULL, NULL, NULL, '3/8\"', NULL, NULL),
+(24, NULL, 'Acél', 10, NULL, NULL, '1/2\"', NULL, NULL),
+(25, NULL, 'Acél', 20, NULL, NULL, '1/2\"', NULL, NULL),
+(26, NULL, 'Acél', NULL, NULL, NULL, '3/4\"', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1241,10 +1252,25 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 10:07:05', '2025-12-04 10:34:05', NULL, 0, 2, 5, '888888885', NULL, 1),
 (6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 10:09:07', '2025-12-04 10:34:05', NULL, 0, 300, 6, '888888886', NULL, 1),
 (7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 10:09:07', '2025-12-22 20:46:49', NULL, 0, 100, 7, '888888887', NULL, 2),
-(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 10:10:55', '2025-12-22 21:05:57', NULL, 0, 110, 8, '888888888', NULL, 2),
+(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 10:10:55', '2025-12-22 21:05:57', NULL, 0, 110, 8, '888888888', NULL, 2),
 (9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 10:10:55', '2025-12-22 21:07:32', NULL, 0, 10, 9, '888888889', NULL, 2),
 (10, '1/4\" 15 cm-es racsnitoldó', '1/4\" 15 cm-es racsnitoldó', 2100, 0, '2025-12-22 21:10:49', NULL, NULL, 0, 100, 10, '8888888810', NULL, 2),
-(11, '1/4\" 23 cm-es racsnitoldó', '1/4\" 23 cm-es racsnitoldó', 2300, 0, '2025-12-22 21:10:49', NULL, NULL, 0, 100, 11, '8888888811', NULL, 2);
+(11, '1/4\" 23 cm-es racsnitoldó', '1/4\" 23 cm-es racsnitoldó', 2300, 0, '2025-12-22 21:10:49', NULL, NULL, 0, 100, 11, '8888888811', NULL, 2),
+(12, '3/8\" 7.5 cm-es racsnitoldó', '3/8\" 7.5 cm-es racsnitoldó', 2100, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 12, '8888888812', NULL, 2),
+(13, '3/8\" 12.5 cm-es racsnitoldó', '3/8\" 12.5 cm-es racsnitoldó', 2200, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 13, '8888888813', NULL, 2),
+(14, '3/8\" 15 cm-es racsnitoldó', '3/8\" 15 cm-es racsnitoldó', 2400, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 14, '8888888814', NULL, 2),
+(15, '3/8\" 20 cm-es racsnitoldó', '3/8\" 20 cm-es racsnitoldó', 2500, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 15, '8888888815', NULL, 2),
+(16, '1/2\" 10 cm-es racsnitoldó', '1/2\" 10 cm-es racsnitoldó', 1800, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 16, '8888888816', NULL, 2),
+(17, '1/2\" 12.5 cm-es racsnitoldó', '1/2\" 12.5 cm-es racsnitoldó', 2100, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 17, '8888888817', NULL, 2),
+(18, '1/2\" 20 cm-es racsnitoldó', '1/2\" 20 cm-es racsnitoldó', 2800, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 18, '8888888818', NULL, 2),
+(19, '3/4\" 10 cm-es racsnitoldó', '3/4\" 10 cm-es racsnitoldó', 5600, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 19, '8888888819', NULL, 2),
+(20, '3/4\" 20 cm-es racsnitoldó', '3/4\" 20 cm-es racsnitoldó', 7500, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 20, '8888888820', NULL, 2),
+(21, '3/4\" 40 cm-es racsnitoldó', '3/4\" 40 cm-es racsnitoldó', 9900, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 21, '8888888821', NULL, 2),
+(22, '1/4\"  fixhajtószár', '1/4\"  fixhajtószár', 1000, 0, '2025-12-23 20:27:19', '2025-12-23 20:22:33', NULL, 0, 100, 22, '8888888822', NULL, 5),
+(23, '3/8\"  fixhajtószár', '3/8\"  fixhajtószár', 2000, 0, '2025-12-23 20:27:19', '2025-12-23 20:22:33', NULL, 0, 100, 23, '8888888823', NULL, 5),
+(24, '1/2\"  fixhajtószár rövid', '1/2\"  fixhajtószár rövid', 3200, 0, '2025-12-23 20:27:19', '2025-12-23 20:22:33', NULL, 0, 100, 24, '8888888824', NULL, 5),
+(25, '1/2\"  fixhajtószár hosszú', '1/2\"  fixhajtószár hosszú', 3800, 0, '2025-12-23 20:27:19', '2025-12-23 20:22:33', NULL, 0, 100, 25, '8888888825', NULL, 5),
+(26, '3/4\"  fixhajtószár', '3/4\"  fixhajtószár', 11500, 0, '2025-12-23 20:27:19', '2025-12-23 20:22:33', NULL, 0, 100, 26, '', NULL, 5);
 
 -- --------------------------------------------------------
 
@@ -1587,7 +1613,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `details`
 --
 ALTER TABLE `details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `order_history`
@@ -1611,7 +1637,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `product_image`
