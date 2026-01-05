@@ -1,0 +1,10 @@
+.iconDiv {
+  width: 80px !important;
+  height: 80px !important;
+  background-color: red;
+  border-radius: 100%;
+}
+
+.iconDiv .material-symbols-outlined {
+  font-size: 50px !important;
+}
