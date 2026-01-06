@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 23, 2025 at 07:30 PM
+-- Generation Time: Jan 06, 2026 at 12:53 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1339,6 +1339,25 @@ INSERT INTO `review` (`id`, `product_id`, `user_id`, `review_text`, `rate`, `cre
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `role`
+--
+
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL,
+  `name` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`id`, `name`) VALUES
+(1, 'user'),
+(2, 'admin');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `status`
 --
 
@@ -1409,7 +1428,7 @@ CREATE TABLE `user` (
   `last_name` varchar(100) NOT NULL,
   `phone_number` varchar(30) DEFAULT NULL,
   `pfp_path` longtext NOT NULL,
-  `is_admin` tinyint(1) DEFAULT '0',
+  `role_id` int(11) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL,
   `last_login` datetime DEFAULT NULL,
@@ -1420,19 +1439,19 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `is_admin`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`) VALUES
-(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, '', 0, 0, NULL, NULL, NULL),
-(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, '', 0, 0, NULL, NULL, NULL),
-(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', '', 0, 0, NULL, '2025-11-23 19:50:57', NULL),
-(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', '', 0, 0, NULL, NULL, NULL),
-(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', '', 0, 0, NULL, NULL, NULL),
-(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', '', 0, 0, NULL, NULL, NULL),
-(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', '', 0, 0, NULL, NULL, NULL),
-(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', '', 0, 0, NULL, NULL, NULL),
-(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', '', 0, 0, NULL, NULL, NULL),
-(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', '', 0, 0, NULL, NULL, NULL),
-(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', '', 0, 0, NULL, NULL, NULL),
-(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', '', 0, 0, NULL, NULL, NULL);
+INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`) VALUES
+(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, '', 1, 0, NULL, NULL, NULL),
+(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, '', 1, 0, NULL, NULL, NULL),
+(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', '', 1, 0, NULL, '2025-11-23 19:50:57', NULL),
+(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', '', 1, 0, NULL, NULL, NULL),
+(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', '', 1, 0, NULL, NULL, NULL),
+(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', '', 1, 0, NULL, NULL, NULL),
+(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', '', 1, 0, NULL, NULL, NULL),
+(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', '', 1, 0, NULL, NULL, NULL),
+(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', '', 1, 0, NULL, NULL, NULL),
+(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', '', 1, 0, NULL, NULL, NULL),
+(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', '', 1, 0, NULL, NULL, NULL),
+(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', '', 1, 0, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -1544,6 +1563,12 @@ ALTER TABLE `review`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indexes for table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `status`
 --
 ALTER TABLE `status`
@@ -1561,7 +1586,8 @@ ALTER TABLE `transport_detail`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `role_id` (`role_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1650,6 +1676,12 @@ ALTER TABLE `product_image`
 --
 ALTER TABLE `review`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `status`
@@ -1749,6 +1781,12 @@ ALTER TABLE `review`
 --
 ALTER TABLE `transport_detail`
   ADD CONSTRAINT `a_type2` FOREIGN KEY (`address_type_id`) REFERENCES `address_type` (`id`);
+
+--
+-- Constraints for table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
