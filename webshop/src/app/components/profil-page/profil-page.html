@@ -1,1 +1,26 @@
-<p>profil-page works!</p>
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-lg-4 d-flex flex-column align-items-center">
+        <button class="w-50 my-2" (click)="selectContent('profilPage')">Saját profil</button>
+        <button class="w-50 my-2" (click)="selectContent('orderHistory')">Rendeléseim</button>
+        <button class="w-50 my-2" (click)="selectContent('reviews')">Véleményeim</button>
+        <button class="w-50 my-2" (click)="selectContent('addresses')">Címeim</button>
+      </div>
+      <div class="col-lg-8">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <img src="" alt="">
+              <h1>Udv, Kiss Pista</h1>
+            </div>
+          </div>
+        </div>
+          @if (selectedContent == 'profilPage') {}
+          @else if (selectedContent == 'orderHistory') {
+
+          }
+          @else if (selectedContent == 'reviews') {}
+          @else if (selectedContent == 'addresses') {}
+      </div>
+  </div>
+</div>
