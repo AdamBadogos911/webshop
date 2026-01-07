@@ -1,7 +1,7 @@
 <nav class="navbar sticky-top navbar-expand-lg">
   <div class="container-fluid">
-    <a href="" class="navbar-brand">
-      <img href="#" src="" alt="Logo">
+    <a routerLink="/homePage" class="navbar-brand">
+      <img src="" alt="Logo">
     </a>
     <form id="search" action="" role="search">
       <input class="form-control shadow" type="search" placeholder="Keresés" aria-label="Keresés">
@@ -10,28 +10,26 @@
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a ng-mouseover="app-product-list">Termékeink</a>
+          <span (click)="handleNavbar()">Termékeink</span>
         </li>
         <li class="nav-item">
-          <a href="">Ajánlatok</a>
+          <a>Ajánlatok</a>
         </li>
         <li class="nav-item">
-          <a href="">Rólunk</a>
+          <a routerLink="/aboutUs">Rólunk</a>
         </li>
       </ul>
     </div>
     <a routerLink="/login">
       <button class="icon-button">
-        <span>{{UserService.user?.firstName}}</span>
+        <span>{{userService.user?.firstName}}</span>
         <span class="material-symbols-outlined">
           person
         </span>
       </button>
     </a>
-    <button class="icon-button">
-      <span class="material-symbols-outlined">
-        shopping_cart
-      </span>
+    <button class="icon-button" routerLink="/basket">
+      <span class="material-symbols-outlined">shopping_cart</span>
     </button>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,5 +37,3 @@
     </button>
   </div>
 </nav>
-<ng-content></ng-content>
-<app-product-list></app-product-list>

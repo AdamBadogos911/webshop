@@ -9,7 +9,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 
 @Component({
   selector: 'app-profil-page',
-  imports: [ReviewCard, OrderCard, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './profil-page.html',
   styleUrl: './profil-page.css',
 })
