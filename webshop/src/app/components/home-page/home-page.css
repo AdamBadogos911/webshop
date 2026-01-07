@@ -8,3 +8,12 @@
 .iconDiv .material-symbols-outlined {
   font-size: 50px !important;
 }
+
+.productCards .col-lg-3 {
+  margin: 10px;
+}
+
+.productCards .row {
+  justify-content: center;
+  width: fit-content;
+}
