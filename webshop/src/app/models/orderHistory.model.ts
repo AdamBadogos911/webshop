@@ -5,7 +5,7 @@ import { Status } from "./status.model";
 import { TransportDetail } from "./transportDetail.model";
 import { User } from "./user.model";
 
-export class OrderHistroy {
+export class OrderHistory {
   constructor(
     public id: number | null,
     public firstNaeme: string,
