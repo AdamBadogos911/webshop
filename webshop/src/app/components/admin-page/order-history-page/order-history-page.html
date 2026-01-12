@@ -1,1 +1,11 @@
-<p>order-history-page works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="container-fluid">
+        @for (orderHistory of allOrderHistory; track $index) {
+          <app-order-card [orderHistory]="orderHistory" />
+        }
+      </div>
+    </div>
+  </div>
+</div>

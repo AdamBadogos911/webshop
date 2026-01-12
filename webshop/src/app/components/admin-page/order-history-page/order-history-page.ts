@@ -1,11 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { OrderCard } from '../../order-card/order-card';
+import { OrderHistroy } from '../../../models/orderHistory.model';
 
 @Component({
   selector: 'app-order-history-page',
-  imports: [],
+  imports: [OrderCard],
   templateUrl: './order-history-page.html',
   styleUrl: './order-history-page.css',
 })
-export class OrderHistoryPage {
+export class OrderHistoryPage implements OnInit{
+  allOrderHistory: OrderHistroy[] = []
 
+  ngOnInit(): void {
+
+  }
 }
