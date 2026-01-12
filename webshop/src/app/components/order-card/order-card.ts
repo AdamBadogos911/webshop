@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { OrderHistroy } from '../../models/orderHistory.model';
 
 @Component({
   selector: 'app-order-card',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './order-card.css',
 })
 export class OrderCard {
-
+  orderHistory = input.required<OrderHistroy>()
 }
