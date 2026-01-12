@@ -9,7 +9,7 @@ import { OrderHistroy } from '../../../models/orderHistory.model';
   styleUrl: './order-history-page.css',
 })
 export class OrderHistoryPage implements OnInit{
-  allOrderHistory: OrderHistroy[] = []
+  allOrderHistory: OrderHistory[] = []
 
   ngOnInit(): void {
 

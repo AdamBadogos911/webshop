@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { OrderHistroy } from '../../models/orderHistory.model';
+import { OrderHistory } from '../../models/orderHistory.model';
 
 @Component({
   selector: 'app-order-card',
@@ -8,5 +8,5 @@ import { OrderHistroy } from '../../models/orderHistory.model';
   styleUrl: './order-card.css',
 })
 export class OrderCard {
-  orderHistory = input.required<OrderHistroy>()
+  orderHistory = input.required<OrderHistory>()
 }
