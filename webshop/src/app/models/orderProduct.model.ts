@@ -1,4 +1,4 @@
-import { OrderHistroy } from './orderHistory.model';
+import { OrderHistory } from './orderHistory.model';
 import { Product } from './product.mode';
 
 export class OrderProduct {
@@ -6,6 +6,6 @@ export class OrderProduct {
     public id: number | null,
     public amount: number,
     public orderProduct: Product,
-    public OrderHistroy: OrderHistroy
+    public OrderHistroy: OrderHistory
   ) {}
 }
