@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 06, 2026 at 12:53 PM
+-- Generation Time: Jan 20, 2026 at 09:44 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -286,6 +286,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `userIdIN` INT(11))
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `geSubcatByPrimCat` (IN `primCategoryIdIN` INT(11))   BEGIN
+	SELECT * FROM category WHERE category.category_id = primCategoryIdIN;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAddressXuserById` (IN `AddressXuserIdIN` INT(11))   BEGIN
 	SELECT* FROM `address_user`
     WHERE `address_user`.`is_deleted`=0 AND `address_user`.`id`=AddressXuserIdIN
@@ -330,6 +334,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllReview` ()   BEGIN
     
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllSubcategory` ()   BEGIN
+	SELECT * FROM category WHERE category.category_id IS NOT NULL;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllTransportDetail` ()   BEGIN
 	SELECT * FROM transport_detail
     
@@ -345,6 +353,10 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getBrandById` (IN `brandIdIN` INT(11))   BEGIN
 	SELECT * FROM `brand`
     WHERE `brand`.`id`=brandIdIN AND `brand`.`is_deleted`=0;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getMainCategory` ()   BEGIN
+	SELECT * FROM category WHERE category.category_id IS NULL;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReviewByProductId` (IN `productIdIN` INT(11))   BEGIN
@@ -988,7 +1000,7 @@ INSERT INTO `brand` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `last_modified_at` datetime DEFAULT NULL,
+  `last_modified_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1054,7 +1066,7 @@ CREATE TABLE `category` (
   `name` longtext NOT NULL,
   `category_id` int(11) DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1143,7 +1155,7 @@ CREATE TABLE `order_history` (
   `payment_method_id` int(11) NOT NULL,
   `status_id` int(2) NOT NULL,
   `ordered_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `canceled_at` datetime DEFAULT NULL,
+  `canceled_at` timestamp NULL DEFAULT NULL,
   `is_canceled` tinyint(1) NOT NULL DEFAULT '0',
   `canceler_user_id` int(11) DEFAULT NULL,
   `order_id` int(11) NOT NULL
@@ -1229,9 +1241,9 @@ CREATE TABLE `product` (
   `description` longtext NOT NULL,
   `price` int(7) NOT NULL,
   `discount` int(2) DEFAULT '0',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `amount` int(100) NOT NULL,
   `detail_id` int(11) NOT NULL,
@@ -1245,32 +1257,32 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `created_at`, `updated_at`, `deleted_at`, `is_deleted`, `amount`, `detail_id`, `stock_keeping_unit`, `brand_id`, `category_id`) VALUES
-(1, '1/4\" Racsni Króm', 'Pontos leírás a tárgyról amiről semmi információm nincs, ezért csak gépelek, és majd másolok :)', 3000, 0, '2025-10-22 09:44:26', '2025-12-04 10:12:09', NULL, 0, 500, 1, '888888881', NULL, 1),
-(2, '3/8\" Racsni Króm', '3/8\" Racsni Króm', 3200, 0, '2025-10-22 13:28:15', '2025-12-04 10:13:09', NULL, 0, 200000, 2, '888888882', NULL, 1),
-(3, '1/2\" Racsni Króm', '1/2\" Racsni Króm', 3600, 0, '2025-10-22 13:58:03', '2025-12-04 10:15:33', NULL, 0, 10, 3, '888888883', NULL, 1),
-(4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 10:07:05', '2025-12-04 10:34:05', NULL, 0, 100, 4, '888888884', NULL, 1),
-(5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 10:07:05', '2025-12-04 10:34:05', NULL, 0, 2, 5, '888888885', NULL, 1),
-(6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 10:09:07', '2025-12-04 10:34:05', NULL, 0, 300, 6, '888888886', NULL, 1),
-(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 10:09:07', '2025-12-22 20:46:49', NULL, 0, 100, 7, '888888887', NULL, 2),
-(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 10:10:55', '2025-12-22 21:05:57', NULL, 0, 110, 8, '888888888', NULL, 2),
-(9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 10:10:55', '2025-12-22 21:07:32', NULL, 0, 10, 9, '888888889', NULL, 2),
-(10, '1/4\" 15 cm-es racsnitoldó', '1/4\" 15 cm-es racsnitoldó', 2100, 0, '2025-12-22 21:10:49', NULL, NULL, 0, 100, 10, '8888888810', NULL, 2),
-(11, '1/4\" 23 cm-es racsnitoldó', '1/4\" 23 cm-es racsnitoldó', 2300, 0, '2025-12-22 21:10:49', NULL, NULL, 0, 100, 11, '8888888811', NULL, 2),
-(12, '3/8\" 7.5 cm-es racsnitoldó', '3/8\" 7.5 cm-es racsnitoldó', 2100, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 12, '8888888812', NULL, 2),
-(13, '3/8\" 12.5 cm-es racsnitoldó', '3/8\" 12.5 cm-es racsnitoldó', 2200, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 13, '8888888813', NULL, 2),
-(14, '3/8\" 15 cm-es racsnitoldó', '3/8\" 15 cm-es racsnitoldó', 2400, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 14, '8888888814', NULL, 2),
-(15, '3/8\" 20 cm-es racsnitoldó', '3/8\" 20 cm-es racsnitoldó', 2500, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 15, '8888888815', NULL, 2),
-(16, '1/2\" 10 cm-es racsnitoldó', '1/2\" 10 cm-es racsnitoldó', 1800, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 16, '8888888816', NULL, 2),
-(17, '1/2\" 12.5 cm-es racsnitoldó', '1/2\" 12.5 cm-es racsnitoldó', 2100, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 17, '8888888817', NULL, 2),
-(18, '1/2\" 20 cm-es racsnitoldó', '1/2\" 20 cm-es racsnitoldó', 2800, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 18, '8888888818', NULL, 2),
-(19, '3/4\" 10 cm-es racsnitoldó', '3/4\" 10 cm-es racsnitoldó', 5600, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 19, '8888888819', NULL, 2),
-(20, '3/4\" 20 cm-es racsnitoldó', '3/4\" 20 cm-es racsnitoldó', 7500, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 20, '8888888820', NULL, 2),
-(21, '3/4\" 40 cm-es racsnitoldó', '3/4\" 40 cm-es racsnitoldó', 9900, 0, '2025-12-23 20:03:35', '2025-12-23 19:51:18', NULL, 0, 100, 21, '8888888821', NULL, 2),
-(22, '1/4\"  fixhajtószár', '1/4\"  fixhajtószár', 1000, 0, '2025-12-23 20:27:19', '2025-12-23 20:22:33', NULL, 0, 100, 22, '8888888822', NULL, 5),
-(23, '3/8\"  fixhajtószár', '3/8\"  fixhajtószár', 2000, 0, '2025-12-23 20:27:19', '2025-12-23 20:22:33', NULL, 0, 100, 23, '8888888823', NULL, 5),
-(24, '1/2\"  fixhajtószár rövid', '1/2\"  fixhajtószár rövid', 3200, 0, '2025-12-23 20:27:19', '2025-12-23 20:22:33', NULL, 0, 100, 24, '8888888824', NULL, 5),
-(25, '1/2\"  fixhajtószár hosszú', '1/2\"  fixhajtószár hosszú', 3800, 0, '2025-12-23 20:27:19', '2025-12-23 20:22:33', NULL, 0, 100, 25, '8888888825', NULL, 5),
-(26, '3/4\"  fixhajtószár', '3/4\"  fixhajtószár', 11500, 0, '2025-12-23 20:27:19', '2025-12-23 20:22:33', NULL, 0, 100, 26, '', NULL, 5);
+(1, '1/4\" Racsni Króm', 'Pontos leírás a tárgyról amiről semmi információm nincs, ezért csak gépelek, és majd másolok :)', 3000, 0, '2025-10-22 07:44:26', '2025-12-04 09:12:09', NULL, 0, 500, 1, '888888881', NULL, 1),
+(2, '3/8\" Racsni Króm', '3/8\" Racsni Króm', 3200, 0, '2025-10-22 11:28:15', '2025-12-04 09:13:09', NULL, 0, 200000, 2, '888888882', NULL, 1),
+(3, '1/2\" Racsni Króm', '1/2\" Racsni Króm', 3600, 0, '2025-10-22 11:58:03', '2025-12-04 09:15:33', NULL, 0, 10, 3, '888888883', NULL, 1),
+(4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 100, 4, '888888884', NULL, 1),
+(5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 2, 5, '888888885', NULL, 1),
+(6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 09:09:07', '2025-12-04 09:34:05', NULL, 0, 300, 6, '888888886', NULL, 1),
+(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', NULL, 2),
+(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', NULL, 2),
+(9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 09:10:55', '2025-12-22 20:07:32', NULL, 0, 10, 9, '888888889', NULL, 2),
+(10, '1/4\" 15 cm-es racsnitoldó', '1/4\" 15 cm-es racsnitoldó', 2100, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 10, '8888888810', NULL, 2),
+(11, '1/4\" 23 cm-es racsnitoldó', '1/4\" 23 cm-es racsnitoldó', 2300, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 11, '8888888811', NULL, 2),
+(12, '3/8\" 7.5 cm-es racsnitoldó', '3/8\" 7.5 cm-es racsnitoldó', 2100, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 12, '8888888812', NULL, 2),
+(13, '3/8\" 12.5 cm-es racsnitoldó', '3/8\" 12.5 cm-es racsnitoldó', 2200, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 13, '8888888813', NULL, 2),
+(14, '3/8\" 15 cm-es racsnitoldó', '3/8\" 15 cm-es racsnitoldó', 2400, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 14, '8888888814', NULL, 2),
+(15, '3/8\" 20 cm-es racsnitoldó', '3/8\" 20 cm-es racsnitoldó', 2500, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 15, '8888888815', NULL, 2),
+(16, '1/2\" 10 cm-es racsnitoldó', '1/2\" 10 cm-es racsnitoldó', 1800, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 16, '8888888816', NULL, 2),
+(17, '1/2\" 12.5 cm-es racsnitoldó', '1/2\" 12.5 cm-es racsnitoldó', 2100, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 17, '8888888817', NULL, 2),
+(18, '1/2\" 20 cm-es racsnitoldó', '1/2\" 20 cm-es racsnitoldó', 2800, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 18, '8888888818', NULL, 2),
+(19, '3/4\" 10 cm-es racsnitoldó', '3/4\" 10 cm-es racsnitoldó', 5600, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 19, '8888888819', NULL, 2),
+(20, '3/4\" 20 cm-es racsnitoldó', '3/4\" 20 cm-es racsnitoldó', 7500, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 20, '8888888820', NULL, 2),
+(21, '3/4\" 40 cm-es racsnitoldó', '3/4\" 40 cm-es racsnitoldó', 9900, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 21, '8888888821', NULL, 2),
+(22, '1/4\"  fixhajtószár', '1/4\"  fixhajtószár', 1000, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 22, '8888888822', NULL, 5),
+(23, '3/8\"  fixhajtószár', '3/8\"  fixhajtószár', 2000, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 23, '8888888823', NULL, 5),
+(24, '1/2\"  fixhajtószár rövid', '1/2\"  fixhajtószár rövid', 3200, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 24, '8888888824', NULL, 5),
+(25, '1/2\"  fixhajtószár hosszú', '1/2\"  fixhajtószár hosszú', 3800, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 25, '8888888825', NULL, 5),
+(26, '3/4\"  fixhajtószár', '3/4\"  fixhajtószár', 11500, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 26, '', NULL, 5);
 
 -- --------------------------------------------------------
 
@@ -1313,8 +1325,8 @@ CREATE TABLE `review` (
   `user_id` int(11) NOT NULL,
   `review_text` longtext NOT NULL,
   `rate` int(1) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1324,17 +1336,17 @@ CREATE TABLE `review` (
 --
 
 INSERT INTO `review` (`id`, `product_id`, `user_id`, `review_text`, `rate`, `created_at`, `deleted_at`, `is_deleted`, `updated_at`) VALUES
-(1, 1, 1, 'Megint át lesz írva', 3, '2025-11-19 10:55:32', NULL, 0, '2025-11-20 20:01:24'),
-(2, 2, 2, '(Teszt2)', 4, '2025-11-19 10:55:32', NULL, 0, NULL),
-(3, 3, 3, '(Teszt3)', 5, '2025-11-19 10:56:03', NULL, 0, NULL),
-(4, 4, 4, '(Teszt4)', 3, '2025-11-19 10:56:03', NULL, 0, NULL),
-(5, 5, 5, '(Teszt5)', 5, '2025-11-19 10:56:35', NULL, 0, NULL),
-(6, 6, 6, '(Teszt6)', 4, '2025-11-19 10:56:35', NULL, 0, NULL),
-(7, 7, 7, '(Teszt7)', 5, '2025-11-19 10:58:38', NULL, 0, NULL),
-(8, 8, 8, '(Teszt8)', 5, '2025-11-19 10:58:38', NULL, 0, NULL),
-(9, 9, 9, '(Teszt9)', 5, '2025-11-19 10:59:34', NULL, 0, NULL),
-(10, 9, 10, '(Teszt10)', 5, '2025-11-19 10:59:34', NULL, 0, NULL),
-(11, 3, 8, 'tessszt', 5, '2025-11-20 12:25:21', NULL, 0, NULL);
+(1, 1, 1, 'Megint át lesz írva', 3, '2025-11-19 09:55:32', NULL, 0, '2025-11-20 20:01:24'),
+(2, 2, 2, '(Teszt2)', 4, '2025-11-19 09:55:32', NULL, 0, NULL),
+(3, 3, 3, '(Teszt3)', 5, '2025-11-19 09:56:03', NULL, 0, NULL),
+(4, 4, 4, '(Teszt4)', 3, '2025-11-19 09:56:03', NULL, 0, NULL),
+(5, 5, 5, '(Teszt5)', 5, '2025-11-19 09:56:35', NULL, 0, NULL),
+(6, 6, 6, '(Teszt6)', 4, '2025-11-19 09:56:35', NULL, 0, NULL),
+(7, 7, 7, '(Teszt7)', 5, '2025-11-19 09:58:38', NULL, 0, NULL),
+(8, 8, 8, '(Teszt8)', 5, '2025-11-19 09:58:38', NULL, 0, NULL),
+(9, 9, 9, '(Teszt9)', 5, '2025-11-19 09:59:34', NULL, 0, NULL),
+(10, 9, 10, '(Teszt10)', 5, '2025-11-19 09:59:34', NULL, 0, NULL),
+(11, 3, 8, 'tessszt', 5, '2025-11-20 11:25:21', NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1430,9 +1442,9 @@ CREATE TABLE `user` (
   `pfp_path` longtext NOT NULL,
   `role_id` int(11) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL,
-  `last_login` datetime DEFAULT NULL,
-  `register_finished_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `last_login` timestamp NULL DEFAULT NULL,
+  `register_finished_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1442,7 +1454,7 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`) VALUES
 (1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, '', 1, 0, NULL, NULL, NULL),
 (2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, '', 1, 0, NULL, NULL, NULL),
-(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', '', 1, 0, NULL, '2025-11-23 19:50:57', NULL),
+(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', '', 1, 0, NULL, '2025-11-23 18:50:57', NULL),
 (4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', '', 1, 0, NULL, NULL, NULL),
 (5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', '', 1, 0, NULL, NULL, NULL),
 (6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', '', 1, 0, NULL, NULL, NULL),
