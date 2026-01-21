@@ -3,7 +3,7 @@ import { UserService } from '../../services/user-service';
 import { ReviewCard } from '../review-card/review-card';
 import { Review } from '../../models/review.model';
 import { OrderCard } from '../order-card/order-card';
-import { OrderHistroy } from '../../models/orderHistory.model';
+import { OrderHistory } from '../../models/orderHistory.model';
 import { AddressUser } from '../../models/addressUser.model';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -17,7 +17,7 @@ export class ProfilPage implements OnInit {
   userService = inject(UserService)
   selectedContent: "profilPage" | "orderHistory" | "reviews" | "addresses" = "profilPage"
   reviewList: Review[] = []
-  orderHistory: OrderHistroy[] = []
+  orderHistory: OrderHistory[] = []
   addressList: AddressUser[] = []
 
   updateForm!: FormGroup
