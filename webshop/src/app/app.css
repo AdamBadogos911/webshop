@@ -5,3 +5,15 @@ body {
 .body {
   min-height: calc(100vh - 120px - 44px);
 }
+
+.row {
+  margin: 0;
+}
+
+.container-fluid {
+  padding: 0;
+}
+
+.col-lg-12 {
+  padding: 0;
+}

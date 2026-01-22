@@ -15,7 +15,7 @@
 }
 
 .img-fluid {
-    width: 100%;
+  width: 100%;
   object-fit: cover;
   height: 300px;
 }
@@ -33,5 +33,10 @@
 }
 
 .card {
-  width: 100%;
+  border: none;
+  padding: 5px;
+}
+
+p .mb-5 {
+  margin: 5px;
 }
