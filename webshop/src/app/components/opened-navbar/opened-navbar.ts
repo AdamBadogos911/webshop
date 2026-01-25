@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, output } from '@angular/core';
 import { CategoryService } from '../../services/category-service';
 import { Category } from '../../models/category.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-opened-navbar',
@@ -9,9 +10,11 @@ import { Category } from '../../models/category.model';
   styleUrl: './opened-navbar.css',
 })
 export class OpenedNavbar implements OnInit {
-  categoryService = inject(CategoryService)
+  private categoryService = inject(CategoryService)
+  private router = inject(Router)
   mainCategories: Category[] = []
   subCategories: Category[] = []
+  close = output()
 
   ngOnInit(): void {
     this.categoryService.getAllMainCategory().subscribe({
@@ -20,9 +23,13 @@ export class OpenedNavbar implements OnInit {
   }
 
   getAllSubCategory(mainCategoryId: number) {
-    console.log(mainCategoryId)
     this.categoryService.getAllSubCategoryFromMainCategory(mainCategoryId).subscribe({
       next: response => this.subCategories = response
     })
+  }
+
+  navigateToProductList(categoryId: number) {
+    this.router.navigate(["productList", categoryId])
+    this.close.emit()
   }
 }
