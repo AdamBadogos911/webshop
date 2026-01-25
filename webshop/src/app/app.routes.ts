@@ -12,7 +12,6 @@ import { ProductDetails } from './components/product-details/product-details';
 import { Unauthorized } from './components/unauthorized/unauthorized';
 import { Basket } from './components/basket/basket';
 import { AboutUsPage } from './components/about-us-page/about-us-page';
-import { ProductList } from './components/product-list/product-list';
 
 export const routes: Routes = [
   { path: "homePage", component: HomePage, },
@@ -20,7 +19,7 @@ export const routes: Routes = [
   { path: "login", component: LoginPage },
   { path: "register", component: RegistrationPage },
   { path: "passwordReset", component: PasswordResetPage },
-  { path: "productList", component: ProductList },
+  { path: "productList/:categoryId", loadComponent: () => import("./components/product-list/product-list").then((c) => c.ProductList) },
   { path: "aboutUs", component: AboutUsPage },
   { path: "basket", component: Basket },
   { path: "unauthorized", component: Unauthorized },
