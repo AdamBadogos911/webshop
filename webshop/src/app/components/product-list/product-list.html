@@ -1,28 +1,20 @@
-<div class="products">
-  <div class="body container-fluid">
+<div class="container-fluid py-4 d-flex flex-column justify-content-center align-items-center">
+  @if (!isError) {
+
+      @for (productRow of getRows(); track $index) {
+        <div class="row">
+          @for (product of productRow; track $index) {
+            <div class="col-xl-3 col-lg-6 col-md-6 my-4 d-flex justify-content-center align-items-center">
+              <app-product-card [product]="product" />
+            </div>
+          }
+        </div>
+    }
+  } @else {
     <div class="row">
-      <div class="col-4 category">
-        <table>
-          <tr>
-            <td><a>Dugófejek</a></td>
-          </tr>
-          <tr>
-            <td><a>Valami</a></td>
-          </tr>
-        </table>
-      </div>
-      <div class="col-4">
-        <p class="item">Dugófej 1</p>
-        <p class="item">Dugófej 2</p>
-        <p class="item">Dugófej 2</p>
-        <p class="item">Dugófej 2</p>
-      </div>
-      <div class="col-4">
-        <p class="item">Dugófej 1</p>
-        <p class="item">Dugófej 2</p>
-        <p class="item">Dugófej 2</p>
-        <p class="item">Dugófej 2</p>
+      <div class="col-lg-12">
+        <h1 class="text-center">Hiba történt! Kérlek próbáld meg később!!!</h1>
       </div>
     </div>
-  </div>
+  }
 </div>
