@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
+import { Product } from '../../models/product.mode';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-card',
@@ -7,5 +9,11 @@ import { Component } from '@angular/core';
   styleUrl: './product-card.css',
 })
 export class ProductCard {
+  product = input<Product>()
+  private router = inject(Router)
 
+
+  navigateToDetails() {
+    this.router.navigate(["product", this.product()?.id])
+  }
 }
