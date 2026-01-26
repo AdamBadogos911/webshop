@@ -43,4 +43,8 @@ public class OrderProduct {
     @JoinColumn(name = "order_id")
     private OrderHistory orderHistory;
 
+    public OrderProduct(Integer amount, Product orderProduct) {
+        this.orderProduct = orderProduct;
+        this.amount = amount;
+    }
 }

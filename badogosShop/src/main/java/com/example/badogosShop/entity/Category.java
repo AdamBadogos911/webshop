@@ -1,5 +1,6 @@
 package com.example.badogosShop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,12 @@ import java.util.List;
 @Setter
 @ToString
 @NoArgsConstructor
-
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getMainCategory", procedureName = "getMainCategory", resultClasses = Category.class),
+        @NamedStoredProcedureQuery(name = "geSubcatByPrimCat", procedureName = "geSubcatByPrimCat", parameters = {
+                @StoredProcedureParameter(name = "primCategoryIdIN", mode = ParameterMode.IN, type = Integer.class)
+        }, resultClasses = Category.class)
+})
 public class Category {
 
     @Id
@@ -33,15 +39,21 @@ public class Category {
     @NotNull
     private Boolean isDeleted = false;
 
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "category_id")
+    @JsonIgnore
+    private Category mainCategory;
+
+    @OneToMany(mappedBy = "mainCategory", cascade = {})
+    @JsonIgnore
+    private List<Category> subCategories;
+
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {})
-    @JoinTable(
-            name = "product_category",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private List<Product> productList;
 }

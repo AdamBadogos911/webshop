@@ -48,6 +48,11 @@ public class User {
     @Column(name = "first_name")
     @NotNull
     @Size(max = 100)
+    private String firstName;
+
+    @Column(name = "last_name")
+    @NotNull
+    @Size(max = 100)
     private String lastName;
 
     @Column(name = "phone_number")
@@ -58,9 +63,6 @@ public class User {
     @Column(name = "pfp_path")
     @NotNull
     private String pfpPath="";
-
-    @Column(name = "is_admin")
-    private Boolean isAdmin = false;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
@@ -76,7 +78,11 @@ public class User {
     @Column(name = "register_finished_at")
     private Date registerFinishedAt;
 
+    @Column(name = "v_code")
+    @Null
+    private String vCode;
 
+    //
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnoreProperties({"author"})
     @Null
@@ -97,9 +103,11 @@ public class User {
     @Null
     private List<AddressUser> savedDetails;
 
-    @OneToMany(mappedBy = "cartUser", fetch = FetchType.LAZY, cascade = {})
+    @OneToOne(mappedBy = "cartUser", fetch = FetchType.LAZY, cascade = {})
+    private Cart cart;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "role_id")
     @Null
-    private List<Cart> cart;
-
-
+    private Role role = new Role(1, "ROLE_user");
 }

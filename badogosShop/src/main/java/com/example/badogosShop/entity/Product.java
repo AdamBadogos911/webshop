@@ -18,7 +18,6 @@ import java.util.List;
 @Setter
 @ToString
 @NoArgsConstructor
-
 public class Product {
 
     @Id
@@ -75,9 +74,8 @@ public class Product {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @OneToOne(cascade = {})
-    @JoinColumn(name = "image_path_id")
-    private ProductImages images;
+    @OneToMany(mappedBy = "product")
+    private List<ProductImages> images;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {})
     private List<Review> productReviewList;
@@ -86,9 +84,10 @@ public class Product {
     @JsonIgnore
     private List<OrderProduct> orderHistoryList;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {}, mappedBy = "productList")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     @JsonIgnoreProperties({"productList"})
-    private List<Category> categories;
+    private Category category;
 
     @OneToMany(mappedBy = "cartProduct", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnore

@@ -2,13 +2,8 @@ package com.example.badogosShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
+import lombok.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,24 +12,17 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-
+@AllArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name="name")
     @NotNull
     private String name;
 
-    @Column(name = "is_deleted")
-    @NotNull
-    private Boolean isDeleted;
-
-    @Column(name = "deleted_at")
-    @NotNull
-    private Date deletedAt;
 
     @OneToMany(
             mappedBy = "role",
@@ -43,4 +31,9 @@ public class Role {
     @JsonIgnore
     private List<User> users;
 
+    public Role(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
+
