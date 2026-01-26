@@ -1,15 +1,16 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { Product } from '../models/product.mode';
+import { TestBed } from '@angular/core/testing';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ProductService {
-  private http = inject(HttpClient)
-  private baseUrl = "http://localhost:8080/product"
+import { ProductService } from './product-service';
 
-  getProductByCategory(categoryId: number) {
-    return this.http.get<Product[]>(`${this.baseUrl}/category/${categoryId}?page=0&size=20`)
-  }
-}
+describe('ProductService', () => {
+  let service: ProductService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(ProductService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});
