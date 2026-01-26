@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 22, 2026 at 09:14 AM
+-- Generation Time: Jan 26, 2026 at 12:54 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1089,7 +1089,9 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 (9, 'Keztyűk', NULL, 0, NULL),
 (10, 'Nyelek', NULL, 0, NULL),
 (11, 'Korongok', NULL, 0, NULL),
-(12, 'Kerti eszközök', NULL, 0, NULL);
+(12, 'Kerti eszközök', NULL, 0, NULL),
+(13, 'Beépített torxok', NULL, 0, NULL),
+(14, 'Imbuszkulcsok', NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1139,7 +1141,29 @@ INSERT INTO `details` (`id`, `weight`, `material`, `length`, `height`, `width`, 
 (23, NULL, 'Acél', NULL, NULL, NULL, '3/8\"', NULL, NULL),
 (24, NULL, 'Acél', 10, NULL, NULL, '1/2\"', NULL, NULL),
 (25, NULL, 'Acél', 20, NULL, NULL, '1/2\"', NULL, NULL),
-(26, NULL, 'Acél', NULL, NULL, NULL, '3/4\"', NULL, NULL);
+(26, NULL, 'Acél', NULL, NULL, NULL, '3/4\"', NULL, NULL),
+(27, NULL, 'Fém', NULL, NULL, NULL, 'T30', NULL, NULL),
+(28, NULL, 'Fém', NULL, NULL, NULL, 'T40', NULL, NULL),
+(29, NULL, 'Fém', NULL, NULL, NULL, 'T45', NULL, NULL),
+(30, NULL, 'Fém', NULL, NULL, NULL, 'T50', NULL, NULL),
+(31, NULL, 'Fém', NULL, NULL, NULL, 'T55', NULL, NULL),
+(32, NULL, 'Fém', NULL, NULL, NULL, 'T60', NULL, NULL),
+(33, NULL, 'Fém', NULL, NULL, NULL, 'T70', NULL, NULL),
+(34, NULL, 'Fém', NULL, NULL, NULL, 'M12', NULL, NULL),
+(35, NULL, 'Fém', NULL, NULL, NULL, 'M14', NULL, NULL),
+(36, NULL, 'Fém', NULL, NULL, NULL, 'M16', NULL, NULL),
+(37, NULL, 'Fém', NULL, NULL, NULL, 'M17', NULL, NULL),
+(38, NULL, 'Fém', NULL, NULL, NULL, '4', NULL, NULL),
+(41, NULL, 'Fém', NULL, NULL, NULL, '5', NULL, NULL),
+(42, NULL, 'Fém', NULL, NULL, NULL, '6', NULL, NULL),
+(43, NULL, 'Fém', NULL, NULL, NULL, '7', NULL, NULL),
+(44, NULL, 'Fém', NULL, NULL, NULL, '8', NULL, NULL),
+(45, NULL, 'Fém', NULL, NULL, NULL, '10', NULL, NULL),
+(46, NULL, 'Fém', NULL, NULL, NULL, '12', NULL, NULL),
+(47, NULL, 'Fém', NULL, NULL, NULL, '13', NULL, NULL),
+(48, NULL, 'Fém', NULL, NULL, NULL, '14', NULL, NULL),
+(49, NULL, 'Fém', NULL, NULL, NULL, '17', NULL, NULL),
+(50, NULL, 'Fém', NULL, NULL, NULL, '19', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1286,7 +1310,18 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (23, '3/8\"  fixhajtószár', '3/8\"  fixhajtószár', 2000, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 23, '8888888823', NULL, 5),
 (24, '1/2\"  fixhajtószár rövid', '1/2\"  fixhajtószár rövid', 3200, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 24, '8888888824', NULL, 5),
 (25, '1/2\"  fixhajtószár hosszú', '1/2\"  fixhajtószár hosszú', 3800, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 25, '8888888825', NULL, 5),
-(26, '3/4\"  fixhajtószár', '3/4\"  fixhajtószár', 11500, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 26, '', NULL, 5);
+(26, '3/4\"  fixhajtószár', '3/4\"  fixhajtószár', 11500, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 26, '8888888826', NULL, 5),
+(38, 'Beépített torx T30', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 27, '8888888827', NULL, 13),
+(39, 'Beépített torx T40', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 28, '8888888828', NULL, 13),
+(40, 'Beépített torx T45', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 29, '8888888829', NULL, 13),
+(41, 'Beépített torx T50', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 30, '8888888830', NULL, 13),
+(42, 'Beépített torx T55', '', 1700, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 31, '8888888831', NULL, 13),
+(43, 'Beépített torx T60', '', 1700, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 32, '8888888832', NULL, 13),
+(44, 'Beépített torx T70', '', 1900, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 33, '8888888833', NULL, 13),
+(45, 'Beépített torx M12', '', 2100, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 34, '8888888834', NULL, 13),
+(46, 'Beépített torx M14', '', 2600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 35, '8888888835', NULL, 13),
+(47, 'Beépített torx M16', '', 2600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 36, '8888888836', NULL, 13),
+(48, 'Beépített torx M17', '', 2800, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 37, '8888888837', NULL, 13);
 
 -- --------------------------------------------------------
 
@@ -1649,13 +1684,13 @@ ALTER TABLE `cart_product`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `details`
 --
 ALTER TABLE `details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `order_history`
@@ -1679,7 +1714,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `product_image`
