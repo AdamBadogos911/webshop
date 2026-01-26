@@ -10,7 +10,7 @@
           </div>
           <div class="col-lg-8 d-flex flex-column">
             @for (subCategory of subCategories; track $index) {
-              <button class="my-2" >{{subCategory.name}}</button>
+              <button class="my-2" (click)="navigateToProductList(subCategory.id!)">{{subCategory.name}}</button>
             }
           </div>
         </div>
