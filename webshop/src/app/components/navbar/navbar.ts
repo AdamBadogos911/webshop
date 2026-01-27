@@ -17,6 +17,7 @@ export class Navbar {
   handleNavbar() {
     this.navbarIsOpen = !this.navbarIsOpen
     this.openNavBar.emit(this.navbarIsOpen)
+
   }
 
   navigateWithUserIcon() {

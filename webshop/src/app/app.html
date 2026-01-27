@@ -1,9 +1,9 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-md-12 col-sm-12">
       <app-navbar (openNavBar)="isNavbarOpen.set($event)" style="position: sticky;"/>
       @if (isNavbarOpen()) {
-        <app-opened-navbar style="position: fixed; z-index: 2;"/>
+        <app-opened-navbar style="position: fixed; z-index: 1000;"/>
       }
     </div>
   </div>

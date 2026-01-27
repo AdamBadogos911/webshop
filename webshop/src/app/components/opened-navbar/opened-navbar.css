@@ -2,10 +2,12 @@
   background-color: rgba(0, 0, 0, 0.6);
   width: 100vw;
   height: 100vh;
+  top: 44px;
 }
 
 .col-lg-12 > .container-fluid {
   background-color: #B4B4B4;
-  height: 50vh;
+  height: fit-content;
+
   width: 80%;
 }
