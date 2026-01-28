@@ -10,11 +10,11 @@
 #categoryContainer {
   background-color: #8D8D8D;
   height: fit-content;
-  width: 600px;
+  width: 650px;
   position: fixed;
   top: 44px;
   z-index: 2;
-  left: 500px;
+  left: 450px;
 }
 
 .mainCategory {
