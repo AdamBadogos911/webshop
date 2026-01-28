@@ -15,10 +15,15 @@ export class OpenedNavbar implements OnInit {
   mainCategories: Category[] = []
   subCategories: Category[] = []
   close = output()
+  isError: boolean = false
 
   ngOnInit(): void {
     this.categoryService.getAllMainCategory().subscribe({
-      next: response => this.mainCategories = response
+      next: response => this.mainCategories = response,
+      error: err => this.isError = true,
+      complete: () => {
+        this.getAllSubCategory(this.mainCategories[0].id!)
+      }
     })
   }
 
