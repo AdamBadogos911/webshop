@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: "basket", component: Basket },
   { path: "unauthorized", component: Unauthorized },
   { path: "product", component: ProductDetails },
-  { path: "profilPage", component: ProfilPage },
+  { path: "profile", component: ProfilPage },
   { path: "adminPage", component: AdminPage },
   { path: "orderHistoryPage", component: OrderHistoryPage},
   { path: "storagePage", component: StoragePage},
