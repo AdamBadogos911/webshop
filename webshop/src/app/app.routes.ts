@@ -12,6 +12,7 @@ import { ProductDetails } from './components/product-details/product-details';
 import { Unauthorized } from './components/unauthorized/unauthorized';
 import { Basket } from './components/basket/basket';
 import { AboutUsPage } from './components/about-us-page/about-us-page';
+import { StatisticsPage } from './components/admin-page/statistics-page/statistics-page';
 
 export const routes: Routes = [
   { path: "homePage", component: HomePage, },
@@ -29,6 +30,7 @@ export const routes: Routes = [
   { path: "orderHistoryPage", component: OrderHistoryPage},
   { path: "storagePage", component: StoragePage},
   { path: "productDetails/:productId", component: ProductDetails },
+  { path: "statistics", component: StatisticsPage},
 
   { path: "**", component: NotFound },
 ];
