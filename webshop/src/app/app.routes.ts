@@ -28,6 +28,7 @@ export const routes: Routes = [
   { path: "adminPage", component: AdminPage },
   { path: "orderHistoryPage", component: OrderHistoryPage},
   { path: "storagePage", component: StoragePage},
+  { path: "productDetails/:productId", component: ProductDetails },
 
   { path: "**", component: NotFound },
 ];
