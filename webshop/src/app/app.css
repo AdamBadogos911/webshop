@@ -17,3 +17,7 @@ body {
 .col-lg-12 {
   padding: 0;
 }
+
+#main {
+  margin-top: 42px;
+}
