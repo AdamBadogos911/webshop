@@ -1,11 +1,12 @@
 .cardContainer {
   width: 100%;
   height: 350px;
-  background-color: #B4B4B4;
+  background-color: #D9D9D9;
   border-radius: 15px;
   padding: 10px 20px;
   margin: 5px;
   align-self: center;
+  box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.25);
 }
 
 img {
@@ -16,4 +17,11 @@ img {
 .kep {
   padding: 0;
   width: 100%;
+}
+
+.m-0 {
+  background-color: #6EDC6A;
+  width: fit-content;
+  border-radius: 10px;
+  padding: 0 6px;
 }
