@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 26, 2026 at 12:54 PM
+-- Generation Time: Jan 30, 2026 at 04:32 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1091,7 +1091,11 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 (11, 'Korongok', NULL, 0, NULL),
 (12, 'Kerti eszközök', NULL, 0, NULL),
 (13, 'Beépített torxok', NULL, 0, NULL),
-(14, 'Imbuszkulcsok', NULL, 0, NULL);
+(14, 'Imbuszkulcsok', NULL, 0, NULL),
+(15, 'Kulcsok', NULL, 0, NULL),
+(16, 'Csillagvillás kulcs', 15, 0, NULL),
+(17, 'Fékcsőkulcs', 15, 0, NULL),
+(18, '\"T\" kulcs', 15, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1154,16 +1158,40 @@ INSERT INTO `details` (`id`, `weight`, `material`, `length`, `height`, `width`, 
 (36, NULL, 'Fém', NULL, NULL, NULL, 'M16', NULL, NULL),
 (37, NULL, 'Fém', NULL, NULL, NULL, 'M17', NULL, NULL),
 (38, NULL, 'Fém', NULL, NULL, NULL, '4', NULL, NULL),
-(41, NULL, 'Fém', NULL, NULL, NULL, '5', NULL, NULL),
-(42, NULL, 'Fém', NULL, NULL, NULL, '6', NULL, NULL),
-(43, NULL, 'Fém', NULL, NULL, NULL, '7', NULL, NULL),
-(44, NULL, 'Fém', NULL, NULL, NULL, '8', NULL, NULL),
-(45, NULL, 'Fém', NULL, NULL, NULL, '10', NULL, NULL),
-(46, NULL, 'Fém', NULL, NULL, NULL, '12', NULL, NULL),
-(47, NULL, 'Fém', NULL, NULL, NULL, '13', NULL, NULL),
-(48, NULL, 'Fém', NULL, NULL, NULL, '14', NULL, NULL),
-(49, NULL, 'Fém', NULL, NULL, NULL, '17', NULL, NULL),
-(50, NULL, 'Fém', NULL, NULL, NULL, '19', NULL, NULL);
+(39, NULL, 'Fém', NULL, NULL, NULL, '5', NULL, NULL),
+(40, NULL, 'Fém', NULL, NULL, NULL, '6', NULL, NULL),
+(41, NULL, 'Fém', NULL, NULL, NULL, '7', NULL, NULL),
+(42, NULL, 'Fém', NULL, NULL, NULL, '8', NULL, NULL),
+(43, NULL, 'Fém', NULL, NULL, NULL, '10', NULL, NULL),
+(44, NULL, 'Fém', NULL, NULL, NULL, '12', NULL, NULL),
+(45, NULL, 'Fém', NULL, NULL, NULL, '13', NULL, NULL),
+(46, NULL, 'Fém', NULL, NULL, NULL, '14', NULL, NULL),
+(47, NULL, 'Fém', NULL, NULL, NULL, '17', NULL, NULL),
+(48, NULL, 'Fém', NULL, NULL, NULL, '19', NULL, NULL),
+(49, NULL, 'Fém', NULL, NULL, NULL, '7', NULL, NULL),
+(50, NULL, 'Fém', NULL, NULL, NULL, '8', NULL, NULL),
+(51, NULL, 'Fém', NULL, NULL, NULL, '9', NULL, NULL),
+(52, NULL, 'Fém', NULL, NULL, NULL, '10', NULL, NULL),
+(53, NULL, 'Fém', NULL, NULL, NULL, '11', NULL, NULL),
+(54, NULL, 'Fém', NULL, NULL, NULL, '12', NULL, NULL),
+(55, NULL, 'Fém', NULL, NULL, NULL, '13', NULL, NULL),
+(56, NULL, 'Fém', NULL, NULL, NULL, '14', NULL, NULL),
+(57, NULL, 'Fém', NULL, NULL, NULL, '15', NULL, NULL),
+(58, NULL, 'Fém', NULL, NULL, NULL, '16', NULL, NULL),
+(59, NULL, 'Fém', NULL, NULL, NULL, '17', NULL, NULL),
+(60, NULL, 'Fém', NULL, NULL, NULL, '18', NULL, NULL),
+(61, NULL, 'Fém', NULL, NULL, NULL, '19', NULL, NULL),
+(62, NULL, 'Fém', NULL, NULL, NULL, '21', NULL, NULL),
+(63, NULL, 'Fém', NULL, NULL, NULL, '22', NULL, NULL),
+(64, NULL, 'Fém', NULL, NULL, NULL, '24', NULL, NULL),
+(65, NULL, 'Fém', NULL, NULL, NULL, '27', NULL, NULL),
+(66, NULL, 'Fém', NULL, NULL, NULL, '30', NULL, NULL),
+(67, NULL, 'Fém', NULL, NULL, NULL, '32', NULL, NULL),
+(68, NULL, 'Fém', NULL, NULL, NULL, '36', NULL, NULL),
+(69, NULL, 'Fém', NULL, NULL, NULL, '41', NULL, NULL),
+(70, NULL, 'Fém', NULL, NULL, NULL, '46', NULL, NULL),
+(71, NULL, 'Fém', NULL, NULL, NULL, '55', NULL, NULL),
+(72, NULL, 'Fém', NULL, NULL, NULL, '60', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1321,7 +1349,42 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (45, 'Beépített torx M12', '', 2100, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 34, '8888888834', NULL, 13),
 (46, 'Beépített torx M14', '', 2600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 35, '8888888835', NULL, 13),
 (47, 'Beépített torx M16', '', 2600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 36, '8888888836', NULL, 13),
-(48, 'Beépített torx M17', '', 2800, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 37, '8888888837', NULL, 13);
+(48, 'Beépített torx M17', '', 2800, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 37, '8888888837', NULL, 13),
+(49, 'Imbuszkulcs 4-es mértű', 'Imbuszkulcs 4-es mértű', 300, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 38, '8888888838', NULL, 14),
+(50, 'Imbuszkulcs 5-ös', 'Imbuszkulcs 5-ös', 350, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 39, '8888888839', NULL, 14),
+(51, 'Imbuszkulcs 6-os', 'Imbuszkulcs 6-os', 350, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 40, '8888888840', NULL, 14),
+(52, 'Imbuszkulcs 7-es', 'Imbuszkulcs 7-es', 500, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 41, '8888888841', NULL, 14),
+(53, 'Imbuszkulcs 8-as', 'Imbuskulcs 8-as', 700, 100, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 42, '8888888842', NULL, 14),
+(54, 'Imbuszkulcs 10-es', 'Imbuszkulcs 10-es', 800, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 43, '8888888843', NULL, 14),
+(55, 'Imbuszkulcs 12-es', 'Imbuszkulcs 12-es', 1200, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 44, '8888888844', NULL, 14),
+(56, 'Imbuszkulcs 13', 'Imbuszkulcs 13', 1400, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 45, '8888888845', NULL, 14),
+(57, 'Imbuszkulcs 14-es', 'Imbuszkulcs 14-es', 1700, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 46, '8888888846', NULL, 14),
+(58, 'Imbuszkulcs 17-es', 'Imbuszkulcs 17-es', 3200, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 47, '8888888847', NULL, 14),
+(59, 'Imbuszkulcs 19-es', 'Imbuszkulcs 19-es', 3500, 0, '2026-01-29 09:02:24', NULL, NULL, 0, 100, 48, '8888888848', NULL, 14),
+(60, '7-es Csillagvillás kulcs', '7-es Csillagvillás kulcs', 500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 49, '8888888849', NULL, 16),
+(61, '8-as Csillagvillás kulcs', '8-as Csillagvillás kulcs', 500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 50, '8888888850', NULL, 16),
+(62, '9-es Csillagvillás kulcs', '9-es Csillagvillás kulcs', 500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 51, '8888888851', NULL, 16),
+(63, '10-es Csillagvillás kulcs', '10-es Csillagvillás kulcs', 600, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 52, '8888888852', NULL, 16),
+(64, '11-es Csillagvillás kulcs', '11-es Csillagvillás kulcs', 600, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 53, '8888888853', NULL, 16),
+(65, '12-es Csillagvillás kulcs', '12-es Csillagvillás kulcs', 700, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 54, '8888888854', NULL, 16),
+(66, '13-as Csillagvillás kulcs', '13-as Csillagvillás kulcs', 800, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 55, '8888888855', NULL, 16),
+(67, '14-es Csillagvillás kulcs', '14-es Csillagvillás kulcs', 800, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 56, '8888888856', NULL, 16),
+(68, '15-ös Csillagvillás kulcs', '15-ös Csillagvillás kulcs', 1100, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 57, '8888888857', NULL, 16),
+(69, '16-os Csillagvillás kulcs', '16-os Csillagvillás kulcs', 1100, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 58, '8888888858', NULL, 16),
+(70, '17-es Csillagvillás kulcs', '17-es Csillagvillás kulcs', 1200, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 59, '', NULL, 16),
+(71, '18-as Csillagvillás kulcs', '18-as Csillagvillás kulcs', 1200, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 60, '8888888860', NULL, 16),
+(72, '19-es Csillagvillás kulcs', '19-es Csillagvillás kulcs', 1500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 61, '8888888861', NULL, 16),
+(73, '21-es Csillagvillás kulcs', '21-es Csillagvillás kulcs', 1600, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 62, '8888888862', NULL, 16),
+(74, '22-es Csillagvillás kulcs', '22-es Csillagvillás kulcs', 1800, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 63, '8888888863', NULL, 16),
+(75, '24-es csillagvillás kulcs', '24-es Csillagvillás kulcs', 2800, 0, '2026-01-29 10:29:59', NULL, NULL, 0, 100, 64, '8888888864\r\n', NULL, 16),
+(76, '27-es Csillagvillás kulcs', '27-es Csillagvillás kulcs', 3800, 0, '2026-01-29 10:29:59', NULL, NULL, 0, 100, 65, '8888888865', NULL, 16),
+(77, '30-as Csillagvillás kulcs', '30-as Csillagvillás kulcs', 4800, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 66, '8888888866', NULL, 16),
+(78, '32-es Csillagvillás kulcs', '32-es Csillagvillás kulcs', 5300, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 67, '8888888867', NULL, 16),
+(79, '36-os Csillagvillás kulcs', '36-os Csillagvillás kulcs', 7500, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 68, '8888888868', NULL, 16),
+(80, '41-es Csillagvillás kulcs', '41-es Csillagvillás kulcs', 9400, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 69, '8888888869', NULL, 16),
+(81, '46-os Csillagvillás kulcs', '46-os Csillagvillás kulcs', 10400, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 70, '8888888870', NULL, 16),
+(82, '55-ös Csillagvillás kulcs', '55-ös Csillagvillás kulcs', 10800, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 71, '8888888871', NULL, 16),
+(83, '60-as Csillagvillás kulcs', '60-as Csillagvillás kulcs', 12900, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 72, '8888888872', NULL, 16);
 
 -- --------------------------------------------------------
 
@@ -1684,13 +1747,13 @@ ALTER TABLE `cart_product`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `details`
 --
 ALTER TABLE `details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `order_history`
@@ -1714,7 +1777,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `product_image`
