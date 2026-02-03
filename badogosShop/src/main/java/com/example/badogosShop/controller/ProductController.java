@@ -2,10 +2,11 @@ package com.example.badogosShop.controller;
 
 import com.example.badogosShop.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
+
 
 @RestController
 @RequestMapping("/product")
@@ -17,7 +18,7 @@ public class ProductController {
 
     @GetMapping("/category/{id}")
         public ResponseEntity<Object> getProductByCategory(Pageable pageable, @PathVariable("id") Integer categoryId) {
-            return productService.getProductCategory(pageable, categoryId);
+            return productService.getProductsByCategory(pageable, categoryId);
     }
 
     @DeleteMapping("/{id}")

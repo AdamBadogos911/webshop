@@ -82,7 +82,6 @@ public class User {
     @Null
     private String vCode;
 
-    //
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnoreProperties({"author"})
     @Null
