@@ -37,8 +37,6 @@ export class ProfilPage implements OnInit {
       this.getOrderHistory()
     } else if (this.selectedContent == "reviews") {
       this.getReviews()
-    } else if (this.selectedContent == "addresses") {
-      this.getAddresses()
     }
   }
 
@@ -47,10 +45,6 @@ export class ProfilPage implements OnInit {
   }
 
   getReviews() {
-
-  }
-
-  getAddresses() {
 
   }
 
