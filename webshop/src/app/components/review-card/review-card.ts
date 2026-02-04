@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
+import { Review } from '../../models/review.model';
 
 @Component({
   selector: 'app-review-card',
@@ -6,6 +7,10 @@ import { Component } from '@angular/core';
   templateUrl: './review-card.html',
   styleUrl: './review-card.css',
 })
-export class ReviewCard {
+export class ReviewCard implements OnInit{
+  review = input.required<Review>()
 
+  ngOnInit(): void {
+
+  }
 }
