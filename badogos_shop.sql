@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 02, 2026 at 04:55 PM
+-- Generation Time: Feb 04, 2026 at 08:18 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1620,18 +1620,18 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`) VALUES
-(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, '', 1, 0, NULL, NULL, NULL),
-(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, '', 1, 0, NULL, NULL, NULL),
-(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', '', 1, 0, NULL, '2025-11-23 18:50:57', NULL),
-(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', '', 1, 0, NULL, NULL, NULL),
-(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', '', 1, 0, NULL, NULL, NULL),
-(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', '', 1, 0, NULL, NULL, NULL),
-(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', '', 1, 0, NULL, NULL, NULL),
-(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', '', 1, 0, NULL, NULL, NULL),
-(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', '', 1, 0, NULL, NULL, NULL),
-(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', '', 1, 0, NULL, NULL, NULL),
-(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', '', 1, 0, NULL, NULL, NULL),
-(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', '', 1, 0, NULL, NULL, NULL);
+(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
+(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
+(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, '2025-11-23 18:50:57', NULL),
+(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
+(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
+(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
+(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
+(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
+(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
+(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
+(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
+(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
