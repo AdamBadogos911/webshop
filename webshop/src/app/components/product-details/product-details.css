@@ -1,0 +1,126 @@
+body {
+  background-color: #e5e5e5;
+  font-family: 'Inter', sans-serif;
+  color: #222;
+}
+
+.container-fluid {
+  max-width: 1200px;
+  background-color: #dddddd;
+  padding: 32px;
+  border-radius: 12px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.col-lg-12 img:first-child {
+  background-color: #f2f2f2;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.col-lg-3 img {
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+span {
+  display: inline-block;
+  font-size: 14px;
+}
+
+.col-lg-6 span:first-child {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.col-lg-6 span:last-child {
+  background-color: #4caf50;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-left: 8px;
+}
+
+input[type="number"] {
+  width: 80px;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  text-align: center;
+}
+
+button {
+  background-color: #7fb2ff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #6aa3ff;
+}
+
+p {
+  font-size: 13px;
+  margin: 4px 0;
+  color: #444;
+}
+
+.col-lg-12 > button {
+  background-color: #cccccc;
+  color: #222;
+  margin-right: 8px;
+}
+
+.col-lg-12 > button:first-child {
+  background-color: #bdbdbd;
+}
+
+.col-lg-12 p {
+  background-color: #eeeeee;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 16px;
+}
+
+.row .col-lg-12:has(:contains("REVIEW CARD")) {
+  background-color: #eeeeee;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+h3 {
+  margin: 32px 0 16px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.col-lg-3 {
+  background-color: #f0f0f0;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.row {
+  margin-bottom: 16px;
+}
