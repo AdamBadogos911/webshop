@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 04, 2026 at 08:18 AM
+-- Generation Time: Feb 09, 2026 at 12:27 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -314,6 +314,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllCategory` ()   BEGIN
     WHERE `category`.`is_deleted`=0
     ;
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllProduct` ()   BEGIN
+	SELECT *FROM product
+    WHERE product.is_deleted=0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllProductXcategories` ()   BEGIN
@@ -1224,7 +1229,16 @@ INSERT INTO `details` (`id`, `weight`, `material`, `length`, `height`, `width`, 
 (102, NULL, 'Műanyag', 5000, NULL, NULL, '2', NULL, NULL),
 (103, NULL, 'Műanyag', 5000, NULL, NULL, '2.4', NULL, NULL),
 (104, NULL, 'Műanyag', 5000, NULL, NULL, '2.7', NULL, NULL),
-(105, NULL, 'Műanyag', 5000, NULL, NULL, '3', NULL, NULL);
+(105, NULL, 'Műanyag', 5000, NULL, NULL, '3', NULL, NULL),
+(106, NULL, 'Alumínium, műanyag', 1500, NULL, NULL, '1.6', NULL, NULL),
+(107, NULL, 'Alumínium, műanyag', 1500, NULL, NULL, '2', NULL, NULL),
+(108, NULL, 'Alumínium, műanyag', 1500, NULL, NULL, '2.4', NULL, NULL),
+(109, NULL, 'Alumínium, műanyag', 1500, NULL, NULL, '2.7', NULL, NULL),
+(110, NULL, 'Alumínium, műanyag', 1500, NULL, NULL, '3', NULL, NULL),
+(111, NULL, 'Alumínium, műanyag', 5000, NULL, NULL, '2', NULL, NULL),
+(112, NULL, 'Alumínium, műanyag', 5000, NULL, NULL, '2.4', NULL, NULL),
+(113, NULL, 'Alumínium, műanyag', 5000, NULL, NULL, '2.7', NULL, NULL),
+(114, NULL, 'Alumínium, műanyag', 5000, NULL, NULL, '3', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1450,7 +1464,16 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (102, 'Fűnyíró damil 50 méteres műanyag 2mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2mm-es  ', 1700, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 102, '88888888102', NULL, 7),
 (103, 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 2300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 103, '88888888103', NULL, 7),
 (104, 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 2900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 104, '88888888104', NULL, 7),
-(105, 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 3400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 105, '88888888104', NULL, 7);
+(105, 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 3400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 105, '88888888104', NULL, 7),
+(106, 'Fűnyíró damil alumíniumos 15 méteres műanyag 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 106, '88888888106', NULL, 7),
+(107, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2mm-es ', 900, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 107, '88888888107', NULL, 7),
+(108, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.4mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.4mm-es ', 1200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 108, '88888888108', NULL, 7),
+(109, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.7mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.7mm-es ', 1500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 109, '88888888109', NULL, 7),
+(110, 'Fűnyíró damil alumíniumos 15 méteres műanyag 3mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 3mm-es ', 1700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 110, '88888888110', NULL, 7),
+(111, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2mm-es ', 2200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 111, '88888888111', NULL, 7),
+(112, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.4mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.4mm-es ', 3000, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 112, '88888888112', NULL, 7),
+(113, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.7mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.7mm-es ', 3700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 113, '88888888113', NULL, 7),
+(114, 'Fűnyíró damil alumíniumos 50 méteres műanyag 3mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 3mm-es ', 4500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 114, '88888888114', NULL, 7);
 
 -- --------------------------------------------------------
 
@@ -1819,7 +1842,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `details`
 --
 ALTER TABLE `details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT for table `order_history`
@@ -1843,7 +1866,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT for table `product_image`
