@@ -24,7 +24,7 @@
     <div class="col-lg-6 col-md-6 col-sm-6">
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-          <h2>Termék név</h2>
+          <h2>{{selectedProduct.name}}</h2>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
           <span>Márka</span>
@@ -54,28 +54,23 @@
   <div class="row">
     <div class="row">
       <div class="col-lg-12">
-        <button>Leírás</button>
-        <button>Értékelések</button>
+        <button (click)="handleReview(false)">Leírás</button>
+        <button (click)="handleReview(true)">Értékelések</button>
       </div>
     </div>
     <div class="row">
-      <!-- Leírás -->
       <div class="col-lg-12">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur deserunt magnam repellendus? Alias, dicta
-          dolorem, labore explicabo eius commodi quidem debitis, consequatur voluptatem ratione vitae consequuntur.
-          Voluptas quis, molestias non ut iste excepturi ex ad, iure officiis odit a maxime laborum fugiat sapiente
-          voluptatibus hic dolorum quibusdam cupiditate, obcaecati harum?</p>
+        @if (showReviews) {
+          @for (review of reviews; track $index) {
+            <app-review-card [review]="review" />
+          } @empty {
+            <p>Nincs még vélemény irva.</p>
+          }
+        } @else {
+          <p>{{selectedProduct.description}}</p>
+        }
       </div>
-      <!-- Értékelések -->
-      <div class="col-lg-12">
-        <!-- <h2>Még nincsenek értékelések.</h2> -->
-        <div class="row">
-          <div class="col-lg-12">
-            REVIEW CARD
-          </div>
-        </div>
-      </div>
-    </div>
+
   </div>
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
