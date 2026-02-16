@@ -24,7 +24,7 @@ import java.util.List;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "login", procedureName = "login", parameters = {
                 @StoredProcedureParameter(name = "emailIn", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "passwordIN", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "passwordIn", mode = ParameterMode.IN, type = String.class),
 
         }, resultClasses = User.class)
 })
@@ -82,6 +82,7 @@ public class User {
     @Null
     private String vCode;
 
+    //
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnoreProperties({"author"})
     @Null

@@ -87,4 +87,12 @@ public class ProductService {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    public ResponseEntity<Object> addProduct() {
+        return null;
+    }
+
+    public ResponseEntity<Object> updateProduct() {
+        return null;
+    }
 }

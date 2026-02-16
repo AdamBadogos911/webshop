@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getMainCategory", procedureName = "getMainCategory", resultClasses = Category.class),
-        @NamedStoredProcedureQuery(name = "geSubCatByPrimCat", procedureName = "geSubCatByPrimCat", parameters = {
+        @NamedStoredProcedureQuery(name = "getSubCatByPrimCat", procedureName = "getSubCatByPrimCat", parameters = {
                 @StoredProcedureParameter(name = "primCategoryIdIN", mode = ParameterMode.IN, type = Integer.class)
         }, resultClasses = Category.class)
 })

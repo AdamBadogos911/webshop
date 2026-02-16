@@ -21,7 +21,6 @@ public class ProductImages {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
     @Column(name = "image_path")
@@ -30,12 +29,11 @@ public class ProductImages {
 
     @Column(name = "placement")
     @NotNull
-    @Size(max = 2)
     private Integer placement;
 
-    @OneToOne(mappedBy = "images", cascade = {})
+    @ManyToOne()
+    @JoinColumn(name = "product_id")
     @JsonIgnore
     private Product product;
-
 
 }
