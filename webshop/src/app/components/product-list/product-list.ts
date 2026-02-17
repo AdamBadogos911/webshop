@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
-import { Product } from '../../models/product.mode';
 import { ProductCard } from '../product-card/product-card';
+import { Product } from '../../models/product.model';
 
 @Component({
   selector: 'app-product-list',
