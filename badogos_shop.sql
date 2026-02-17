@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 09, 2026 at 12:27 PM
+-- Generation Time: Feb 17, 2026 at 09:28 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -219,6 +219,13 @@ WHERE `product`.`id` = productIdIN;
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `clearCart` (IN `idIN` INT)   BEGIN 
+	UPDATE `cart_product` SET 
+    `is_deleted`=1,`deleted_at`=CURRENT_DATE() 
+    WHERE
+    cart_product.cart_id = idIN;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteAddress` (IN `addressIdIN` INT(11))   BEGIN
 	UPDATE `address`
     SET `address`.`is_deleted`=1,
@@ -259,6 +266,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteProduct` (IN `productIdIN` IN
     `is_deleted` = 1
 	WHERE `product`.`id` = productIdIN;
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteProductFromCart` (IN `idIN` INT)   BEGIN
+	UPDATE `cart_product` SET 
+    `is_deleted`=1,`deleted_at`=CURRENT_DATE() 
+    WHERE
+    cart_product.id = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteProductXcategories` (IN `productXcategoriesIdIN` INT(11))   BEGIN
@@ -354,6 +368,12 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getBrandById` (IN `brandIdIN` INT(11))   BEGIN
 	SELECT * FROM `brand`
     WHERE `brand`.`id`=brandIdIN AND `brand`.`is_deleted`=0;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getCartByUserId` (IN `idIN` INT)   BEGIN 
+	SELECT * FROM cart
+    WHERE 
+    cart.user_id = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getMainCategory` ()   BEGIN
@@ -1041,28 +1061,30 @@ CREATE TABLE `cart_product` (
   `cart_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_modified_at` timestamp NULL DEFAULT NULL,
-  `amount` int(11) DEFAULT NULL
+  `amount` int(11) DEFAULT NULL,
+  `is_deleted` tinyint(4) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cart_product`
 --
 
-INSERT INTO `cart_product` (`id`, `product_id`, `cart_id`, `created_at`, `last_modified_at`, `amount`) VALUES
-(1, 1, 1, '2025-11-20 16:37:30', NULL, 1),
-(2, 3, 1, '2025-11-20 16:37:30', NULL, 2),
-(3, 5, 2, '2025-11-20 16:45:53', NULL, 1),
-(4, 2, 2, '2025-11-20 16:45:53', NULL, 1),
-(5, 5, 3, '2025-11-20 16:46:22', NULL, 1),
-(6, 2, 3, '2025-11-20 16:46:22', NULL, 1),
-(7, 5, 4, '2025-11-20 16:46:39', NULL, 1),
-(8, 2, 4, '2025-11-20 16:46:39', NULL, 1),
-(9, 5, 5, '2025-11-20 16:46:55', NULL, 1),
-(10, 2, 5, '2025-11-20 16:46:55', NULL, 1),
-(11, 5, 6, '2025-11-20 16:47:50', NULL, 1),
-(12, 2, 6, '2025-11-20 16:47:50', NULL, 1),
-(13, 9, 9, '2025-11-20 16:51:00', NULL, 1),
-(14, 9, 6, '2025-11-20 16:51:01', NULL, 1);
+INSERT INTO `cart_product` (`id`, `product_id`, `cart_id`, `created_at`, `last_modified_at`, `amount`, `is_deleted`, `deleted_at`) VALUES
+(1, 1, 1, '2025-11-20 16:37:30', NULL, 1, 0, NULL),
+(2, 3, 1, '2025-11-20 16:37:30', NULL, 2, 0, NULL),
+(3, 5, 2, '2025-11-20 16:45:53', NULL, 1, 0, NULL),
+(4, 2, 2, '2025-11-20 16:45:53', NULL, 1, 0, NULL),
+(5, 5, 3, '2025-11-20 16:46:22', NULL, 1, 0, NULL),
+(6, 2, 3, '2025-11-20 16:46:22', NULL, 1, 0, NULL),
+(7, 5, 4, '2025-11-20 16:46:39', NULL, 1, 0, NULL),
+(8, 2, 4, '2025-11-20 16:46:39', NULL, 1, 0, NULL),
+(9, 5, 5, '2025-11-20 16:46:55', NULL, 1, 0, NULL),
+(10, 2, 5, '2025-11-20 16:46:55', NULL, 1, 0, NULL),
+(11, 5, 6, '2025-11-20 16:47:50', NULL, 1, 0, NULL),
+(12, 2, 6, '2025-11-20 16:47:50', NULL, 1, 0, NULL),
+(13, 9, 9, '2025-11-20 16:51:00', NULL, 1, 0, NULL),
+(14, 9, 6, '2025-11-20 16:51:01', NULL, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
