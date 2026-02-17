@@ -10,9 +10,12 @@ import { AdminPage } from './components/admin-page/admin-page';
 import { ProfilPage } from './components/profil-page/profil-page';
 import { ProductDetails } from './components/product-details/product-details';
 import { Unauthorized } from './components/unauthorized/unauthorized';
-import { Basket } from './components/basket/basket';
 import { AboutUsPage } from './components/about-us-page/about-us-page';
 import { StatisticsPage } from './components/admin-page/statistics-page/statistics-page';
+import { OrderPage } from './components/order-page/order-page';
+import { TransportDetails } from './components/order-page/transport-details/transport-details';
+import { BillingDetails } from './components/order-page/billing-details/billing-details';
+import { SummaryPage } from './components/order-page/summary-page/summary-page';
 
 export const routes: Routes = [
   { path: "homePage", component: HomePage, },
@@ -22,15 +25,21 @@ export const routes: Routes = [
   { path: "passwordReset", component: PasswordResetPage },
   { path: "productList/:categoryId", loadComponent: () => import("./components/product-list/product-list").then((c) => c.ProductList) },
   { path: "aboutUs", component: AboutUsPage },
-  { path: "basket", component: Basket },
   { path: "unauthorized", component: Unauthorized },
-  { path: "product", component: ProductDetails },
   { path: "profile", component: ProfilPage },
   { path: "adminPage", component: AdminPage },
   { path: "orderHistoryPage", component: OrderHistoryPage},
   { path: "storagePage", component: StoragePage},
   { path: "productDetails/:productId", component: ProductDetails },
   { path: "statistics", component: StatisticsPage},
+
+  {
+    path: "orderPage", component: OrderPage, children: [
+      { path: "transportDetails", component: TransportDetails },
+      { path: "billingDetails", component: BillingDetails },
+      { path: "summary", component: SummaryPage }
+    ]
+  },
 
   { path: "**", component: NotFound },
 ];
