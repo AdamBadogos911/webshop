@@ -1,1 +1,30 @@
-<p>cart-card works!</p>
+<div class="container-fluid bg-danger my-4">
+  <div class="row">
+    <div class="col-lg-12 d-flex justify-content-end align-items-center">
+      <button (click)="deleteProductFromBasket()">X</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4">
+
+    </div>
+    <div class="col-lg-8">
+      <div class="container-fluid d-flex flex-column">
+        <div class="row">
+          <div class="col-lg-12">
+            <h4>{{cartProduct().cartProduct.name}}</h4>
+            <p>{{cartProduct().cartProduct.price}}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <button (click)="changeAmountOfProduct(-1)">-</button>
+            {{cartProduct().amount}}
+            <button (click)="changeAmountOfProduct(1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
