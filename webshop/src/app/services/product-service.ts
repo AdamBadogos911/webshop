@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Product } from '../models/product.mode';
 import { Observable } from 'rxjs';
+import { Product } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.baseUrl}/category/${categoryId}?page=0&size=20`)
   }
 
-  getProductById(productId: number): Observable<Product> {
-    return this.http.get<Product>(`${this.baseUrl}/${productId}`)
+  getProductById(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.baseUrl}/${id}`)
   }
 }
