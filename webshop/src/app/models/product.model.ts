@@ -17,6 +17,6 @@ export class Product {
     public brand: Brand,
     public images: ProductImages,
     public productReviewList: Review[],
-    public categories: Category[]
+    public category: Category
   ) { }
 }
