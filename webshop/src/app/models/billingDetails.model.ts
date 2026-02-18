@@ -2,8 +2,8 @@ import { AddressType } from "./addressType.model";
 
 export class BillingDetail {
   constructor(
-    public id: number,
-    public postalCode: number,
+    public id: number | null,
+    public postCode: number,
     public town: string,
     public address: string,
     public houseNumber: number,

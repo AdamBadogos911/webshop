@@ -1,6 +1,6 @@
 export class PaymentMethod {
   constructor(
-    public id: number | null,
+    public id: number,
     public name: string
   ) {}
 }
