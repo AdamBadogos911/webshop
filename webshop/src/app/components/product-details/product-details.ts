@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ReviewService } from '../../services/review-service';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
-import { Product } from '../../models/product.mode';
+import { Product } from '../../models/product.model';
 import { Review } from '../../models/review.model';
 import { ReviewCard } from '../review-card/review-card';
 
