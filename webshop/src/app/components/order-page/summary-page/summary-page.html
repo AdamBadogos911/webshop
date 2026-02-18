@@ -1,1 +1,77 @@
-<p>summary-page works!</p>
+<div class="container-fluid" id="mainContainer">
+  <div class="row h-100">
+    <div class="col-lg-12 h-100 d-flex justify-content-center align-items-center">
+      <div class="container-fluid d-flex flex-column justify-content-between align-items-center py-4" id="secondContainer">
+
+        <div class="row w-100">
+          <div class="col-lg-12 mb-3">
+            <h1 class="text-center">Összesités</h1>
+          </div>
+        </div>
+
+        <div class="row h-100 w-100">
+          <div class="col-lg-12">
+            <ul>
+              <li><span class="fw-bold">Név: </span>{{orderService.actualOrder.firstName}} {{orderService.actualOrder.lastName}}</li>
+              <li><span class="fw-bold">E-mail:</span>{{orderService.actualOrder.email}}</li>
+              <li><span class="fw-bold">Telefonszám:</span>{{orderService.actualOrder.phone}}</li>
+
+              <li>
+                <span class="fw-bold">Szállitási adatok:</span>
+                <ul>
+                  <li><span class="fw-bold">Cím: </span>{{transportAddress}}</li>
+                  <li><span class="fw-bold">Megjegyzés</span> {{
+                    orderService.actualOrder.orderTransportDetail?.other != null ? orderService.actualOrder.orderTransportDetail?.other : "nincs"
+                  }}</li>
+                </ul>
+              </li>
+
+              <li>
+                <span class="fw-bold">Számlázási adatok:</span>
+                <ul>
+                  <li><span class="fw-bold">Cím: </span>{{billingAddress}}</li>
+                  @if (orderService.actualOrder.orderBillingDetail?.companyName != null) {
+                    <li><span class="fw-bold">Adószám:</span> {{orderService.actualOrder.orderBillingDetail?.taxNumber}}</li>
+                    <li><span class="fw-bold">Cég:</span> {{orderService.actualOrder.orderBillingDetail?.companyName}}</li>
+                  }
+                  <li><span class="fw-bold">Megjegyzés: </span> {{
+                    orderService.actualOrder.orderBillingDetail?.other != null ? orderService.actualOrder.orderBillingDetail?.other : "nincs"
+                  }}</li>
+                </ul>
+              </li>
+            </ul>
+            <div class="bg-danger" style="height: 275px;">
+              <table class="table table-sm table-hover">
+                <thead>
+                  <tr>
+                    <th>Termék neve</th>
+                    <th>Ár</th>
+                    <th>Db</th>
+                    <th>Összesen</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of cartService.usersCart.cartProductList; track $index) {
+                    <tr>
+                      <td scope="row">{{item.cartProduct.name}}</td>
+                      <td>{{item.cartProduct.price}}</td>
+                      <td>{{item.amount}}</td>
+                      <td>{{item.cartProduct.price * item.amount}} Ft</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+            <p class="text-end">Végösszeg: </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-center align-items-center">
+            <button (click)="sendOrder()">Rendelés megerősitése</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
