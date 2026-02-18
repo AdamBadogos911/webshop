@@ -1,1 +1,87 @@
-<p>billing-details works!</p>
+<div class="container-fluid" style="height: 100vh;">
+  <div class="row h-100">
+    <div class="col-lg-12 d-flex justify-content-center align-items-center">
+      <form class="container-fluid" id="formContainer" [formGroup]="form">
+        <div class="row">
+          <div class="col-lg-12">
+            <h1 class="text-center my-2">Számlázási adatok:</h1>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 my-2">
+            <input type="text" class="form-control" placeholder="Irányitószám" formControlName="postCode">
+          </div>
+          <div class="col-lg-9 my-2">
+            <input type="text" class="form-control" placeholder="Város" formControlName="town">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 my-2">
+            <select class="form-select" formControlName="addressType">
+              <option value="null" selected disabled>Közúti tipus kiválasztása</option>
+              @for (addressType of addressTypes; track $index) {
+                <option [value]="addressType.id">{{addressType.name}}</option>
+              }
+            </select>
+          </div>
+          <div class="col-lg-6 my-2">
+            <input type="text" class="form-control" placeholder="Cím" formControlName="address">
+          </div>
+          <div class="col-lg-3 my-2">
+            <input type="text" class="form-control" placeholder="Házszám" formControlName="houseNumber">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 my-2">
+            <textarea class="form-control" style="height: 100px;" placeholder="Egyéb" formControlName="other"></textarea>
+            <div class="my-2">
+              <input class="mx-1 form-check-input" type="checkbox" name="isCompany" id="isCompany" (change)="handleCompany()">
+              <label for="isCompany">Cégként vásárolok</label>
+            </div>
+          </div>
+        </div>
+
+        @if (isCompany) {
+          <div class="row">
+            <div class="col-lg-12 mb-2">
+              <input type="text" class="form-control" placeholder="Cég név" formControlName="companyName">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 mb-2">
+              <input type="text" class="form-control" placeholder="Adószám" formControlName="taxNumber">
+            </div>
+          </div>
+        }
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1 class="text-center">Fizetési mód kiválasztása</h1>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-center align-items-center">
+            @for (paymentMethod of paymentMethods; track $index) {
+              <div class="mx-2">
+                <input [checked]="paymentMethod.id === form.controls['paymentMethod'].value" type="radio" name="paymentMethod" [id]="paymentMethod.name" class="mx-1 form-check-input" (click)="setPaymentMethod(paymentMethod.id)">
+                <label [for]="paymentMethod.name">{{paymentMethod.name}}</label>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-between">
+            <button routerLink="/orderPage/transportDetails">Vissza</button>
+            <button (click)="continue()" [disabled]="form.invalid">Tovább</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
