@@ -1,1 +1,92 @@
-<p>transport-details works!</p>
+<div class="container-fluid" style="height: 100vh;">
+  <div class="row h-100">
+    <div class="col-lg-12 d-flex justify-content-center align-items-center">
+      <div class="container-fluid" id="formContainer">
+        <div class="row mt-4">
+          <div class="col-lg-12">
+            <h1 class="text-center">Adatok megadása</h1>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <form class="container-fluid" [formGroup]="detailsForm">
+              <div class="row">
+                <div class="col-lg-6 mb-3">
+                  <label for="firstName">Vezetéknév</label>
+                  <input type="text" class="form-control" placeholder="Vezetéknév*" formControlName="firstName">
+                </div>
+                <div class="col-lg-6 mb-3">
+                  <label for="lastName">Keresztnév</label>
+                  <input type="text" class="form-control" placeholder="Keresztnév*" formControlName="lastName">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12 mb-3">
+                  <label for="">E-mail cím:</label>
+                  <input type="text" class="form-control" placeholder="E-mail cím*" formControlName="email">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12 mb-3">
+                  <label for="">Telefonszám:</label>
+                  <input type="text" class="form-control" placeholder="Telefonszám*" formControlName="phoneNumber">
+                </div>
+              </div>
+
+              <div class="row mt-4">
+              <div class="col-lg-12">
+                <h1 class="text-center">Szállitási adatok megadása</h1>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3 mb-3">
+                <label for="">Irányitószám:</label>
+                <input type="text" class="form-control" placeholder="Irányitó szám*" formControlName="postCode">
+              </div>
+              <div class="col-lg-9 mb-3">
+                <label for="">Város:</label>
+                <input type="text" class="form-control" placeholder="Város*" formControlName="town">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3 mb-3">
+                <label for="">Közúti tipus:</label>
+                <select name="" id="" class="form-select" formControlName="addressType">
+                  <option value="null" selected disabled>Közúti tipus*</option>
+                  @for (addressType of addressTypes; track $index) {
+                    <option [value]="addressType.id">{{addressType.name}}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-lg-7 mb-3">
+                <label for="">Cím:</label>
+                <input type="text" class="form-control" placeholder="Cím*" formControlName="address">
+              </div>
+              <div class="col-lg-2 mb-3">
+                <label for="">Házszám:</label>
+                <input type="number" name="" id="" class="form-control" placeholder="Házszám*" formControlName="houseNumber">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 mb-3">
+                <label for="Megjegyzés:"></label>
+                <textarea name="" id="" class="form-control" placeholder="Megjegyzés" formControlName="other"></textarea>
+              </div>
+            </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-between">
+            <button routerLink="/orderPage/basket">Vissza</button>
+            <button (click)="continue()" [disabled]="detailsForm.invalid">Tovább</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
