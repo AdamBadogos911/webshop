@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 17, 2026 at 09:28 AM
+-- Generation Time: Feb 18, 2026 at 08:38 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -300,6 +300,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `userIdIN` INT(11))
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `geSubcatByPrimCat` (IN `primCategoryIdIN` INT(11))   BEGIN
+	SELECT * FROM category WHERE category.category_id = primCategoryIdIN;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAddressXuserById` (IN `AddressXuserIdIN` INT(11))   BEGIN
 	SELECT* FROM `address_user`
     WHERE `address_user`.`is_deleted`=0 AND `address_user`.`id`=AddressXuserIdIN
@@ -377,7 +381,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getCartByUserId` (IN `idIN` INT)   
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getMainCategory` ()   BEGIN
-	SELECT * FROM category WHERE category.category_id IS NULL AND category.is_deleted=0;
+	SELECT * FROM category WHERE category.category_id IS NULL;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getMostViewedProducts` ()   BEGIN 
+	SELECT * FROM product
+    WHERE product.is_deleted = 0
+    ORDER BY product.view_count DESC
+    LIMIT 4;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getProductByCategoryID` (IN `categoryIdIN` INT)   BEGIN
@@ -399,10 +410,6 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReviewByUserId` (IN `userIdIN` INT(11))   BEGIN
 	SELECT * FROM `review`
     WHERE `review`.`user_id`=userIdIN AND `review`.`is_deleted`=0;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getSubcatByPrimCat` (IN `primCategoryIdIN` INT(11))   BEGIN
-	SELECT * FROM category WHERE category.category_id = primCategoryIdIN AND category.is_deleted=0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getTransportDetailsById` (IN `transportDetailsIdIN` INT(11))   BEGIN
@@ -1374,128 +1381,129 @@ CREATE TABLE `product` (
   `detail_id` int(11) NOT NULL,
   `stock_keeping_unit` varchar(255) NOT NULL,
   `brand_id` int(11) DEFAULT NULL,
-  `category_id` int(11) NOT NULL
+  `category_id` int(11) NOT NULL,
+  `view_count` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `created_at`, `updated_at`, `deleted_at`, `is_deleted`, `amount`, `detail_id`, `stock_keeping_unit`, `brand_id`, `category_id`) VALUES
-(1, '1/4\" Racsni Króm', 'Pontos leírás a tárgyról amiről semmi információm nincs, ezért csak gépelek, és majd másolok :)', 3000, 0, '2025-10-22 07:44:26', '2025-12-04 09:12:09', NULL, 0, 500, 1, '888888881', NULL, 1),
-(2, '3/8\" Racsni Króm', '3/8\" Racsni Króm', 3200, 0, '2025-10-22 11:28:15', '2025-12-04 09:13:09', NULL, 0, 200000, 2, '888888882', NULL, 1),
-(3, '1/2\" Racsni Króm', '1/2\" Racsni Króm', 3600, 0, '2025-10-22 11:58:03', '2025-12-04 09:15:33', NULL, 0, 10, 3, '888888883', NULL, 1),
-(4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 100, 4, '888888884', NULL, 1),
-(5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 2, 5, '888888885', NULL, 1),
-(6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 09:09:07', '2025-12-04 09:34:05', NULL, 0, 300, 6, '888888886', NULL, 1),
-(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', NULL, 2),
-(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', NULL, 2),
-(9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 09:10:55', '2025-12-22 20:07:32', NULL, 0, 10, 9, '888888889', NULL, 2),
-(10, '1/4\" 15 cm-es racsnitoldó', '1/4\" 15 cm-es racsnitoldó', 2100, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 10, '8888888810', NULL, 2),
-(11, '1/4\" 23 cm-es racsnitoldó', '1/4\" 23 cm-es racsnitoldó', 2300, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 11, '8888888811', NULL, 2),
-(12, '3/8\" 7.5 cm-es racsnitoldó', '3/8\" 7.5 cm-es racsnitoldó', 2100, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 12, '8888888812', NULL, 2),
-(13, '3/8\" 12.5 cm-es racsnitoldó', '3/8\" 12.5 cm-es racsnitoldó', 2200, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 13, '8888888813', NULL, 2),
-(14, '3/8\" 15 cm-es racsnitoldó', '3/8\" 15 cm-es racsnitoldó', 2400, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 14, '8888888814', NULL, 2),
-(15, '3/8\" 20 cm-es racsnitoldó', '3/8\" 20 cm-es racsnitoldó', 2500, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 15, '8888888815', NULL, 2),
-(16, '1/2\" 10 cm-es racsnitoldó', '1/2\" 10 cm-es racsnitoldó', 1800, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 16, '8888888816', NULL, 2),
-(17, '1/2\" 12.5 cm-es racsnitoldó', '1/2\" 12.5 cm-es racsnitoldó', 2100, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 17, '8888888817', NULL, 2),
-(18, '1/2\" 20 cm-es racsnitoldó', '1/2\" 20 cm-es racsnitoldó', 2800, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 18, '8888888818', NULL, 2),
-(19, '3/4\" 10 cm-es racsnitoldó', '3/4\" 10 cm-es racsnitoldó', 5600, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 19, '8888888819', NULL, 2),
-(20, '3/4\" 20 cm-es racsnitoldó', '3/4\" 20 cm-es racsnitoldó', 7500, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 20, '8888888820', NULL, 2),
-(21, '3/4\" 40 cm-es racsnitoldó', '3/4\" 40 cm-es racsnitoldó', 9900, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 21, '8888888821', NULL, 2),
-(22, '1/4\"  fixhajtószár', '1/4\"  fixhajtószár', 1000, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 22, '8888888822', NULL, 5),
-(23, '3/8\"  fixhajtószár', '3/8\"  fixhajtószár', 2000, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 23, '8888888823', NULL, 5),
-(24, '1/2\"  fixhajtószár rövid', '1/2\"  fixhajtószár rövid', 3200, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 24, '8888888824', NULL, 5),
-(25, '1/2\"  fixhajtószár hosszú', '1/2\"  fixhajtószár hosszú', 3800, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 25, '8888888825', NULL, 5),
-(26, '3/4\"  fixhajtószár', '3/4\"  fixhajtószár', 11500, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 26, '8888888826', NULL, 5),
-(27, 'Beépített torx T30', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 27, '8888888827', NULL, 13),
-(28, 'Beépített torx T40', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 28, '8888888828', NULL, 13),
-(29, 'Beépített torx T45', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 29, '8888888829', NULL, 13),
-(30, 'Beépített torx T50', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 30, '8888888830', NULL, 13),
-(31, 'Beépített torx T55', '', 1700, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 31, '8888888831', NULL, 13),
-(32, 'Beépített torx T60', '', 1700, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 32, '8888888832', NULL, 13),
-(33, 'Beépített torx T70', '', 1900, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 33, '8888888833', NULL, 13),
-(34, 'Beépített torx M12', '', 2100, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 34, '8888888834', NULL, 13),
-(35, 'Beépített torx M14', '', 2600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 35, '8888888835', NULL, 13),
-(36, 'Beépített torx M16', '', 2600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 36, '8888888836', NULL, 13),
-(37, 'Beépített torx M17', '', 2800, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 37, '8888888837', NULL, 13),
-(38, 'Imbuszkulcs 4-es mértű', 'Imbuszkulcs 4-es mértű', 300, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 38, '8888888838', NULL, 14),
-(39, 'Imbuszkulcs 5-ös', 'Imbuszkulcs 5-ös', 350, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 39, '8888888839', NULL, 14),
-(40, 'Imbuszkulcs 6-os', 'Imbuszkulcs 6-os', 350, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 40, '8888888840', NULL, 14),
-(41, 'Imbuszkulcs 7-es', 'Imbuszkulcs 7-es', 500, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 41, '8888888841', NULL, 14),
-(42, 'Imbuszkulcs 8-as', 'Imbuskulcs 8-as', 700, 100, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 42, '8888888842', NULL, 14),
-(43, 'Imbuszkulcs 10-es', 'Imbuszkulcs 10-es', 800, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 43, '8888888843', NULL, 14),
-(44, 'Imbuszkulcs 12-es', 'Imbuszkulcs 12-es', 1200, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 44, '8888888844', NULL, 14),
-(45, 'Imbuszkulcs 13', 'Imbuszkulcs 13', 1400, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 45, '8888888845', NULL, 14),
-(46, 'Imbuszkulcs 14-es', 'Imbuszkulcs 14-es', 1700, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 46, '8888888846', NULL, 14),
-(47, 'Imbuszkulcs 17-es', 'Imbuszkulcs 17-es', 3200, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 47, '8888888847', NULL, 14),
-(48, 'Imbuszkulcs 19-es', 'Imbuszkulcs 19-es', 3500, 0, '2026-01-29 09:02:24', NULL, NULL, 0, 100, 48, '8888888848', NULL, 14),
-(49, '7-es Csillagvillás kulcs', '7-es Csillagvillás kulcs', 500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 49, '8888888849', NULL, 16),
-(50, '8-as Csillagvillás kulcs', '8-as Csillagvillás kulcs', 500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 50, '8888888850', NULL, 16),
-(51, '9-es Csillagvillás kulcs', '9-es Csillagvillás kulcs', 500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 51, '8888888851', NULL, 16),
-(52, '10-es Csillagvillás kulcs', '10-es Csillagvillás kulcs', 600, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 52, '8888888852', NULL, 16),
-(53, '11-es Csillagvillás kulcs', '11-es Csillagvillás kulcs', 600, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 53, '8888888853', NULL, 16),
-(54, '12-es Csillagvillás kulcs', '12-es Csillagvillás kulcs', 700, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 54, '8888888854', NULL, 16),
-(55, '13-as Csillagvillás kulcs', '13-as Csillagvillás kulcs', 800, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 55, '8888888855', NULL, 16),
-(56, '14-es Csillagvillás kulcs', '14-es Csillagvillás kulcs', 800, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 56, '8888888856', NULL, 16),
-(57, '15-ös Csillagvillás kulcs', '15-ös Csillagvillás kulcs', 1100, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 57, '8888888857', NULL, 16),
-(58, '16-os Csillagvillás kulcs', '16-os Csillagvillás kulcs', 1100, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 58, '8888888858', NULL, 16),
-(59, '17-es Csillagvillás kulcs', '17-es Csillagvillás kulcs', 1200, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 59, '8888888859', NULL, 16),
-(60, '18-as Csillagvillás kulcs', '18-as Csillagvillás kulcs', 1200, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 60, '8888888860', NULL, 16),
-(61, '19-es Csillagvillás kulcs', '19-es Csillagvillás kulcs', 1500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 61, '8888888861', NULL, 16),
-(62, '21-es Csillagvillás kulcs', '21-es Csillagvillás kulcs', 1600, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 62, '8888888862', NULL, 16),
-(63, '22-es Csillagvillás kulcs', '22-es Csillagvillás kulcs', 1800, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 63, '8888888863', NULL, 16),
-(64, '24-es csillagvillás kulcs', '24-es Csillagvillás kulcs', 2800, 0, '2026-01-29 10:29:59', NULL, NULL, 0, 100, 64, '8888888864\r\n', NULL, 16),
-(65, '27-es Csillagvillás kulcs', '27-es Csillagvillás kulcs', 3800, 0, '2026-01-29 10:29:59', NULL, NULL, 0, 100, 65, '8888888865', NULL, 16),
-(66, '30-as Csillagvillás kulcs', '30-as Csillagvillás kulcs', 4800, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 66, '8888888866', NULL, 16),
-(67, '32-es Csillagvillás kulcs', '32-es Csillagvillás kulcs', 5300, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 67, '8888888867', NULL, 16),
-(68, '36-os Csillagvillás kulcs', '36-os Csillagvillás kulcs', 7500, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 68, '8888888868', NULL, 16),
-(69, '41-es Csillagvillás kulcs', '41-es Csillagvillás kulcs', 9400, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 69, '8888888869', NULL, 16),
-(70, '46-os Csillagvillás kulcs', '46-os Csillagvillás kulcs', 10400, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 70, '8888888870', NULL, 16),
-(71, '55-ös Csillagvillás kulcs', '55-ös Csillagvillás kulcs', 10800, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 71, '8888888871', NULL, 16),
-(72, '60-as Csillagvillás kulcs', '60-as Csillagvillás kulcs', 12900, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 72, '8888888872', NULL, 16),
-(73, 'Olcsó csillagvillás kulcs 11-es', '', 300, 0, '2026-02-02 09:49:53', NULL, NULL, 0, 100, 73, '8888888873', NULL, 16),
-(74, 'Olcsó csillagvillás kulcs 14-es', 'Olcsó csillagvillás kulcs 14-es', 400, 0, '2026-02-02 09:49:53', NULL, NULL, 0, 100, 74, '8888888874', NULL, 16),
-(75, 'Olcsó csillagvillás kulcs 32-es', 'Olcsó csillagvillás kulcs 32-es', 1800, 0, '2026-02-02 09:49:53', NULL, NULL, 0, 100, 75, '8888888875', NULL, 16),
-(76, 'Olcsó csillagvillás kulcs 30-as', 'Olcsó csillagvillás kulcs 30-as', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 76, '8888888876', NULL, 16),
-(77, 'Olcsó csillagvillás kulcs 31-es', 'Olcsó csillagvillás kulcs 31-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 77, '8888888877', NULL, 16),
-(78, 'Olcsó csillagvillás kulcs 33-as', 'Olcsó csillagvillás kulcs 33-as', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 78, '8888888878', NULL, 16),
-(79, 'Olcsó csillagvillás kulcs 34-es', 'Olcsó csillagvillás kulcs 34-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 79, '8888888879', NULL, 16),
-(80, 'Olcsó csillagvillás kulcs 35-ös', 'Olcsó csillagvillás kulcs 35-ös', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 80, '8888888880', NULL, 16),
-(81, 'Olcsó csillagvillás kulcs 36-os', 'Olcsó csillagvillás kulcs 36-os', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 81, '8888888881', NULL, 16),
-(82, 'Olcsó csillagvillás kulcs 37-es', 'Olcsó csillagvillás kulcs 37-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 82, '8888888882', NULL, 16),
-(83, 'Olcsó csillagvillás kulcs 38-as', 'Olcsó csillagvillás kulcs 38-as', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 83, '8888888883', NULL, 16),
-(84, 'Olcsó csillagvillás kulcs 39-es', 'Olcsó csillagvillás kulcs 39-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 84, '8888888884', NULL, 16),
-(85, 'Olcsó csillagvillás kulcs 40-as', 'Olcsó csillagvillás kulcs 40-as', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 85, '8888888885', NULL, 16),
-(86, 'Olcsó csillagvillás kulcs 41-es', 'Olcsó csillagvillás kulcs 41-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 86, '8888888886', NULL, 16),
-(87, 'Olcsó csillagvillás kulcs 42-es', 'Olcsó csillagvillás kulcs 42-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 87, '8888888887', NULL, 16),
-(88, 'Olcsó csillagvillás kulcs 43-as', 'Olcsó csillagvillás kulcs 43-as', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 88, '8888888888', NULL, 16),
-(89, 'Olcsó csillagvillás kulcs 44-es', 'Olcsó csillagvillás kulcs 44-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 89, '8888888889', NULL, 16),
-(90, 'Olcsó csillagvillás kulcs 45-ös', 'Olcsó csillagvillás kulcs 45-ös', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 90, '8888888890', NULL, 16),
-(91, 'Olcsó Csillagvillás kulcs 46-os', 'Olcsó Csillagvillás kulcs 46-os', 2500, 0, '2026-02-02 10:04:49', NULL, NULL, 0, 100, 91, '8888888891', NULL, 16),
-(92, 'Fékcsőkulcs 11-es', 'Fékcsőkulcs 11-es', 2200, 0, '2026-02-02 11:41:33', NULL, NULL, 0, 100, 92, '8888888892', NULL, 17),
-(93, 'Fékcsőkulcs 12-es', 'Fékcsőkulcs 12-es', 2200, 0, '2026-02-02 11:41:33', NULL, NULL, 0, 100, 93, '8888888893', NULL, 17),
-(94, 'Fékcsőkulcs 13-as', 'Fékcsőkulcs 13-as', 2200, 0, '2026-02-02 11:41:33', NULL, NULL, 0, 100, 94, '8888888894', NULL, 17),
-(95, '\"T\" kulcs', '\"T\" kulcs', 800, 0, '2026-02-02 11:44:02', NULL, NULL, 0, 100, 95, '8888888895', NULL, 18),
-(96, 'Fűnyíró damil 15 méteres műanyag 1.3mm-es  ', 'Fűnyíró damil 15 méteres műanyag 1.3mm-es  ', 400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 96, '8888888896', NULL, 7),
-(97, 'Fűnyíró damil 15 méteres műanyag 1.6mm-es  ', 'Fűnyíró damil 15 méteres műanyag 1.6mm-es  ', 500, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 97, '8888888897', NULL, 7),
-(98, 'Fűnyíró damil 15 méteres műanyag 2mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2mm-es  ', 700, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 98, '8888888898', NULL, 7),
-(99, 'Fűnyíró damil 15 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2.4mm-es  ', 900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 99, '8888888899', NULL, 7),
-(100, 'Fűnyíró damil 15 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2.7mm-es  ', 1100, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 100, '88888888100', NULL, 7),
-(101, 'Fűnyíró damil 15 méteres műanyag 3mm-es  ', 'Fűnyíró damil 15 méteres műanyag 3mm-es  ', 1300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 101, '88888888101', NULL, 7),
-(102, 'Fűnyíró damil 50 méteres műanyag 2mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2mm-es  ', 1700, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 102, '88888888102', NULL, 7),
-(103, 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 2300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 103, '88888888103', NULL, 7),
-(104, 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 2900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 104, '88888888104', NULL, 7),
-(105, 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 3400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 105, '88888888104', NULL, 7),
-(106, 'Fűnyíró damil alumíniumos 15 méteres műanyag 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 106, '88888888106', NULL, 7),
-(107, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2mm-es ', 900, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 107, '88888888107', NULL, 7),
-(108, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.4mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.4mm-es ', 1200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 108, '88888888108', NULL, 7),
-(109, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.7mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.7mm-es ', 1500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 109, '88888888109', NULL, 7),
-(110, 'Fűnyíró damil alumíniumos 15 méteres műanyag 3mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 3mm-es ', 1700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 110, '88888888110', NULL, 7),
-(111, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2mm-es ', 2200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 111, '88888888111', NULL, 7),
-(112, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.4mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.4mm-es ', 3000, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 112, '88888888112', NULL, 7),
-(113, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.7mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.7mm-es ', 3700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 113, '88888888113', NULL, 7),
-(114, 'Fűnyíró damil alumíniumos 50 méteres műanyag 3mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 3mm-es ', 4500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 114, '88888888114', NULL, 7);
+INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `created_at`, `updated_at`, `deleted_at`, `is_deleted`, `amount`, `detail_id`, `stock_keeping_unit`, `brand_id`, `category_id`, `view_count`) VALUES
+(1, '1/4\" Racsni Króm', 'Pontos leírás a tárgyról amiről semmi információm nincs, ezért csak gépelek, és majd másolok :)', 3000, 0, '2025-10-22 07:44:26', '2025-12-04 09:12:09', NULL, 0, 500, 1, '888888881', NULL, 1, 0),
+(2, '3/8\" Racsni Króm', '3/8\" Racsni Króm', 3200, 0, '2025-10-22 11:28:15', '2025-12-04 09:13:09', NULL, 0, 200000, 2, '888888882', NULL, 1, 0),
+(3, '1/2\" Racsni Króm', '1/2\" Racsni Króm', 3600, 0, '2025-10-22 11:58:03', '2025-12-04 09:15:33', NULL, 0, 10, 3, '888888883', NULL, 1, 0),
+(4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 100, 4, '888888884', NULL, 1, 0),
+(5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 2, 5, '888888885', NULL, 1, 0),
+(6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 09:09:07', '2025-12-04 09:34:05', NULL, 0, 300, 6, '888888886', NULL, 1, 0),
+(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', NULL, 2, 0),
+(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', NULL, 2, 0),
+(9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 09:10:55', '2025-12-22 20:07:32', NULL, 0, 10, 9, '888888889', NULL, 2, 0),
+(10, '1/4\" 15 cm-es racsnitoldó', '1/4\" 15 cm-es racsnitoldó', 2100, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 10, '8888888810', NULL, 2, 0),
+(11, '1/4\" 23 cm-es racsnitoldó', '1/4\" 23 cm-es racsnitoldó', 2300, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 11, '8888888811', NULL, 2, 0),
+(12, '3/8\" 7.5 cm-es racsnitoldó', '3/8\" 7.5 cm-es racsnitoldó', 2100, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 12, '8888888812', NULL, 2, 0),
+(13, '3/8\" 12.5 cm-es racsnitoldó', '3/8\" 12.5 cm-es racsnitoldó', 2200, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 13, '8888888813', NULL, 2, 0),
+(14, '3/8\" 15 cm-es racsnitoldó', '3/8\" 15 cm-es racsnitoldó', 2400, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 14, '8888888814', NULL, 2, 0),
+(15, '3/8\" 20 cm-es racsnitoldó', '3/8\" 20 cm-es racsnitoldó', 2500, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 15, '8888888815', NULL, 2, 0),
+(16, '1/2\" 10 cm-es racsnitoldó', '1/2\" 10 cm-es racsnitoldó', 1800, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 16, '8888888816', NULL, 2, 0),
+(17, '1/2\" 12.5 cm-es racsnitoldó', '1/2\" 12.5 cm-es racsnitoldó', 2100, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 17, '8888888817', NULL, 2, 0),
+(18, '1/2\" 20 cm-es racsnitoldó', '1/2\" 20 cm-es racsnitoldó', 2800, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 18, '8888888818', NULL, 2, 0),
+(19, '3/4\" 10 cm-es racsnitoldó', '3/4\" 10 cm-es racsnitoldó', 5600, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 19, '8888888819', NULL, 2, 0),
+(20, '3/4\" 20 cm-es racsnitoldó', '3/4\" 20 cm-es racsnitoldó', 7500, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 20, '8888888820', NULL, 2, 0),
+(21, '3/4\" 40 cm-es racsnitoldó', '3/4\" 40 cm-es racsnitoldó', 9900, 0, '2025-12-23 19:03:35', '2025-12-23 18:51:18', NULL, 0, 100, 21, '8888888821', NULL, 2, 0),
+(22, '1/4\"  fixhajtószár', '1/4\"  fixhajtószár', 1000, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 22, '8888888822', NULL, 5, 0),
+(23, '3/8\"  fixhajtószár', '3/8\"  fixhajtószár', 2000, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 23, '8888888823', NULL, 5, 0),
+(24, '1/2\"  fixhajtószár rövid', '1/2\"  fixhajtószár rövid', 3200, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 24, '8888888824', NULL, 5, 0),
+(25, '1/2\"  fixhajtószár hosszú', '1/2\"  fixhajtószár hosszú', 3800, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 25, '8888888825', NULL, 5, 0),
+(26, '3/4\"  fixhajtószár', '3/4\"  fixhajtószár', 11500, 0, '2025-12-23 19:27:19', '2025-12-23 19:22:33', NULL, 0, 100, 26, '8888888826', NULL, 5, 0),
+(27, 'Beépített torx T30', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 27, '8888888827', NULL, 13, 0),
+(28, 'Beépített torx T40', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 28, '8888888828', NULL, 13, 0),
+(29, 'Beépített torx T45', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 29, '8888888829', NULL, 13, 0),
+(30, 'Beépített torx T50', '', 1600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 30, '8888888830', NULL, 13, 0),
+(31, 'Beépített torx T55', '', 1700, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 31, '8888888831', NULL, 13, 0),
+(32, 'Beépített torx T60', '', 1700, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 32, '8888888832', NULL, 13, 0),
+(33, 'Beépített torx T70', '', 1900, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 33, '8888888833', NULL, 13, 0),
+(34, 'Beépített torx M12', '', 2100, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 34, '8888888834', NULL, 13, 0),
+(35, 'Beépített torx M14', '', 2600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 35, '8888888835', NULL, 13, 0),
+(36, 'Beépített torx M16', '', 2600, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 36, '8888888836', NULL, 13, 0),
+(37, 'Beépített torx M17', '', 2800, 0, '2026-01-26 12:28:16', NULL, NULL, 0, 100, 37, '8888888837', NULL, 13, 0),
+(38, 'Imbuszkulcs 4-es mértű', 'Imbuszkulcs 4-es mértű', 300, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 38, '8888888838', NULL, 14, 0),
+(39, 'Imbuszkulcs 5-ös', 'Imbuszkulcs 5-ös', 350, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 39, '8888888839', NULL, 14, 0),
+(40, 'Imbuszkulcs 6-os', 'Imbuszkulcs 6-os', 350, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 40, '8888888840', NULL, 14, 0),
+(41, 'Imbuszkulcs 7-es', 'Imbuszkulcs 7-es', 500, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 41, '8888888841', NULL, 14, 0),
+(42, 'Imbuszkulcs 8-as', 'Imbuskulcs 8-as', 700, 100, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 42, '8888888842', NULL, 14, 0),
+(43, 'Imbuszkulcs 10-es', 'Imbuszkulcs 10-es', 800, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 43, '8888888843', NULL, 14, 0),
+(44, 'Imbuszkulcs 12-es', 'Imbuszkulcs 12-es', 1200, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 44, '8888888844', NULL, 14, 0),
+(45, 'Imbuszkulcs 13', 'Imbuszkulcs 13', 1400, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 45, '8888888845', NULL, 14, 0),
+(46, 'Imbuszkulcs 14-es', 'Imbuszkulcs 14-es', 1700, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 46, '8888888846', NULL, 14, 0),
+(47, 'Imbuszkulcs 17-es', 'Imbuszkulcs 17-es', 3200, 0, '2026-01-29 09:00:12', NULL, NULL, 0, 100, 47, '8888888847', NULL, 14, 0),
+(48, 'Imbuszkulcs 19-es', 'Imbuszkulcs 19-es', 3500, 0, '2026-01-29 09:02:24', NULL, NULL, 0, 100, 48, '8888888848', NULL, 14, 0),
+(49, '7-es Csillagvillás kulcs', '7-es Csillagvillás kulcs', 500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 49, '8888888849', NULL, 16, 0),
+(50, '8-as Csillagvillás kulcs', '8-as Csillagvillás kulcs', 500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 50, '8888888850', NULL, 16, 0),
+(51, '9-es Csillagvillás kulcs', '9-es Csillagvillás kulcs', 500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 51, '8888888851', NULL, 16, 0),
+(52, '10-es Csillagvillás kulcs', '10-es Csillagvillás kulcs', 600, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 52, '8888888852', NULL, 16, 0),
+(53, '11-es Csillagvillás kulcs', '11-es Csillagvillás kulcs', 600, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 53, '8888888853', NULL, 16, 0),
+(54, '12-es Csillagvillás kulcs', '12-es Csillagvillás kulcs', 700, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 54, '8888888854', NULL, 16, 0),
+(55, '13-as Csillagvillás kulcs', '13-as Csillagvillás kulcs', 800, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 55, '8888888855', NULL, 16, 0),
+(56, '14-es Csillagvillás kulcs', '14-es Csillagvillás kulcs', 800, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 56, '8888888856', NULL, 16, 0),
+(57, '15-ös Csillagvillás kulcs', '15-ös Csillagvillás kulcs', 1100, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 57, '8888888857', NULL, 16, 0),
+(58, '16-os Csillagvillás kulcs', '16-os Csillagvillás kulcs', 1100, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 58, '8888888858', NULL, 16, 0),
+(59, '17-es Csillagvillás kulcs', '17-es Csillagvillás kulcs', 1200, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 59, '8888888859', NULL, 16, 0),
+(60, '18-as Csillagvillás kulcs', '18-as Csillagvillás kulcs', 1200, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 60, '8888888860', NULL, 16, 0),
+(61, '19-es Csillagvillás kulcs', '19-es Csillagvillás kulcs', 1500, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 61, '8888888861', NULL, 16, 0),
+(62, '21-es Csillagvillás kulcs', '21-es Csillagvillás kulcs', 1600, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 62, '8888888862', NULL, 16, 0),
+(63, '22-es Csillagvillás kulcs', '22-es Csillagvillás kulcs', 1800, 0, '2026-01-29 10:16:39', NULL, NULL, 0, 100, 63, '8888888863', NULL, 16, 0),
+(64, '24-es csillagvillás kulcs', '24-es Csillagvillás kulcs', 2800, 0, '2026-01-29 10:29:59', NULL, NULL, 0, 100, 64, '8888888864\r\n', NULL, 16, 0),
+(65, '27-es Csillagvillás kulcs', '27-es Csillagvillás kulcs', 3800, 0, '2026-01-29 10:29:59', NULL, NULL, 0, 100, 65, '8888888865', NULL, 16, 0),
+(66, '30-as Csillagvillás kulcs', '30-as Csillagvillás kulcs', 4800, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 66, '8888888866', NULL, 16, 0),
+(67, '32-es Csillagvillás kulcs', '32-es Csillagvillás kulcs', 5300, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 67, '8888888867', NULL, 16, 0),
+(68, '36-os Csillagvillás kulcs', '36-os Csillagvillás kulcs', 7500, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 68, '8888888868', NULL, 16, 0),
+(69, '41-es Csillagvillás kulcs', '41-es Csillagvillás kulcs', 9400, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 69, '8888888869', NULL, 16, 0),
+(70, '46-os Csillagvillás kulcs', '46-os Csillagvillás kulcs', 10400, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 70, '8888888870', NULL, 16, 0),
+(71, '55-ös Csillagvillás kulcs', '55-ös Csillagvillás kulcs', 10800, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 71, '8888888871', NULL, 16, 0),
+(72, '60-as Csillagvillás kulcs', '60-as Csillagvillás kulcs', 12900, 0, '2026-01-29 10:47:42', NULL, NULL, 0, 100, 72, '8888888872', NULL, 16, 0),
+(73, 'Olcsó csillagvillás kulcs 11-es', '', 300, 0, '2026-02-02 09:49:53', NULL, NULL, 0, 100, 73, '8888888873', NULL, 16, 0),
+(74, 'Olcsó csillagvillás kulcs 14-es', 'Olcsó csillagvillás kulcs 14-es', 400, 0, '2026-02-02 09:49:53', NULL, NULL, 0, 100, 74, '8888888874', NULL, 16, 0),
+(75, 'Olcsó csillagvillás kulcs 32-es', 'Olcsó csillagvillás kulcs 32-es', 1800, 0, '2026-02-02 09:49:53', NULL, NULL, 0, 100, 75, '8888888875', NULL, 16, 0),
+(76, 'Olcsó csillagvillás kulcs 30-as', 'Olcsó csillagvillás kulcs 30-as', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 76, '8888888876', NULL, 16, 0),
+(77, 'Olcsó csillagvillás kulcs 31-es', 'Olcsó csillagvillás kulcs 31-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 77, '8888888877', NULL, 16, 0),
+(78, 'Olcsó csillagvillás kulcs 33-as', 'Olcsó csillagvillás kulcs 33-as', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 78, '8888888878', NULL, 16, 0),
+(79, 'Olcsó csillagvillás kulcs 34-es', 'Olcsó csillagvillás kulcs 34-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 79, '8888888879', NULL, 16, 0),
+(80, 'Olcsó csillagvillás kulcs 35-ös', 'Olcsó csillagvillás kulcs 35-ös', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 80, '8888888880', NULL, 16, 0),
+(81, 'Olcsó csillagvillás kulcs 36-os', 'Olcsó csillagvillás kulcs 36-os', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 81, '8888888881', NULL, 16, 0),
+(82, 'Olcsó csillagvillás kulcs 37-es', 'Olcsó csillagvillás kulcs 37-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 82, '8888888882', NULL, 16, 0),
+(83, 'Olcsó csillagvillás kulcs 38-as', 'Olcsó csillagvillás kulcs 38-as', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 83, '8888888883', NULL, 16, 0),
+(84, 'Olcsó csillagvillás kulcs 39-es', 'Olcsó csillagvillás kulcs 39-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 84, '8888888884', NULL, 16, 0),
+(85, 'Olcsó csillagvillás kulcs 40-as', 'Olcsó csillagvillás kulcs 40-as', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 85, '8888888885', NULL, 16, 0),
+(86, 'Olcsó csillagvillás kulcs 41-es', 'Olcsó csillagvillás kulcs 41-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 86, '8888888886', NULL, 16, 0),
+(87, 'Olcsó csillagvillás kulcs 42-es', 'Olcsó csillagvillás kulcs 42-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 87, '8888888887', NULL, 16, 0),
+(88, 'Olcsó csillagvillás kulcs 43-as', 'Olcsó csillagvillás kulcs 43-as', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 88, '8888888888', NULL, 16, 0),
+(89, 'Olcsó csillagvillás kulcs 44-es', 'Olcsó csillagvillás kulcs 44-es', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 89, '8888888889', NULL, 16, 0),
+(90, 'Olcsó csillagvillás kulcs 45-ös', 'Olcsó csillagvillás kulcs 45-ös', 2500, 0, '2026-02-02 09:58:23', NULL, NULL, 0, 100, 90, '8888888890', NULL, 16, 0),
+(91, 'Olcsó Csillagvillás kulcs 46-os', 'Olcsó Csillagvillás kulcs 46-os', 2500, 0, '2026-02-02 10:04:49', NULL, NULL, 0, 100, 91, '8888888891', NULL, 16, 0),
+(92, 'Fékcsőkulcs 11-es', 'Fékcsőkulcs 11-es', 2200, 0, '2026-02-02 11:41:33', NULL, NULL, 0, 100, 92, '8888888892', NULL, 17, 0),
+(93, 'Fékcsőkulcs 12-es', 'Fékcsőkulcs 12-es', 2200, 0, '2026-02-02 11:41:33', NULL, NULL, 0, 100, 93, '8888888893', NULL, 17, 0),
+(94, 'Fékcsőkulcs 13-as', 'Fékcsőkulcs 13-as', 2200, 0, '2026-02-02 11:41:33', NULL, NULL, 0, 100, 94, '8888888894', NULL, 17, 0),
+(95, '\"T\" kulcs', '\"T\" kulcs', 800, 0, '2026-02-02 11:44:02', NULL, NULL, 0, 100, 95, '8888888895', NULL, 18, 0),
+(96, 'Fűnyíró damil 15 méteres műanyag 1.3mm-es  ', 'Fűnyíró damil 15 méteres műanyag 1.3mm-es  ', 400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 96, '8888888896', NULL, 7, 0),
+(97, 'Fűnyíró damil 15 méteres műanyag 1.6mm-es  ', 'Fűnyíró damil 15 méteres műanyag 1.6mm-es  ', 500, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 97, '8888888897', NULL, 7, 0),
+(98, 'Fűnyíró damil 15 méteres műanyag 2mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2mm-es  ', 700, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 98, '8888888898', NULL, 7, 0),
+(99, 'Fűnyíró damil 15 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2.4mm-es  ', 900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 99, '8888888899', NULL, 7, 0),
+(100, 'Fűnyíró damil 15 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2.7mm-es  ', 1100, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 100, '88888888100', NULL, 7, 0),
+(101, 'Fűnyíró damil 15 méteres műanyag 3mm-es  ', 'Fűnyíró damil 15 méteres műanyag 3mm-es  ', 1300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 101, '88888888101', NULL, 7, 0),
+(102, 'Fűnyíró damil 50 méteres műanyag 2mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2mm-es  ', 1700, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 102, '88888888102', NULL, 7, 0),
+(103, 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 2300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 103, '88888888103', NULL, 7, 0),
+(104, 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 2900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 104, '88888888104', NULL, 7, 0),
+(105, 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 3400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 105, '88888888104', NULL, 7, 0),
+(106, 'Fűnyíró damil alumíniumos 15 méteres műanyag 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 106, '88888888106', NULL, 7, 0),
+(107, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2mm-es ', 900, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 107, '88888888107', NULL, 7, 0),
+(108, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.4mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.4mm-es ', 1200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 108, '88888888108', NULL, 7, 0),
+(109, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.7mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.7mm-es ', 1500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 109, '88888888109', NULL, 7, 0),
+(110, 'Fűnyíró damil alumíniumos 15 méteres műanyag 3mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 3mm-es ', 1700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 110, '88888888110', NULL, 7, 0),
+(111, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2mm-es ', 2200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 111, '88888888111', NULL, 7, 0),
+(112, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.4mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.4mm-es ', 3000, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 112, '88888888112', NULL, 7, 0),
+(113, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.7mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.7mm-es ', 3700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 113, '88888888113', NULL, 7, 0),
+(114, 'Fűnyíró damil alumíniumos 50 méteres műanyag 3mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 3mm-es ', 4500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 114, '88888888114', NULL, 7, 0);
 
 -- --------------------------------------------------------
 
@@ -1665,18 +1673,18 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`) VALUES
-(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
-(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
-(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, '2025-11-23 18:50:57', NULL),
-(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
-(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
-(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
-(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
-(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
-(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
-(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
-(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL),
-(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', 'http://localhost:8080/pfp/defaultPfp.png', 1, 0, NULL, NULL, NULL);
+(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
+(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
+(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, '2025-11-23 18:50:57', NULL),
+(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
+(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
+(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
+(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
+(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
+(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
+(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
+(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
+(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
