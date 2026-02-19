@@ -8,10 +8,11 @@ import { Product } from '../../models/product.model';
 import { ProductCard } from '../product-card/product-card';
 import { UserService } from '../../services/user-service';
 import { CartService } from '../../services/cart-service';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-product-details',
-  imports: [ReviewCard, ProductCard],
+  imports: [ReviewCard, ProductCard, ReactiveFormsModule],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })
@@ -25,6 +26,8 @@ export class ProductDetails implements OnInit {
   selectedProduct!: Product
   reviews: Review[] = []
   similarProducts: Product[] = []
+  reviewForm!: FormGroup
+  isShowReviewForm: boolean = false
 
   ngOnInit(): void {
     this.route.params.subscribe({
@@ -41,6 +44,11 @@ export class ProductDetails implements OnInit {
         })
       }
     })
+
+    this.reviewForm = new FormGroup({
+      reviewText: new FormControl("", new FormControl([Validators.required])),
+      rating: new FormControl("", new FormControl([Validators.required, Validators.min(0), Validators.max(5)])),
+    })
   }
 
   handleReview(isShowReview: boolean) {
@@ -56,6 +64,7 @@ export class ProductDetails implements OnInit {
     this.reviewService.getReviewsAboutProduct(this.selectedProduct.id!).subscribe({
       next: response => {
         this.reviews = response
+        console.log(this.reviews)
       }
     })
   }
@@ -70,5 +79,33 @@ export class ProductDetails implements OnInit {
         console.log(response)
       }
     })
+  }
+
+  handleReviewCreat() {
+    if (this.userService.user == null) {
+      alert("Előbb jelentkezzél be")
+      return
+    }
+
+    if(this.isShowReviewForm) {
+
+      const review = new Review(
+        null,
+        this.reviewForm.controls["reviewText"].value,
+        this.reviewForm.controls["rating"].value,
+        new Date(),
+        this.selectedProduct,
+        this.userService.user!
+      )
+
+      this.reviewService.addReview(review).subscribe({
+        next: response => {
+          console.log(response)
+          this.reviews.push(response)
+        }
+      })
+    }
+
+    this.isShowReviewForm = !this.isShowReviewForm
   }
 }

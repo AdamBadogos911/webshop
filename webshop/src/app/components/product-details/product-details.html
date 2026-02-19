@@ -58,7 +58,7 @@
 
     <div class="col-lg-6">
       <h1 class="text-lg-start text-center">{{ selectedProduct.name }}</h1>
-      <h3 class="text-lg-start text-center">{{ selectedProduct.brand }}</h3>
+      <h3 class="text-lg-start text-center">{{ selectedProduct.brand.name }}</h3>
 
       <div class="w-100 d-flex justify-content-between align-items-center">
         <h4>{{ selectedProduct.price }} FT</h4>
@@ -83,8 +83,24 @@
 
       @if (showReviews) {
         @for (review of reviews; track $index) {
-          <app-review-card [review]="review" />
+          <app-review-card [review]="review" [parentComponent]="'productDetails'"/>
         }
+        <div>
+          @if (isShowReviewForm) {
+            <form [formGroup]="reviewForm">
+              <textarea type="text" class="form-control" formControlName="reviewText"> </textarea>
+              <select formControlName="rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </form>
+          }
+
+          <button [disabled]="reviewForm.invalid && isShowReviewForm" (click)="handleReviewCreat()">Review irás</button>
+        </div>
       } @else {
         <p>{{selectedProduct.description}}</p>
       }
