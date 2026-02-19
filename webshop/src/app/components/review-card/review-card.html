@@ -1,13 +1,25 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1>Termék neve</h1>
+  @if (parentComponent() == "profilPage") {
+    <div class="row">
+      <!-- <img [src]="review().product.images[0].imagePath" alt=""> -->
+       <img src="" alt="">
+      <div>
+        <h4>{{review().product.name}}</h4>
+        <p>{{review().reviewText}}</p>
+      </div>
     </div>
-  </div>
+  } @else {
+    <div class="row">
+      <div class="col-lg-12 d-flex justify-content-lg-start justify-content-center align-items-center">
+        <img [src]="review().author.pfpPath" alt="" style="height: 50px; width: 50px;">
+        <p>{{review().author.firstName}} {{review().author.lastName}}</p>
+      </div>
+    </div>
 
-  <div class="row">
-    <div class="col-lg-12">
-      <p>{{review().reviewText}}</p>
+    <div class="row">
+      <div class="col-lg-12">
+        <p class="m-0">{{review().reviewText}}</p>
+      </div>
     </div>
-  </div>
+  }
 </div>

@@ -9,6 +9,7 @@ import { Review } from '../../models/review.model';
 })
 export class ReviewCard implements OnInit{
   review = input.required<Review>()
+  parentComponent = input.required<"profilPage" | "productDetails">()
 
   ngOnInit(): void {
 
