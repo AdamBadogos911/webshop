@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { ProductCard } from '../product-card/product-card';
 import { Product } from '../../models/product.model';
@@ -21,7 +21,10 @@ export class ProductList implements OnInit {
       next: param => {
         const categoryId: number = param["categoryId"]
         this.productService.getProductByCategory(categoryId).subscribe({
-          next: response => this.productList = response,
+          next: response => {
+            this.productList = response
+            console.log(response)
+          },
           error: error => this.isError = true
         })
       }
