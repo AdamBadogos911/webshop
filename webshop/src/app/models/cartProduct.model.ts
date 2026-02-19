@@ -1,5 +1,5 @@
 import { Cart } from "./cart.model";
-import { Product } from "./product.mode";
+import { Product } from "./product.model";
 
 export class CartProduct {
   constructor(

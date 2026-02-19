@@ -1,5 +1,5 @@
 import { OrderHistory } from './orderHistory.model';
-import { Product } from './product.mode';
+import { Product } from './product.model';
 
 export class OrderProduct {
   constructor(
