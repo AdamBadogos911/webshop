@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 18, 2026 at 08:38 AM
+-- Generation Time: Feb 19, 2026 at 12:31 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1120,7 +1120,7 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 (6, 'Dugófejek', NULL, 0, NULL),
 (7, 'Damilok', NULL, 0, NULL),
 (8, 'Locsoló technika', NULL, 0, NULL),
-(9, 'Keztyűk', NULL, 0, NULL),
+(9, 'Kesztyűk', NULL, 0, NULL),
 (10, 'Nyelek', NULL, 0, NULL),
 (11, 'Korongok', NULL, 0, NULL),
 (12, 'Kerti eszközök', NULL, 0, NULL),
@@ -1129,7 +1129,10 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 (15, 'Kulcsok', NULL, 0, NULL),
 (16, 'Csillagvillás kulcs', 15, 0, NULL),
 (17, 'Fékcsőkulcs', 15, 0, NULL),
-(18, '\"T\" kulcs', 15, 0, NULL);
+(18, '\"T\" kulcs', 15, 0, NULL),
+(19, 'műanyagos damil', 7, 0, NULL),
+(20, 'alumíniumos damil', 7, 0, NULL),
+(21, 'Racsnik', 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1390,12 +1393,12 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `created_at`, `updated_at`, `deleted_at`, `is_deleted`, `amount`, `detail_id`, `stock_keeping_unit`, `brand_id`, `category_id`, `view_count`) VALUES
-(1, '1/4\" Racsni Króm', 'Pontos leírás a tárgyról amiről semmi információm nincs, ezért csak gépelek, és majd másolok :)', 3000, 0, '2025-10-22 07:44:26', '2025-12-04 09:12:09', NULL, 0, 500, 1, '888888881', NULL, 1, 0),
-(2, '3/8\" Racsni Króm', '3/8\" Racsni Króm', 3200, 0, '2025-10-22 11:28:15', '2025-12-04 09:13:09', NULL, 0, 200000, 2, '888888882', NULL, 1, 0),
-(3, '1/2\" Racsni Króm', '1/2\" Racsni Króm', 3600, 0, '2025-10-22 11:58:03', '2025-12-04 09:15:33', NULL, 0, 10, 3, '888888883', NULL, 1, 0),
-(4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 100, 4, '888888884', NULL, 1, 0),
-(5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 2, 5, '888888885', NULL, 1, 0),
-(6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 09:09:07', '2025-12-04 09:34:05', NULL, 0, 300, 6, '888888886', NULL, 1, 0),
+(1, '1/4\" Racsni Króm', 'Pontos leírás a tárgyról amiről semmi információm nincs, ezért csak gépelek, és majd másolok :)', 3000, 0, '2025-10-22 07:44:26', '2025-12-04 09:12:09', NULL, 0, 500, 1, '888888881', NULL, 21, 0),
+(2, '3/8\" Racsni Króm', '3/8\" Racsni Króm', 3200, 0, '2025-10-22 11:28:15', '2025-12-04 09:13:09', NULL, 0, 200000, 2, '888888882', NULL, 21, 0),
+(3, '1/2\" Racsni Króm', '1/2\" Racsni Króm', 3600, 0, '2025-10-22 11:58:03', '2025-12-04 09:15:33', NULL, 0, 10, 3, '888888883', NULL, 21, 0),
+(4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 100, 4, '888888884', NULL, 21, 0),
+(5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 2, 5, '888888885', NULL, 21, 0),
+(6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 09:09:07', '2025-12-04 09:34:05', NULL, 0, 300, 6, '888888886', NULL, 21, 0),
 (7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', NULL, 2, 0),
 (8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', NULL, 2, 0),
 (9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 09:10:55', '2025-12-22 20:07:32', NULL, 0, 10, 9, '888888889', NULL, 2, 0),
@@ -1485,25 +1488,25 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (93, 'Fékcsőkulcs 12-es', 'Fékcsőkulcs 12-es', 2200, 0, '2026-02-02 11:41:33', NULL, NULL, 0, 100, 93, '8888888893', NULL, 17, 0),
 (94, 'Fékcsőkulcs 13-as', 'Fékcsőkulcs 13-as', 2200, 0, '2026-02-02 11:41:33', NULL, NULL, 0, 100, 94, '8888888894', NULL, 17, 0),
 (95, '\"T\" kulcs', '\"T\" kulcs', 800, 0, '2026-02-02 11:44:02', NULL, NULL, 0, 100, 95, '8888888895', NULL, 18, 0),
-(96, 'Fűnyíró damil 15 méteres műanyag 1.3mm-es  ', 'Fűnyíró damil 15 méteres műanyag 1.3mm-es  ', 400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 96, '8888888896', NULL, 7, 0),
-(97, 'Fűnyíró damil 15 méteres műanyag 1.6mm-es  ', 'Fűnyíró damil 15 méteres műanyag 1.6mm-es  ', 500, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 97, '8888888897', NULL, 7, 0),
-(98, 'Fűnyíró damil 15 méteres műanyag 2mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2mm-es  ', 700, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 98, '8888888898', NULL, 7, 0),
-(99, 'Fűnyíró damil 15 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2.4mm-es  ', 900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 99, '8888888899', NULL, 7, 0),
-(100, 'Fűnyíró damil 15 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2.7mm-es  ', 1100, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 100, '88888888100', NULL, 7, 0),
-(101, 'Fűnyíró damil 15 méteres műanyag 3mm-es  ', 'Fűnyíró damil 15 méteres műanyag 3mm-es  ', 1300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 101, '88888888101', NULL, 7, 0),
-(102, 'Fűnyíró damil 50 méteres műanyag 2mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2mm-es  ', 1700, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 102, '88888888102', NULL, 7, 0),
-(103, 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 2300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 103, '88888888103', NULL, 7, 0),
-(104, 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 2900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 104, '88888888104', NULL, 7, 0),
-(105, 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 3400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 105, '88888888104', NULL, 7, 0),
-(106, 'Fűnyíró damil alumíniumos 15 méteres műanyag 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 106, '88888888106', NULL, 7, 0),
-(107, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2mm-es ', 900, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 107, '88888888107', NULL, 7, 0),
-(108, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.4mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.4mm-es ', 1200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 108, '88888888108', NULL, 7, 0),
-(109, 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.7mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 2.7mm-es ', 1500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 109, '88888888109', NULL, 7, 0),
-(110, 'Fűnyíró damil alumíniumos 15 méteres műanyag 3mm-es ', 'Fűnyíró damil alumíniumos 15 méteres műanyag 3mm-es ', 1700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 110, '88888888110', NULL, 7, 0),
-(111, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2mm-es ', 2200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 111, '88888888111', NULL, 7, 0),
-(112, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.4mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.4mm-es ', 3000, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 112, '88888888112', NULL, 7, 0),
-(113, 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.7mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 2.7mm-es ', 3700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 113, '88888888113', NULL, 7, 0),
-(114, 'Fűnyíró damil alumíniumos 50 méteres műanyag 3mm-es ', 'Fűnyíró damil alumíniumos 50 méteres műanyag 3mm-es ', 4500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 114, '88888888114', NULL, 7, 0);
+(96, 'Fűnyíró damil 15 méteres műanyag 1.3mm-es  ', 'Fűnyíró damil 15 méteres műanyag 1.3mm-es  ', 400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 96, '8888888896', NULL, 19, 0),
+(97, 'Fűnyíró damil 15 méteres műanyag 1.6mm-es  ', 'Fűnyíró damil 15 méteres műanyag 1.6mm-es  ', 500, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 97, '8888888897', NULL, 19, 0),
+(98, 'Fűnyíró damil 15 méteres műanyag 2mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2mm-es  ', 700, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 98, '8888888898', NULL, 19, 0),
+(99, 'Fűnyíró damil 15 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2.4mm-es  ', 900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 99, '8888888899', NULL, 19, 0),
+(100, 'Fűnyíró damil 15 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 15 méteres műanyag 2.7mm-es  ', 1100, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 100, '88888888100', NULL, 19, 0),
+(101, 'Fűnyíró damil 15 méteres műanyag 3mm-es  ', 'Fűnyíró damil 15 méteres műanyag 3mm-es  ', 1300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 101, '88888888101', NULL, 19, 0),
+(102, 'Fűnyíró damil 50 méteres műanyag 2mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2mm-es  ', 1700, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 102, '88888888102', NULL, 19, 0),
+(103, 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 2300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 103, '88888888103', NULL, 19, 0),
+(104, 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 2900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 104, '88888888104', NULL, 19, 0),
+(105, 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 3400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 105, '88888888104', NULL, 19, 0),
+(106, 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 106, '88888888106', NULL, 20, 0),
+(107, 'Fűnyíró damil alumíniumos 15 méteres 2mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2mm-es ', 900, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 107, '88888888107', NULL, 20, 0),
+(108, 'Fűnyíró damil alumíniumos 15 méteres 2.4mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2.4mm-es ', 1200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 108, '88888888108', NULL, 20, 0),
+(109, 'Fűnyíró damil alumíniumos 15 méteres 2.7mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2.7mm-es ', 1500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 109, '88888888109', NULL, 20, 0),
+(110, 'Fűnyíró damil alumíniumos 15 méteres 3mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 3mm-es ', 1700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 110, '88888888110', NULL, 20, 0),
+(111, 'Fűnyíró damil alumíniumos 50 méteres 2mm-es ', 'Fűnyíró damil alumíniumos 50 méteres 2mm-es ', 2200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 111, '88888888111', NULL, 20, 0),
+(112, 'Fűnyíró damil alumíniumos 50 méteres 2.4mm-es ', 'Fűnyíró damil alumíniumos 50 méteres 2.4mm-es ', 3000, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 112, '88888888112', NULL, 20, 0),
+(113, 'Fűnyíró damil alumíniumos 50 méteres 2.7mm-es ', 'Fűnyíró damil alumíniumos 50 méteres 2.7mm-es ', 3700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 113, '88888888113', NULL, 20, 0),
+(114, 'Fűnyíró damil alumíniumos 50 méteres 3mm-es ', 'Fűnyíró damil alumíniumos 50 méteres 3mm-es ', 4500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 114, '88888888114', NULL, 20, 0);
 
 -- --------------------------------------------------------
 
@@ -1585,8 +1588,8 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `name`) VALUES
-(1, 'user'),
-(2, 'admin');
+(1, 'ROLE_user'),
+(2, 'ROLE_admin');
 
 -- --------------------------------------------------------
 
@@ -1665,26 +1668,27 @@ CREATE TABLE `user` (
   `is_deleted` tinyint(1) DEFAULT '0',
   `deleted_at` timestamp NULL DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT NULL,
-  `register_finished_at` timestamp NULL DEFAULT NULL
+  `register_finished_at` timestamp NULL DEFAULT NULL,
+  `v_code` longtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`) VALUES
-(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
-(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
-(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, '2025-11-23 18:50:57', NULL),
-(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
-(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
-(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
-(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
-(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
-(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
-(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
-(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL),
-(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL);
+INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`, `v_code`) VALUES
+(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, '2025-11-23 18:50:57', NULL, NULL),
+(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -1866,7 +1870,7 @@ ALTER TABLE `cart_product`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `details`
