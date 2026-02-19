@@ -17,4 +17,8 @@ export class ReviewService {
   getReviewsAboutProduct(productId: number): Observable<Review[]> {
     return this.http.get<Review[]>(`${this.baseUrl}/product/${productId}`)
   }
+
+  addReview(newReview: Review): Observable<Review> {
+    return this.http.post<Review>(this.baseUrl, newReview)
+  }
 }
