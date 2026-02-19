@@ -1,5 +1,6 @@
 package com.example.badogosShop.service;
 
+import com.example.badogosShop.config.email.EmailSender;
 import com.example.badogosShop.entity.*;
 import com.example.badogosShop.repository.*;
 import jakarta.transaction.Transactional;

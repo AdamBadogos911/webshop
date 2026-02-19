@@ -24,7 +24,7 @@ import java.util.List;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "login", procedureName = "login", parameters = {
                 @StoredProcedureParameter(name = "emailIn", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "passwordIn", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "passwordIN", mode = ParameterMode.IN, type = String.class),
 
         }, resultClasses = User.class)
 })
@@ -82,7 +82,6 @@ public class User {
     @Null
     private String vCode;
 
-    //
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnoreProperties({"author"})
     @Null
@@ -90,7 +89,7 @@ public class User {
 
     @OneToMany(mappedBy = "orderUser", fetch = FetchType.LAZY, cascade = {})
     @Null
-    @JsonIgnoreProperties({"orderUser"})
+    @JsonIgnoreProperties(value = {"orderUser"}, allowSetters = true)
     private List<OrderHistory> orderHistoryList;
 
     @OneToMany(mappedBy = "cancelerUser", fetch = FetchType.LAZY, cascade = {})
@@ -106,7 +105,7 @@ public class User {
     @OneToOne(mappedBy = "cartUser", fetch = FetchType.LAZY, cascade = {})
     private Cart cart;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "role_id")
     @Null
     private Role role = new Role(1, "ROLE_user");

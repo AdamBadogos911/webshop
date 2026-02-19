@@ -51,14 +51,14 @@ public class Review {
     @Null
     private LocalDateTime updatedAt;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "product_id")
-    @JsonIncludeProperties
+    @JsonIgnoreProperties({"brand", "images", "productReviewList", "orderHistoryList", "category", "cartProductList"})
     private Product product;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"cart", "savedDetails"})
+    @JsonIgnoreProperties({"cart", "savedDetails", "orderHistoryList", "reviewList"})
     private User author;
 
 }

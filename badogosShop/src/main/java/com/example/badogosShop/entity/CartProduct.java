@@ -17,7 +17,11 @@ import java.util.Date;
 @Setter
 @ToString
 @NoArgsConstructor
-
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "deleteProductFromCart", procedureName = "deleteProductFromCart", parameters = {
+                @StoredProcedureParameter(name = "idIN", mode = ParameterMode.IN, type = Integer.class)
+        })
+})
 public class CartProduct {
 
     @Id
@@ -35,6 +39,12 @@ public class CartProduct {
     @NotNull
     private Integer amount;
 
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
     @ManyToOne(cascade = {})
     @JoinColumn(name = "product_id")
     @JsonIgnoreProperties({"productReviewList"})
@@ -44,4 +54,9 @@ public class CartProduct {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
+    public CartProduct(Integer amount ,Product cartProduct, Cart cart) {
+        this.amount = amount;
+        this.cartProduct = cartProduct;
+        this.cart = cart;
+    }
 }

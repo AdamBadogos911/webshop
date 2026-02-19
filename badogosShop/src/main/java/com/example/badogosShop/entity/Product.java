@@ -18,8 +18,10 @@ import java.util.List;
 @Setter
 @ToString
 @NoArgsConstructor
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getMostViewedProducts", procedureName = "getMostViewedProducts", resultClasses = Product.class)
+})
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -66,6 +68,9 @@ public class Product {
     @Size(max = 255)
     private String stockKeepingUnit;
 
+    @Column(name = "view_count")
+    private Long viewCount;
+
     @OneToOne(cascade = {})
     @JoinColumn(name = "detail_id")
     private Details detail;
@@ -77,7 +82,8 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<ProductImages> images;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {})
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<Review> productReviewList;
 
     @OneToMany(mappedBy = "orderProduct", fetch = FetchType.LAZY, cascade = {})
