@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { Product } from '../../models/product.mode';
+import { Product } from '../../models/product.model';
 import { Router } from '@angular/router';
 
 @Component({
