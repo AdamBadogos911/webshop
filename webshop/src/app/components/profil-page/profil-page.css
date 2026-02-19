@@ -8,3 +8,7 @@
 a, p, span {
   margin: 5px;
 }
+
+img {
+  width: 150px;
+}

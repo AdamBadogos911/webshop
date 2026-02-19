@@ -4,13 +4,19 @@
       <button class="w-50 my-2" (click)="selectContent('profilPage')">Saját profil</button>
       <button class="w-50 my-2" (click)="selectContent('orderHistory')">Rendeléseim</button>
       <button class="w-50 my-2" (click)="selectContent('reviews')">Véleményeim</button>
+      <button class="w-50 my-2" (click)="deleteUser()">Fiók törlése</button>
     </div>
     <div class="col-lg-8">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-12">
-            <img src="" alt="Profilkép">
-            <h1>Udv, Kiss Pista</h1>
+          <div class="col-lg-12 d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-center align-items-center">
+              <label for="pfpInput">
+                <img [src]="userService.user?.pfpPath" alt="Profilkép">
+              </label>
+              <h1>Udv, {{userService.user?.firstName}} {{userService.user?.lastName}}</h1>
+            </div>
+            <button (click)="logout()">Kijelentkezés</button>
           </div>
         </div>
       </div>
@@ -18,48 +24,51 @@
         @if (selectedContent == 'profilPage') {
           <div class="container-fluid">
             <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <p>Vezetéknév</p>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <a>Vezetéknév megváltoztatása</a>
+              <div class="col-lg-12 d-flex justify-content-end align-items-center">
+                <button (click)="handleUpdate()" [disabled]="isEdit && updateForm.invalid">Edit</button>
               </div>
             </div>
+
             <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <p>Keresztnév</p>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <a>Keresztnév megváltoztatása</a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <p>E-mail</p>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <a>E-mail cím megváltoztatása</a>
-              </div>
-            </div>
-            <!-- Ha nincs telefonszám -->
-            <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12">
-                <span>Telefonszám </span>
-                <a>Telefonszám megadása</a>
-              </div>
-            </div>
-            <!-- Ha van telefonszám -->
-            <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <p>Telefonszám</p>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <a>Telefonszám megváltoztatása</a>
+              <div class="col-lg-12">
+                @if(isEdit) {
+                  <form class="container-fluid" [formGroup]="updateForm">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label for="firstName">Vezetéknév:</label>
+                        <input type="text" class="form-control" id="firstName" formControlName="firstName" placeholder="Vezetéknév">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label for="lastName">Keresztnév:</label>
+                        <input type="text" class="form-control" id="lastName" formControlName="lastName" placeholder="Keresztnév">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label for="email">E-mail cím:</label>
+                        <input type="text" class="form-control" id="email" formControlName="email" placeholder="E-mail cím">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label for="phoneNumber">Telefonszám:</label>
+                        <input type="text" class="form-control" id="phoneNumber" formControlName="phoneNumber" placeholder="Telefonszám">
+                      </div>
+                    </div>
+
+                  </form>
+                }@else {
+                  <p><span class="fw-bold">Vezetéknév:</span> {{userService.user?.firstName}}</p>
+                  <p><span class="fw-bold">Keresztnév:</span> {{userService.user?.lastName}}</p>
+                  <p><span class="fw-bold">E-mail:</span> {{userService.user?.email}}</p>
+                  <p><span class="fw-bold">Telefonszám:</span> {{userService.user?.phoneNumber}}</p>
+                }
               </div>
             </div>
           </div>
-        }
-        @else if (selectedContent == 'orderHistory') {
+        } @else if (selectedContent == 'orderHistory') {
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-12 col-md-12 col-sm-12">
@@ -80,7 +89,7 @@
             <div class="row">
               <div class="col-lg-12">
                 @for (review of reviewList; track $index) {
-                  <app-review-card [review]="review" />
+                  <app-review-card [review]="review" [parentComponent]="'profilPage'" />
                 }
               </div>
             </div>
@@ -90,3 +99,5 @@
     </div>
   </div>
 </div>
+
+<input type="file" name="pfpInput" id="pfpInput" (change)="updatePfp($event)" style="opacity: 0; bottom: 0; right: 0;">
