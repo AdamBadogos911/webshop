@@ -15,7 +15,7 @@ export class Product {
     public stockKeepingUnit: string,
     public detail: Details,
     public brand: Brand,
-    public images: ProductImages,
+    public images: ProductImages[],
     public productReviewList: Review[],
     public category: Category
   ) { }
