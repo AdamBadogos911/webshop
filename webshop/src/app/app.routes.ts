@@ -13,6 +13,7 @@ import { Unauthorized } from './components/unauthorized/unauthorized';
 import { AboutUsPage } from './components/about-us-page/about-us-page';
 import { StatisticsPage } from './components/admin-page/statistics-page/statistics-page';
 import { OrderPage } from './components/order-page/order-page';
+import { CartPage } from './components/order-page/cart/cart';
 import { TransportDetails } from './components/order-page/transport-details/transport-details';
 import { BillingDetails } from './components/order-page/billing-details/billing-details';
 import { SummaryPage } from './components/order-page/summary-page/summary-page';
@@ -35,6 +36,7 @@ export const routes: Routes = [
 
   {
     path: "orderPage", component: OrderPage, children: [
+      { path: "cart", component: CartPage },
       { path: "transportDetails", component: TransportDetails },
       { path: "billingDetails", component: BillingDetails },
       { path: "summary", component: SummaryPage }
