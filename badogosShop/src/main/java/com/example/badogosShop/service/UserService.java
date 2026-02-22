@@ -1,6 +1,7 @@
 package com.example.badogosShop.service;
 
 import com.example.badogosShop.config.email.EmailSender;
+import com.example.badogosShop.dto.UserUpdate;
 import com.example.badogosShop.entity.Cart;
 import com.example.badogosShop.entity.User;
 import com.example.badogosShop.repository.CartRepository;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolationException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
@@ -86,18 +88,24 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> update(Integer id, User updatedUser) {
+    public ResponseEntity<Object> update(Integer id, UserUpdate updatedUser) {
         try {
             if (id == null || updatedUser == null) {
                 return ResponseEntity.status(422).build();
             }
-            User searchedUser = userRepository.getUserById(id).orElse(null);
+            User searchedUser = userRepository.findById(id).orElse(null);
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
-            if (!isEmailValid(updatedUser.getEmail())) {
+            if (!isEmailValid(updatedUser.email())) {
                 return ResponseEntity.status(415).body("invalidEmail");
             } else {
+                searchedUser.setEmail(updatedUser.email());
+                searchedUser.setPhoneNumber(updatedUser.phoneNumber());
+                searchedUser.setFirstName(updatedUser.firstName());
+                searchedUser.setLastName(updatedUser.lastName());
+                System.out.println("MENTES");
+
                 return ResponseEntity.ok().body(userRepository.save(searchedUser));
             }
         } catch (Exception e) {
@@ -111,7 +119,7 @@ public class UserService {
             if (id == null) {
                 return ResponseEntity.status(422).build();
             }
-            User searchedUser = userRepository.getUserById(id).orElse(null);
+            User searchedUser = userRepository.findById(id).orElse(null);
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
@@ -130,19 +138,19 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
-            User searchedUser = userRepository.getUserById(id).orElse(null);
+            User searchedUser = userRepository.findById(id).orElse(null);
 
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-//                String filePath = "C:\\Users\\bzhal\\Documents\\GitHub\\appointment_management_system\\pmsWebPage\\src\\assets\\images\\pfp" + File.separator + pfpFile.getOriginalFilename();
+                String filePath = "images/pfp/" + searchedUser.getId() + newPfpImage.getOriginalFilename();
 
                 try {
-//                    FileOutputStream fout = new FileOutputStream(newPfpImage);
-//                    fout.write(newPfpImage.getBytes());
-//                    fout.close();
+                    FileOutputStream fout = new FileOutputStream(filePath);
+                    fout.write(newPfpImage.getBytes());
+                    fout.close();
 
-                    searchedUser.setPfpPath("assets\\images\\pfp" + File.separator + newPfpImage.getOriginalFilename());
+                    searchedUser.setPfpPath("http://localhost:8080/pfp/" + searchedUser.getId() + newPfpImage.getOriginalFilename());
                 } catch (Exception e) {
                     return ResponseEntity.internalServerError().body("fileUploadError");
                 }
@@ -164,14 +172,14 @@ public class UserService {
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                String vCode = generateVerificationCode();
+                String verificationCode = generateVerificationCode();
                 try {
-                    emailSender.sendVerificationCodeForPasswordReset(email, vCode);
+                    emailSender.sendVerificationCodeForPasswordReset(email, verificationCode);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return ResponseEntity.internalServerError().build();
                 }
-                searchedUser.setVCode(passwordEncoder.encode(vCode));
+                searchedUser.setVerificationCode(passwordEncoder.encode(verificationCode));
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
@@ -180,9 +188,9 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> checkVerificationCode(String vCode, String email) {
+    public ResponseEntity<Object> checkVerificationCode(String verificationCode, String email) {
         try {
-            if (vCode == null || email == null) {
+            if (verificationCode == null || email == null) {
                 return ResponseEntity.status(422).build();
             }
             if (!isEmailValid(email)) {
@@ -193,7 +201,7 @@ public class UserService {
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.internalServerError().build();
             } else {
-                return ResponseEntity.ok().body(passwordEncoder.matches(vCode, searchedUser.getVCode()));
+                return ResponseEntity.ok().body(passwordEncoder.matches(verificationCode, searchedUser.getVCode()));
             }
         } catch (Exception e) {
             e.printStackTrace();
