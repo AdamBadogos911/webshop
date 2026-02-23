@@ -32,7 +32,7 @@ export const routes: Routes = [
   { path: "orderHistoryPage", component: OrderHistoryPage},
   { path: "storagePage", component: StoragePage},
   { path: "productDetails/:productId", component: ProductDetails },
-  { path: "statistics", component: StatisticsPage},
+  { path: "statisticsPage", component: StatisticsPage},
 
   {
     path: "orderPage", component: OrderPage, children: [

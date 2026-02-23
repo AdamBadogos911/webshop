@@ -1,6 +1,6 @@
 .cardContainer {
   height: 350px;
-  background-color: #D9D9D9;
+  background-color: #B7B7B7;
   border-radius: 15px;
   padding: 10px 20px;
   margin: 5px;
@@ -19,8 +19,9 @@ img {
 }
 
 .m-0 {
-  background-color: #6EDC6A;
+  background-color: #0A9600;
   width: fit-content;
   border-radius: 10px;
   padding: 0 6px;
+  color: #fff;
 }

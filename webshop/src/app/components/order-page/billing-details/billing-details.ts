@@ -38,8 +38,6 @@ export class BillingDetails {
       address: new FormControl(this.orderService.actualOrder.orderBillingDetail?.address, [Validators.required]),
       houseNumber: new FormControl(this.orderService.actualOrder.orderBillingDetail?.houseNumber, [Validators.required]),
       other: new FormControl(this.orderService.actualOrder.orderBillingDetail?.other, []),
-      // companyName: new FormControl(this.orderService.actualOrder.orderBillingDetail?.companyName, []),
-      // taxNumber: new FormControl(this.orderService.actualOrder.orderBillingDetail?.companyTaxNumber, []),
       paymentMethod: new FormControl(this.orderService.actualOrder.paymentMethod?.id, [Validators.required])
     })
   }

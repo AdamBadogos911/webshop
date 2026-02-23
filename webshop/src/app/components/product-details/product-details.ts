@@ -71,7 +71,7 @@ export class ProductDetails implements OnInit {
 
   addToCart(amount: number) {
     if (this.userService.user == null) {
-      alert("Előbb jelentkezzél be!")
+      alert("Előbb jelentkezz be!")
     }
 
     this.cartService.addProductToBasket(this.userService.user?.id!, this.selectedProduct.id!, amount).subscribe({

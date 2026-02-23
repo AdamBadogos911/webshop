@@ -10,27 +10,27 @@
 
         <div class="row">
           <div class="col-lg-3 my-2">
-            <input type="text" class="form-control" placeholder="Irányitószám" formControlName="postCode">
+            <input type="text" class="form-control" placeholder="Irányitószám*" formControlName="postCode">
           </div>
           <div class="col-lg-9 my-2">
-            <input type="text" class="form-control" placeholder="Város" formControlName="town">
+            <input type="text" class="form-control" placeholder="Város*" formControlName="town">
           </div>
         </div>
 
         <div class="row">
+          <div class="col-lg-6 my-2">
+            <input type="text" class="form-control" placeholder="Közterület neve*" formControlName="address">
+          </div>
           <div class="col-lg-3 my-2">
             <select class="form-select" formControlName="addressType">
-              <option value="null" selected disabled>Közúti tipus kiválasztása</option>
+              <option value="null" selected disabled>Közterület típus kiválasztása*</option>
               @for (addressType of addressTypes; track $index) {
                 <option [value]="addressType.id">{{addressType.name}}</option>
               }
             </select>
           </div>
-          <div class="col-lg-6 my-2">
-            <input type="text" class="form-control" placeholder="Cím" formControlName="address">
-          </div>
           <div class="col-lg-3 my-2">
-            <input type="text" class="form-control" placeholder="Házszám" formControlName="houseNumber">
+            <input type="text" class="form-control" placeholder="Házszám*" formControlName="houseNumber">
           </div>
         </div>
 
