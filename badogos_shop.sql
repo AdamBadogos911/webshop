@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 23, 2026 at 09:34 AM
+-- Generation Time: Feb 24, 2026 at 12:14 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1018,7 +1018,7 @@ INSERT INTO `brand` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 (1, 'Jobi', 0, NULL),
 (2, 'Honiton', 0, NULL),
 (3, 'non', 0, NULL),
-(4, 'TestBrand4', 0, NULL),
+(4, 'Powerjet', 0, NULL),
 (5, 'TestBrand5', 0, NULL),
 (6, 'TestBrand6', 0, NULL),
 (7, 'TestBrand7', 0, NULL),
@@ -1056,7 +1056,8 @@ INSERT INTO `cart` (`id`, `user_id`, `last_modified_at`, `created_at`) VALUES
 (9, 9, NULL, '2025-11-20 16:34:18'),
 (10, 10, NULL, '2025-11-20 16:34:21'),
 (11, 13, NULL, '2026-02-20 08:09:44'),
-(12, 16, NULL, '2026-02-22 17:46:38');
+(12, 16, NULL, '2026-02-22 17:46:38'),
+(13, 17, NULL, '2026-02-23 12:25:31');
 
 -- --------------------------------------------------------
 
@@ -1094,8 +1095,8 @@ INSERT INTO `cart_product` (`id`, `product_id`, `cart_id`, `created_at`, `last_m
 (12, 2, 6, '2025-11-20 16:47:50', NULL, 1, 0, NULL),
 (13, 9, 9, '2025-11-20 16:51:00', NULL, 1, 0, NULL),
 (14, 9, 6, '2025-11-20 16:51:01', NULL, 1, 0, NULL),
-(15, 106, 11, '2026-02-20 08:10:29', NULL, 1, 0, NULL),
-(16, 106, 11, '2026-02-20 08:10:30', NULL, 1, 0, NULL),
+(15, 106, 11, '2026-02-20 08:10:29', NULL, 12, 0, NULL),
+(16, 106, 11, '2026-02-20 08:10:30', NULL, 1, 1, '2026-02-23 00:00:00'),
 (17, 106, 11, '2026-02-20 08:10:30', NULL, 1, 0, NULL),
 (18, 106, 11, '2026-02-20 08:10:31', NULL, 1, 0, NULL),
 (19, 106, 11, '2026-02-20 08:10:33', NULL, 2, 0, NULL),
@@ -1132,7 +1133,17 @@ INSERT INTO `cart_product` (`id`, `product_id`, `cart_id`, `created_at`, `last_m
 (50, 1, 11, '2026-02-22 17:21:05', NULL, 1, 0, NULL),
 (51, 107, 11, '2026-02-22 17:21:21', NULL, 1, 0, NULL),
 (52, 107, 11, '2026-02-22 17:21:24', NULL, 1, 0, NULL),
-(53, 106, 11, '2026-02-22 17:21:38', NULL, 1, 0, NULL);
+(53, 106, 11, '2026-02-22 17:21:38', NULL, 1, 0, NULL),
+(54, 1, 11, '2026-02-23 09:50:23', NULL, 1, 0, NULL),
+(55, 1, 11, '2026-02-23 09:50:25', NULL, 1, 0, NULL),
+(56, 1, 11, '2026-02-23 09:50:25', NULL, 1, 0, NULL),
+(57, 1, 11, '2026-02-23 09:50:25', NULL, 1, 0, NULL),
+(58, 1, 11, '2026-02-23 09:50:25', NULL, 1, 0, NULL),
+(59, 1, 11, '2026-02-23 09:50:27', NULL, 2, 0, NULL),
+(60, 1, 11, '2026-02-23 09:50:27', NULL, 2, 0, NULL),
+(61, 1, 11, '2026-02-23 09:50:28', NULL, 2, 0, NULL),
+(62, 1, 11, '2026-02-23 09:50:28', NULL, 2, 0, NULL),
+(63, 1, 11, '2026-02-23 09:50:28', NULL, 2, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1173,7 +1184,22 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 (18, '\"T\" kulcs', 15, 0, NULL),
 (19, 'Műanyagos damil', 7, 0, NULL),
 (20, 'Alumíniumos damil', 7, 0, NULL),
-(21, 'Racsnik', 1, 0, NULL);
+(21, 'Racsnik', 1, 0, NULL),
+(22, 'Gyorscsatlakozó', 8, 0, NULL),
+(23, 'Összekötő', 8, 0, NULL),
+(24, 'Csapcsatlakozó', 8, 0, NULL),
+(25, 'Kuplung', 8, 0, NULL),
+(26, '\"Y\" elágazó', 8, 0, NULL),
+(27, 'Elosztó', 8, 0, NULL),
+(28, 'Sugárcső', 8, 0, NULL),
+(29, 'Öntöző pisztoly', 8, 0, NULL),
+(30, 'Tömlő', 8, 0, NULL),
+(31, 'Öntöző', 8, 0, NULL),
+(32, 'Kerticsapok', 8, 0, NULL),
+(33, '1/2\"', 30, 0, NULL),
+(34, '3/4\"', 30, 0, NULL),
+(35, 'Műanyag', 32, 0, NULL),
+(36, 'Egyenes', 32, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1183,12 +1209,12 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 
 CREATE TABLE `details` (
   `id` int(11) NOT NULL,
-  `weight` double DEFAULT NULL COMMENT 'kg-ban',
+  `size` varchar(20) DEFAULT NULL,
   `material` varchar(255) DEFAULT NULL,
+  `weight` double DEFAULT NULL COMMENT 'kg-ban',
   `length` double DEFAULT NULL COMMENT 'cm',
   `height` double DEFAULT NULL COMMENT 'cm',
   `width` double DEFAULT NULL COMMENT 'cm',
-  `size` varchar(11) DEFAULT NULL,
   `is_set` tinyint(4) DEFAULT NULL COMMENT 'Szett-e (több dolog egyben)',
   `color` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1197,132 +1223,158 @@ CREATE TABLE `details` (
 -- Dumping data for table `details`
 --
 
-INSERT INTO `details` (`id`, `weight`, `material`, `length`, `height`, `width`, `size`, `is_set`, `color`) VALUES
-(1, NULL, 'Króm', NULL, NULL, NULL, '1/4\"', NULL, 'Króm'),
-(2, NULL, 'Króm', NULL, NULL, NULL, '3/8\"', NULL, 'Króm'),
-(3, NULL, 'Króm', NULL, NULL, NULL, '1/2\"', NULL, 'Króm'),
-(4, NULL, 'Króm, gumi', NULL, NULL, NULL, '1/4\"', NULL, 'Fekete'),
-(5, NULL, 'Króm, gumi', NULL, NULL, NULL, '3/8\"', NULL, 'Fekete'),
-(6, NULL, 'Króm, gumi', NULL, NULL, NULL, '1/2\"', NULL, 'Fekete'),
-(7, NULL, 'Acél', 5.5, NULL, NULL, '1/4\"', NULL, NULL),
-(8, NULL, 'Acél', 7.5, NULL, NULL, '1/4\"', NULL, NULL),
-(9, NULL, 'Acél', 10, NULL, NULL, '1/4\"', NULL, NULL),
-(10, NULL, 'Acél', 15, NULL, NULL, '1/4\"', NULL, NULL),
-(11, NULL, 'Acél', 23, NULL, NULL, '1/4\"', NULL, NULL),
-(12, NULL, 'Acél', 7.5, NULL, NULL, '3/8\"', NULL, NULL),
-(13, NULL, 'Acél', 12.5, NULL, NULL, '3/8\"', NULL, NULL),
-(14, NULL, 'Acél', 15, NULL, NULL, '3/8\"', NULL, NULL),
-(15, NULL, 'Acél', 20, NULL, NULL, '3/8\"', NULL, NULL),
-(16, NULL, 'Acél', 10, NULL, NULL, '1/2\"', NULL, NULL),
-(17, NULL, 'Acél', 12.5, NULL, NULL, '1/2\"', NULL, NULL),
-(18, NULL, 'Acél', 20, NULL, NULL, '1/2\"', NULL, NULL),
-(19, NULL, 'Acél', 10, NULL, NULL, '3/4\"', NULL, NULL),
-(20, NULL, 'Acél', 20, NULL, NULL, '3/4\"', NULL, NULL),
-(21, NULL, 'Acél', 40, NULL, NULL, '3/4\"', NULL, NULL),
-(22, NULL, 'Acél', NULL, NULL, NULL, '1/4\"', NULL, NULL),
-(23, NULL, 'Acél', NULL, NULL, NULL, '3/8\"', NULL, NULL),
-(24, NULL, 'Acél', 10, NULL, NULL, '1/2\"', NULL, NULL),
-(25, NULL, 'Acél', 20, NULL, NULL, '1/2\"', NULL, NULL),
-(26, NULL, 'Acél', NULL, NULL, NULL, '3/4\"', NULL, NULL),
-(27, NULL, 'Fém', NULL, NULL, NULL, 'T30', NULL, NULL),
-(28, NULL, 'Fém', NULL, NULL, NULL, 'T40', NULL, NULL),
-(29, NULL, 'Fém', NULL, NULL, NULL, 'T45', NULL, NULL),
-(30, NULL, 'Fém', NULL, NULL, NULL, 'T50', NULL, NULL),
-(31, NULL, 'Fém', NULL, NULL, NULL, 'T55', NULL, NULL),
-(32, NULL, 'Fém', NULL, NULL, NULL, 'T60', NULL, NULL),
-(33, NULL, 'Fém', NULL, NULL, NULL, 'T70', NULL, NULL),
-(34, NULL, 'Fém', NULL, NULL, NULL, 'M12', NULL, NULL),
-(35, NULL, 'Fém', NULL, NULL, NULL, 'M14', NULL, NULL),
-(36, NULL, 'Fém', NULL, NULL, NULL, 'M16', NULL, NULL),
-(37, NULL, 'Fém', NULL, NULL, NULL, 'M17', NULL, NULL),
-(38, NULL, 'Fém', NULL, NULL, NULL, '4', NULL, NULL),
-(39, NULL, 'Fém', NULL, NULL, NULL, '5', NULL, NULL),
-(40, NULL, 'Fém', NULL, NULL, NULL, '6', NULL, NULL),
-(41, NULL, 'Fém', NULL, NULL, NULL, '7', NULL, NULL),
-(42, NULL, 'Fém', NULL, NULL, NULL, '8', NULL, NULL),
-(43, NULL, 'Fém', NULL, NULL, NULL, '10', NULL, NULL),
-(44, NULL, 'Fém', NULL, NULL, NULL, '12', NULL, NULL),
-(45, NULL, 'Fém', NULL, NULL, NULL, '13', NULL, NULL),
-(46, NULL, 'Fém', NULL, NULL, NULL, '14', NULL, NULL),
-(47, NULL, 'Fém', NULL, NULL, NULL, '17', NULL, NULL),
-(48, NULL, 'Fém', NULL, NULL, NULL, '19', NULL, NULL),
-(49, NULL, 'Fém', NULL, NULL, NULL, '7', NULL, NULL),
-(50, NULL, 'Fém', NULL, NULL, NULL, '8', NULL, NULL),
-(51, NULL, 'Fém', NULL, NULL, NULL, '9', NULL, NULL),
-(52, NULL, 'Fém', NULL, NULL, NULL, '10', NULL, NULL),
-(53, NULL, 'Fém', NULL, NULL, NULL, '11', NULL, NULL),
-(54, NULL, 'Fém', NULL, NULL, NULL, '12', NULL, NULL),
-(55, NULL, 'Fém', NULL, NULL, NULL, '13', NULL, NULL),
-(56, NULL, 'Fém', NULL, NULL, NULL, '14', NULL, NULL),
-(57, NULL, 'Fém', NULL, NULL, NULL, '15', NULL, NULL),
-(58, NULL, 'Fém', NULL, NULL, NULL, '16', NULL, NULL),
-(59, NULL, 'Fém', NULL, NULL, NULL, '17', NULL, NULL),
-(60, NULL, 'Fém', NULL, NULL, NULL, '18', NULL, NULL),
-(61, NULL, 'Fém', NULL, NULL, NULL, '19', NULL, NULL),
-(62, NULL, 'Fém', NULL, NULL, NULL, '21', NULL, NULL),
-(63, NULL, 'Fém', NULL, NULL, NULL, '22', NULL, NULL),
-(64, NULL, 'Fém', NULL, NULL, NULL, '24', NULL, NULL),
-(65, NULL, 'Fém', NULL, NULL, NULL, '27', NULL, NULL),
-(66, NULL, 'Fém', NULL, NULL, NULL, '30', NULL, NULL),
-(67, NULL, 'Fém', NULL, NULL, NULL, '32', NULL, NULL),
-(68, NULL, 'Fém', NULL, NULL, NULL, '36', NULL, NULL),
-(69, NULL, 'Fém', NULL, NULL, NULL, '41', NULL, NULL),
-(70, NULL, 'Fém', NULL, NULL, NULL, '46', NULL, NULL),
-(71, NULL, 'Fém', NULL, NULL, NULL, '55', NULL, NULL),
-(72, NULL, 'Fém', NULL, NULL, NULL, '60', NULL, NULL),
-(73, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '11', NULL, NULL),
-(74, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '14', NULL, NULL),
-(75, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '32', NULL, NULL),
-(76, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '30', NULL, NULL),
-(77, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '31', NULL, NULL),
-(78, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '33', NULL, NULL),
-(79, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '34', NULL, NULL),
-(80, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '35', NULL, NULL),
-(81, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '36', NULL, NULL),
-(82, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '37', NULL, NULL),
-(83, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '38', NULL, NULL),
-(84, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '39', NULL, NULL),
-(85, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '40', NULL, NULL),
-(86, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '41', NULL, NULL),
-(87, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '42', NULL, NULL),
-(88, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '43', NULL, NULL),
-(89, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '44', NULL, NULL),
-(90, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '45', NULL, NULL),
-(91, NULL, 'Fém, olcsóbb', NULL, NULL, NULL, '46', NULL, NULL),
-(92, NULL, 'Fém', NULL, NULL, NULL, '11', NULL, NULL),
-(93, NULL, 'Fém', NULL, NULL, NULL, '12', NULL, NULL),
-(94, NULL, 'Fém', NULL, NULL, NULL, '13', NULL, NULL),
-(95, NULL, 'Fém', NULL, NULL, NULL, 'T kulcs', NULL, NULL),
-(96, NULL, 'Műanyag', 1500, NULL, NULL, '1.3', NULL, NULL),
-(97, NULL, 'Műanyag', 1500, NULL, NULL, '1.6', NULL, NULL),
-(98, NULL, 'Műanyag', 1500, NULL, NULL, '2', NULL, NULL),
-(99, NULL, 'Műanyag', 1500, NULL, NULL, '2.4', NULL, NULL),
-(100, NULL, 'Műanyag', 1500, NULL, NULL, '2.7', NULL, NULL),
-(101, NULL, 'Műanyag', 1500, NULL, NULL, '3', NULL, NULL),
-(102, NULL, 'Műanyag', 5000, NULL, NULL, '2', NULL, NULL),
-(103, NULL, 'Műanyag', 5000, NULL, NULL, '2.4', NULL, NULL),
-(104, NULL, 'Műanyag', 5000, NULL, NULL, '2.7', NULL, NULL),
-(105, NULL, 'Műanyag', 5000, NULL, NULL, '3', NULL, NULL),
-(106, NULL, 'Alumínium, műanyag', 1500, NULL, NULL, '1.6', NULL, NULL),
-(107, NULL, 'Alumínium, műanyag', 1500, NULL, NULL, '2', NULL, NULL),
-(108, NULL, 'Alumínium, műanyag', 1500, NULL, NULL, '2.4', NULL, NULL),
-(109, NULL, 'Alumínium, műanyag', 1500, NULL, NULL, '2.7', NULL, NULL),
-(110, NULL, 'Alumínium, műanyag', 1500, NULL, NULL, '3', NULL, NULL),
-(111, NULL, 'Alumínium, műanyag', 5000, NULL, NULL, '2', NULL, NULL),
-(112, NULL, 'Alumínium, műanyag', 5000, NULL, NULL, '2.4', NULL, NULL),
-(113, NULL, 'Alumínium, műanyag', 5000, NULL, NULL, '2.7', NULL, NULL),
-(114, NULL, 'Alumínium, műanyag', 5000, NULL, NULL, '3', NULL, NULL),
-(115, NULL, 'Fém', NULL, NULL, NULL, '1/4\"-6,3mm', NULL, NULL),
-(116, NULL, 'Fém', NULL, NULL, NULL, '3/8\"-1/4\"', NULL, NULL),
-(117, NULL, 'Fém', NULL, NULL, NULL, '1/4\"-3/8\"', NULL, NULL),
-(118, NULL, 'Fém', NULL, NULL, NULL, '1/2\"-3/8\"', NULL, NULL),
-(119, NULL, 'Fém', NULL, NULL, NULL, '3/8\"-1/2\"', NULL, NULL),
-(120, NULL, 'Fém', NULL, NULL, NULL, '1/2\"-3/4\"', NULL, NULL),
-(121, NULL, 'Fém', NULL, NULL, NULL, '3/4\"-1/2\"', NULL, NULL),
-(122, NULL, 'Fém', NULL, NULL, NULL, '1\"-3/4\"', NULL, NULL),
-(123, NULL, 'Fém', NULL, NULL, NULL, '1/4\"', NULL, NULL),
-(124, NULL, 'Fém', NULL, NULL, NULL, '3/8\"', NULL, NULL),
-(125, NULL, 'Fém', NULL, NULL, NULL, '1/2\"', NULL, NULL);
+INSERT INTO `details` (`id`, `size`, `material`, `weight`, `length`, `height`, `width`, `is_set`, `color`) VALUES
+(1, '1/4\"', 'Króm', NULL, NULL, NULL, NULL, NULL, 'Króm'),
+(2, '3/8\"', 'Króm', NULL, NULL, NULL, NULL, NULL, 'Króm'),
+(3, '1/2\"', 'Króm', NULL, NULL, NULL, NULL, NULL, 'Króm'),
+(4, '1/4\"', 'Króm, gumi', NULL, NULL, NULL, NULL, NULL, 'Fekete'),
+(5, '3/8\"', 'Króm, gumi', NULL, NULL, NULL, NULL, NULL, 'Fekete'),
+(6, '1/2\"', 'Króm, gumi', NULL, NULL, NULL, NULL, NULL, 'Fekete'),
+(7, '1/4\"', 'Acél', NULL, 5.5, NULL, NULL, NULL, NULL),
+(8, '1/4\"', 'Acél', NULL, 7.5, NULL, NULL, NULL, NULL),
+(9, '1/4\"', 'Acél', NULL, 10, NULL, NULL, NULL, NULL),
+(10, '1/4\"', 'Acél', NULL, 15, NULL, NULL, NULL, NULL),
+(11, '1/4\"', 'Acél', NULL, 23, NULL, NULL, NULL, NULL),
+(12, '3/8\"', 'Acél', NULL, 7.5, NULL, NULL, NULL, NULL),
+(13, '3/8\"', 'Acél', NULL, 12.5, NULL, NULL, NULL, NULL),
+(14, '3/8\"', 'Acél', NULL, 15, NULL, NULL, NULL, NULL),
+(15, '3/8\"', 'Acél', NULL, 20, NULL, NULL, NULL, NULL),
+(16, '1/2\"', 'Acél', NULL, 10, NULL, NULL, NULL, NULL),
+(17, '1/2\"', 'Acél', NULL, 12.5, NULL, NULL, NULL, NULL),
+(18, '1/2\"', 'Acél', NULL, 20, NULL, NULL, NULL, NULL),
+(19, '3/4\"', 'Acél', NULL, 10, NULL, NULL, NULL, NULL),
+(20, '3/4\"', 'Acél', NULL, 20, NULL, NULL, NULL, NULL),
+(21, '3/4\"', 'Acél', NULL, 40, NULL, NULL, NULL, NULL),
+(22, '1/4\"', 'Acél', NULL, NULL, NULL, NULL, NULL, NULL),
+(23, '3/8\"', 'Acél', NULL, NULL, NULL, NULL, NULL, NULL),
+(24, '1/2\"', 'Acél', NULL, 10, NULL, NULL, NULL, NULL),
+(25, '1/2\"', 'Acél', NULL, 20, NULL, NULL, NULL, NULL),
+(26, '3/4\"', 'Acél', NULL, NULL, NULL, NULL, NULL, NULL),
+(27, 'T30', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(28, 'T40', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(29, 'T45', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(30, 'T50', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(31, 'T55', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(32, 'T60', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(33, 'T70', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(34, 'M12', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(35, 'M14', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(36, 'M16', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(37, 'M17', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(38, '4', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(39, '5', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(40, '6', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(41, '7', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(42, '8', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(43, '10', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(44, '12', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(45, '13', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(46, '14', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(47, '17', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(48, '19', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(49, '7', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(50, '8', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(51, '9', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(52, '10', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(53, '11', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(54, '12', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(55, '13', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(56, '14', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(57, '15', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(58, '16', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(59, '17', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(60, '18', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(61, '19', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(62, '21', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(63, '22', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(64, '24', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(65, '27', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(66, '30', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(67, '32', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(68, '36', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(69, '41', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(70, '46', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(71, '55', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(72, '60', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(73, '11', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(74, '14', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(75, '32', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(76, '30', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(77, '31', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(78, '33', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(79, '34', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(80, '35', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(81, '36', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(82, '37', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(83, '38', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(84, '39', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(85, '40', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(86, '41', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(87, '42', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(88, '43', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(89, '44', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(90, '45', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(91, '46', 'Fém, olcsóbb', NULL, NULL, NULL, NULL, NULL, NULL),
+(92, '11', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(93, '12', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(94, '13', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(95, 'T kulcs', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(96, '1.3', 'Műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(97, '1.6', 'Műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(98, '2', 'Műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(99, '2.4', 'Műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(100, '2.7', 'Műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(101, '3', 'Műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(102, '2', 'Műanyag', NULL, 5000, NULL, NULL, NULL, NULL),
+(103, '2.4', 'Műanyag', NULL, 5000, NULL, NULL, NULL, NULL),
+(104, '2.7', 'Műanyag', NULL, 5000, NULL, NULL, NULL, NULL),
+(105, '3', 'Műanyag', NULL, 5000, NULL, NULL, NULL, NULL),
+(106, '1.6', 'Alumínium, műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(107, '2', 'Alumínium, műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(108, '2.4', 'Alumínium, műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(109, '2.7', 'Alumínium, műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(110, '3', 'Alumínium, műanyag', NULL, 1500, NULL, NULL, NULL, NULL),
+(111, '2', 'Alumínium, műanyag', NULL, 5000, NULL, NULL, NULL, NULL),
+(112, '2.4', 'Alumínium, műanyag', NULL, 5000, NULL, NULL, NULL, NULL),
+(113, '2.7', 'Alumínium, műanyag', NULL, 5000, NULL, NULL, NULL, NULL),
+(114, '3', 'Alumínium, műanyag', NULL, 5000, NULL, NULL, NULL, NULL),
+(115, '1/4\"-6,3mm', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(116, '3/8\"-1/4\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(117, '1/4\"-3/8\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(118, '1/2\"-3/8\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(119, '3/8\"-1/2\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(120, '1/2\"-3/4\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(121, '3/4\"-1/2\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(122, '1\"-3/4\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(123, '1/4\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(124, '3/8\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(125, '1/2\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(126, '1/4\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(127, '3/8\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(128, '1/2\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(129, '1/4\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(130, '3/8\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(131, '1/2\"', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(132, '1/2\"', 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(133, '3/4\"', 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(134, '3/4\" vastag', 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(135, '1\" piros', 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(136, '1\"', 'Műanyag PowJet', NULL, NULL, NULL, NULL, NULL, NULL),
+(137, '1/2\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(138, '3/4\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(139, '1\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(140, '1/2\"-3/4\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(141, '3/4\"-1\" ', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(142, '1/2\"-3/4\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(143, '3/4\"-1\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(144, 'vastag 3/4\"-1\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(145, '1\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(146, '3/4\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(147, 'vastag 3/4\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(148, 'Normál', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(149, 'Vastag', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(150, '1\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(151, '', 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1334,7 +1386,7 @@ CREATE TABLE `order_history` (
   `id` int(11) NOT NULL,
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
-  `phone` varchar(10) NOT NULL,
+  `phone` varchar(12) NOT NULL,
   `email` varchar(100) NOT NULL,
   `user_id` int(11) NOT NULL,
   `billing_detail_id` int(11) NOT NULL,
@@ -1445,14 +1497,14 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `created_at`, `updated_at`, `deleted_at`, `is_deleted`, `amount`, `detail_id`, `stock_keeping_unit`, `brand_id`, `category_id`, `view_count`) VALUES
-(1, '1/4\" Racsni Króm', 'Pontos leírás a tárgyról amiről semmi információm nincs, ezért csak gépelek, és majd másolok :)', 3000, 0, '2025-10-22 07:44:26', '2025-12-04 09:12:09', NULL, 0, 500, 1, '888888881', 3, 21, 4),
+(1, '1/4\" Racsni Króm', '1/4\" Racsni Króm', 3000, 0, '2025-10-22 07:44:26', '2025-12-04 09:12:09', NULL, 0, 500, 1, '888888881', 3, 21, 5),
 (2, '3/8\" Racsni Króm', '3/8\" Racsni Króm', 3200, 0, '2025-10-22 11:28:15', '2025-12-04 09:13:09', NULL, 0, 200000, 2, '888888882', 3, 21, 0),
 (3, '1/2\" Racsni Króm', '1/2\" Racsni Króm', 3600, 0, '2025-10-22 11:58:03', '2025-12-04 09:15:33', NULL, 0, 10, 3, '888888883', 3, 21, 0),
 (4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 100, 4, '888888884', 3, 21, 0),
 (5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 2, 5, '888888885', 3, 21, 0),
 (6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 09:09:07', '2025-12-04 09:34:05', NULL, 0, 300, 6, '888888886', 3, 21, 0),
-(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', 3, 2, 5),
-(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', 3, 2, 2),
+(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', 3, 2, 8),
+(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', 3, 2, 9),
 (9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 09:10:55', '2025-12-22 20:07:32', NULL, 0, 10, 9, '888888889', 3, 2, 0),
 (10, '1/4\" 15 cm-es racsnitoldó', '1/4\" 15 cm-es racsnitoldó', 2100, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 10, '8888888810', 3, 2, 0),
 (11, '1/4\" 23 cm-es racsnitoldó', '1/4\" 23 cm-es racsnitoldó', 2300, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 11, '8888888811', 3, 2, 0),
@@ -1550,7 +1602,7 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (103, 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 2300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 103, '88888888103', 3, 19, 0),
 (104, 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 2900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 104, '88888888104', 3, 19, 0),
 (105, 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 3400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 105, '88888888104', 3, 19, 0),
-(106, 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 106, '88888888106', 3, 20, 6),
+(106, 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 101, 106, '88888888106', 3, 20, 8),
 (107, 'Fűnyíró damil alumíniumos 15 méteres 2mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2mm-es ', 900, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 107, '88888888107', 3, 20, 2),
 (108, 'Fűnyíró damil alumíniumos 15 méteres 2.4mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2.4mm-es ', 1200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 108, '88888888108', 3, 20, 1),
 (109, 'Fűnyíró damil alumíniumos 15 méteres 2.7mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2.7mm-es ', 1500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 109, '88888888109', 3, 20, 0),
@@ -1569,7 +1621,33 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (122, 'Adapter 1\" - 3/4\"', 'Adapter 1\" - 3/4\"', 7500, 0, '2026-02-23 09:24:41', NULL, NULL, 0, 100, 122, '88888888122', 3, 3, 0),
 (123, 'Csuklo 1/4\"', 'Csuklo 1/4\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 100, 123, '88888888123', 3, 4, 0),
 (124, 'Csuklo 3/8\"', 'Csuklo 3/8\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 0, 124, '88888888124', 3, 4, 0),
-(125, 'Csuklo 1/2\"', 'Csuklo 1/2\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 100, 125, '88888888125', 3, 4, 0);
+(125, 'Csuklo 1/2\"', 'Csuklo 1/2\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 100, 125, '88888888125', 3, 4, 0),
+(126, 'Jobi racsni 1/4\"', 'Jobi racsni 1/4\"', 4000, 0, '2026-02-23 10:13:07', NULL, NULL, 0, 100, 126, '88888888126', 1, 21, 0),
+(127, 'Jobi racsni 3/8\"', 'Jobi racsni 3/8\"', 5000, 0, '2026-02-23 10:13:07', NULL, NULL, 0, 100, 127, '88888888127', 1, 21, 0),
+(128, 'Jobi racsni 1/2\"', 'Jobi racsni 1/2\"', 6000, 0, '2026-02-23 10:13:07', NULL, NULL, 0, 100, 128, '88888888128', 1, 21, 0),
+(129, 'Honiton racsni 1/4\"', 'Honiton racsni 1/4\"', 4500, 0, '2026-02-23 10:13:07', NULL, NULL, 0, 100, 129, '88888888129', 2, 21, 0),
+(130, 'Honiton racsni 3/8\"', 'Honiton racsni 3/8\"', 6500, 0, '2026-02-23 10:13:07', NULL, NULL, 0, 100, 130, '88888888130', 2, 21, 0),
+(131, 'Honiton racsni 1/2\"', 'Honiton racsni 1/2\"', 7500, 0, '2026-02-23 10:13:07', NULL, NULL, 0, 100, 131, '88888888131', 2, 21, 0),
+(132, 'Gyorscsatlakozó 1/2\"', 'Gyorscsatlakozó 1/2\"', 600, 0, '2026-02-24 10:59:54', NULL, NULL, 0, 100, 132, '88888888132', 3, 22, 0),
+(133, 'Gyorscsatlakozó 3/4\"', 'Gyorscsatlakozó 3/4\"', 600, 0, '2026-02-24 10:59:54', NULL, NULL, 0, 100, 133, '88888888133', 3, 22, 0),
+(134, 'Gyorscsatlakozó vastag 3/4\"', 'Gyorscsatlakozó vastag 3/4\"', 1200, 0, '2026-02-24 10:59:54', NULL, NULL, 0, 100, 134, '88888888134', 3, 22, 0),
+(135, 'Gyorscsatlakozó piros 1\"', 'Gyorscsatlakozó piros 1\"', 1600, 0, '2026-02-24 10:59:54', NULL, NULL, 0, 100, 135, '88888888135', 3, 22, 0),
+(136, 'Gyorscsatlakozó Powerjet 1\"', 'Gyorscsatlakozó Powerjet 1\"', 1700, 0, '2026-02-24 10:59:54', NULL, NULL, 0, 100, 136, '88888888136', 4, 22, 0),
+(137, 'Összekötő 1/2\"', 'Összekötő 1/2\"', 600, 0, '2026-02-24 11:13:18', NULL, NULL, 0, 100, 137, '88888888137', 3, 23, 0),
+(138, 'Összekötő 3/4\"', 'Összekötő 3/4\"', 600, 0, '2026-02-24 11:13:18', NULL, NULL, 0, 100, 138, '88888888138', 3, 23, 0),
+(139, 'Összekötő 1\"', 'Összekötő 1\"', 1400, 0, '2026-02-24 11:13:18', NULL, NULL, 0, 100, 139, '888888888139', 3, 23, 0),
+(140, 'Összekötő 1/2\"-3/4\"', 'Összekötő 1/2\"-3/4\"', 550, 0, '2026-02-24 11:13:18', NULL, NULL, 0, 100, 140, '88888888140', 3, 23, 0),
+(141, 'Összekötő 3/4\"-1\"', 'Összekötő 3/4\"-1\"', 1400, 0, '2026-02-24 11:13:18', NULL, NULL, 0, 100, 141, '88888888141', 3, 23, 0),
+(142, 'Csapcsatlakozó 1/2\"-3/4\"', 'Csapcsatlakozó 1/2\"-3/4\"', 400, 0, '2026-02-24 11:44:29', NULL, NULL, 0, 100, 142, '88888888142', 3, 24, 0),
+(143, 'Csapcsatlakozó 3/4\"-1\"', 'Csapcsatlakozó 3/4\"-1\"', 400, 0, '2026-02-24 11:44:29', NULL, NULL, 0, 100, 143, '88888888143', 3, 24, 0),
+(144, 'Csapcsatlakozó vastag 3/4\"-1\"', 'Csapcsatlakozó vastag 3/4\"-1\"', 800, 0, '2026-02-24 11:44:29', NULL, NULL, 0, 100, 144, '88888888144', 3, 24, 0),
+(145, 'Csapcsatlakozó elzárható', 'Csapcsatlakozó elzárható', 800, 0, '2026-02-24 11:44:29', NULL, NULL, 0, 100, 145, '88888888145', 3, 24, 0),
+(146, 'Csapcsatlakozó külsőmenetes 3/4\"', 'Csapcsatlakozó külsőmenetes 3/4\"', 300, 0, '2026-02-24 11:44:29', NULL, NULL, 0, 100, 146, '88888888146', 3, 24, 0),
+(147, 'Csapcsatlakozó külsőmenetes vastag 3/4\"', 'Csapcsatlakozó külsőmenetes vastag 3/4\"', 400, 0, '2026-02-24 11:44:29', NULL, NULL, 0, 100, 147, '88888888147', 3, 24, 0),
+(148, 'Kuplung normál', 'Kuplung normál', 300, 0, '2026-02-24 12:12:33', NULL, NULL, 0, 100, 148, '88888888148', 3, 25, 0),
+(149, 'Kuplung vastag', 'Kuplung vastag', 450, 0, '2026-02-24 12:12:33', NULL, NULL, 0, 100, 149, '88888888149', 3, 25, 0),
+(150, 'Kuplung 1\"', 'Kuplung 1\"', 600, 0, '2026-02-24 12:12:33', NULL, NULL, 0, 100, 150, '88888888150', 3, 25, 0),
+(151, 'Kuplung elzárható', 'Kuplung elzárható', 800, 0, '2026-02-24 12:12:33', NULL, NULL, 0, 100, 151, '88888888151', 3, 25, 0);
 
 -- --------------------------------------------------------
 
@@ -1754,10 +1832,11 @@ INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone
 (10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
 (11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
 (12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(13, 'asdadasad@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$ojdkmaYKQNEw75vyk4Azlg$gTqHjf8YOMxUS8etGkpbOThqEslHT4oC1vqpX97ecaA', 'adadadasd', 'asdadsa', NULL, 'http://localhost:8080/pfp/default.png', 1, 0, NULL, '2026-02-22 17:20:25', NULL, NULL),
+(13, 'asdadasad@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$ojdkmaYKQNEw75vyk4Azlg$gTqHjf8YOMxUS8etGkpbOThqEslHT4oC1vqpX97ecaA', 'adadadasd', 'asdadsa', '-', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, '2026-02-23 12:24:25', NULL, NULL),
 (14, 'test@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$AlmRO5ZErc7T8cCdEge4VQ$Dcnfht4865P16+AY+i0bYh+uYnYiTbqFB/UhjsGKY7g', 'testUpdate', 'test', '06706285232', 'http://localhost:8080/pfp/14464639745_1052396210015983_856568762032357262_n.jpg', 1, 0, NULL, '2026-02-17 19:41:18', NULL, NULL),
 (15, 'test2@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$ohREETSjVyYm+Rf48odKFA$6YuNM79joGYzr9nxAhYx88LFuiOzlTc6vj9xmemcXzU', 'test2U', 'test2', NULL, 'http://localhost:8080/pfp/15464639745_1052396210015983_856568762032357262_n.jpg', 2, 0, NULL, '2026-02-17 18:35:06', NULL, NULL),
-(16, 'lalala@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$cc9rixcvbHAmCVQnUcyw2w$ABFHiZsUcEDHaw3e2Ge8OxDpPZCf5uaOv4D7Kjd+9dE', 'Teszt', 'lalala', NULL, 'assets/pfp/default.png', 1, 0, NULL, '2026-02-22 17:46:53', NULL, NULL);
+(16, 'lalala@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$cc9rixcvbHAmCVQnUcyw2w$ABFHiZsUcEDHaw3e2Ge8OxDpPZCf5uaOv4D7Kjd+9dE', 'Teszt', 'lalala', NULL, 'assets/pfp/default.png', 1, 0, NULL, '2026-02-22 17:46:53', NULL, NULL),
+(17, 'asd1@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$1uX4hdH8FJtHFxj1ymEHJw$NOPftVu6YUoQFwdSsOcTAX0AgzWwW2d4lJccYkHWluc', 'qewqweqeasdadasd', 'qeqweqweqwqeqwe', NULL, 'assets/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -1927,25 +2006,25 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `cart_product`
 --
 ALTER TABLE `cart_product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `details`
 --
 ALTER TABLE `details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- AUTO_INCREMENT for table `order_history`
@@ -1969,7 +2048,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- AUTO_INCREMENT for table `product_image`
@@ -2005,7 +2084,7 @@ ALTER TABLE `transport_detail`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables
