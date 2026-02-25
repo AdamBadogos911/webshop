@@ -1,0 +1,15 @@
+.container-fluid {
+  padding: 10px;
+  background-color: #8D8D8D;
+  color: white;
+  border-radius: 15px;
+  margin: 10px;
+}
+
+img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  margin: 10px;
+}
+

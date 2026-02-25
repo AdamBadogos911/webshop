@@ -12,3 +12,7 @@ a, p, span {
 img {
   width: 150px;
 }
+
+img:hover {
+  cursor: pointer;
+}

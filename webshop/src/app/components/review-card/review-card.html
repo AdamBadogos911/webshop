@@ -3,22 +3,21 @@
     <div class="row">
       <!-- <img [src]="review().product.images[0].imagePath" alt=""> -->
        <img src="" alt="">
-      <div>
+      <div class="col-lg-12 col-md-12 col-sm-12">
         <h4>{{review().product.name}}</h4>
         <p>{{review().reviewText}}</p>
       </div>
     </div>
   } @else {
     <div class="row">
-      <div class="col-lg-12 d-flex justify-content-lg-start justify-content-center align-items-center">
-        <img [src]="review().author.pfpPath" alt="" style="height: 50px; width: 50px;">
-        <p>{{review().author.firstName}} {{review().author.lastName}}</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-12">
-        <p class="m-0">{{review().reviewText}}</p>
+      <div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-lg-start align-items-center">
+        <img [src]="review().author.pfpPath" alt="">
+        <div class="row m-1">
+          <div class="col-lg-12">
+            <h5 class="m-1">{{review().author.lastName}} {{review().author.firstName}}</h5>
+            <span>{{review().reviewText}}</span>
+          </div>
+        </div>
       </div>
     </div>
   }
