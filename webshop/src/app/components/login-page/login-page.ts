@@ -13,11 +13,12 @@ export class LoginPage {
   private userService = inject(UserService);
   private router = inject(Router);
   loginForm!: FormGroup;
+  errorMsg: string | null = null
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      email: new FormControl("", [Validators.required, Validators.email]),
-      password: new FormControl("", [Validators.required, Validators.minLength(8)])
+      email: new FormControl("test@gmail.com", [Validators.required, Validators.email]),
+      password: new FormControl("test5.Asd", [Validators.required, Validators.minLength(8)])
     })
   }
 
@@ -27,8 +28,16 @@ export class LoginPage {
         this.userService.user = response;
       }, error: error => {
         console.log(error)
+        if (error.status == 404) {
+          this.errorMsg = "Rossz felhasználónév és/vagy jelszó."
+        } else {
+          this.errorMsg = "Hiba történt! Kérlek próbáld újra."
+        }
+
+        setTimeout(() => {
+          this.errorMsg = null
+        }, 2500)
       }, complete: () => {
-        console.log(this.userService.user)
         this.router.navigate(["/homePage"])
       }
     })
