@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 24, 2026 at 12:14 PM
+-- Generation Time: Feb 27, 2026 at 07:59 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -389,6 +389,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getMostViewedProducts` ()   BEGIN
     WHERE product.is_deleted = 0
     ORDER BY product.view_count DESC
     LIMIT 4;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOrderedProductOfMonth` (IN `monthNumber` INT)   BEGIN
+	SELECT p.id FROM product p
+    INNER JOIN order_product op ON
+    p.id = op.product_id
+    WHERE 
+    MONTH(op.created_at) = monthNumber;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getProductByCategoryID` (IN `categoryIdIN` INT)   BEGIN
