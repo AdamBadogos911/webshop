@@ -18,4 +18,8 @@ export class OrderService {
   sendOrder(cartId: number) {
     return this.http.post(`${this.baseUrl}/cart/${cartId}`, this.actualOrder)
   }
+
+  getAllOrderHistory():Observable<OrderHistory[]> {
+    return this.http.get<OrderHistory[]>(`${this.baseUrl}`)
+  }
 }
