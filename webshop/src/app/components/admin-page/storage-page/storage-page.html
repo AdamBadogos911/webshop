@@ -1,30 +1,14 @@
 <div class="container fluid">
   <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
       <h1>Termékek</h1>
     </div>
-    <div class="col-lg-6">
+    <!-- <div class="col-lg-6">
       <input type="text" placeholder="Keresés">
-    </div>
+    </div> -->
   </div>
   <div class="row">
-    <div class="col-lg-2">
-      <div class="row">
-        <div class="col-lg-12">
-          <h4>Rendezés</h4>
-          <p>Cikkszám</p>
-          <p>Terméknév</p>
-          <p>Márka</p>
-          <p>Raktáron</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <button>Új termék hozzáadása +</button>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-10">
+    <div class="col-lg-12">
       <table>
         <thead>
           <tr>
@@ -32,25 +16,25 @@
             <th>Terméknév</th>
             <th>Márka</th>
             <th>Bruttó ár</th>
-            <th>Akció</th>
-            <th>Akciós ár</th>
-            <th>Ratáron</th>
+            <th>Raktáron</th>
             <th>Kép</th>
             <th>Bővebben</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Cikkszám</td>
-            <td>Terméknév</td>
-            <td>Márka</td>
-            <td>Bruttó ár</td>
-            <td>Akció</td>
-            <td>Akciós ár</td>
-            <td>Ratáron</td>
-            <td>Kép</td>
-            <td><a href="">Bővebben</a></td>
-          </tr>
+          @for (product of products; track $index) {
+            <tr>
+              <td>{{product.stockKeepingUnit}}</td>
+              <td>{{product.name}}</td>
+              <td>{{product.brand.name}}</td>
+              <td>{{product.price}}</td>
+              <td>{{product.amount}}</td>
+              <td></td>
+
+              <td>
+                <span class="material-symbols-outlined">menu</span></td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

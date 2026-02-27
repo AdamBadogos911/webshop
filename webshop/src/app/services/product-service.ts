@@ -22,4 +22,8 @@ export class ProductService {
   getMostViewedProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.baseUrl}/mostViewed`)
   }
+
+  getAllProduct(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.baseUrl)
+  }
 }
