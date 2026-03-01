@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController()
 @RequestMapping("/category")
 @RequiredArgsConstructor
-
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -31,19 +31,18 @@ public class CategoryController {
         return categoryService.getAllSubCategoryFromMainCategory(mainCategoryId);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<Object> addCategory(@RequestBody Category newCategory) {
         return categoryService.addCategory(newCategory);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<Object> updateCategory(@RequestBody Category updatedCategory) {
-        return categoryService.updateCategory((updatedCategory));
+        return categoryService.updateCategory(updatedCategory);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteCategory(@PathVariable("id") Integer categoryId) {
         return categoryService.deleteCategory(categoryId);
     }
-
 }

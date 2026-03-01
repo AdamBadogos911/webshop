@@ -7,25 +7,20 @@ import com.example.badogosShop.entity.User;
 import com.example.badogosShop.repository.CartRepository;
 import com.example.badogosShop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.ConstraintViolationException;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -57,60 +52,53 @@ public class UserService {
     }
 
     public ResponseEntity<Object> register(User newUser) {
-        try {
-            if (newUser == null) {
-                return ResponseEntity.status(422).build();
-            }
 
-            if (newUser.getId() != null) {
-                return ResponseEntity.status(415).body("invalidObject");
-            } else if (!isEmailValid(newUser.getEmail())) {
-                return ResponseEntity.status(415).body("invalidEmail");
-            } else if (!isPasswordValid(newUser.getPassword())) {
-                return ResponseEntity.status(415).body("invalidPassword");
-            } else {
-                newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-                User registeredUser = userRepository.save(newUser);
-                cartRepository.save(new Cart(registeredUser));
-
-                try {
-                    emailSender.sendEmailAboutRegistration(newUser.getEmail());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return ResponseEntity.internalServerError().build();
-                }
-
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        if (newUser == null) {
+            return ResponseEntity.status(422).build();
         }
+
+        if (newUser.getId() != null) {
+            return ResponseEntity.status(415).body("invalidObject");
+        } else if (!isEmailValid(newUser.getEmail())) {
+            return ResponseEntity.status(415).body("invalidEmail");
+        } else if (!isPasswordValid(newUser.getPassword())) {
+            return ResponseEntity.status(415).body("invalidPassword");
+        } else {
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            User registeredUser = userRepository.save(newUser);
+            cartRepository.save(new Cart(registeredUser));
+
+            try {
+                emailSender.sendEmailAboutRegistration(newUser.getEmail());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.internalServerError().build();
+            }
+
+            newUser.setPfpPath("http://localhost:8080/pfp/default.png");
+            return ResponseEntity.ok().build();
+        }
+
     }
 
     public ResponseEntity<Object> update(Integer id, UserUpdate updatedUser) {
-        try {
-            if (id == null || updatedUser == null) {
-                return ResponseEntity.status(422).build();
-            }
-            User searchedUser = userRepository.findById(id).orElse(null);
-            if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            }
-            if (!isEmailValid(updatedUser.email())) {
-                return ResponseEntity.status(415).body("invalidEmail");
-            } else {
-                searchedUser.setEmail(updatedUser.email());
-                searchedUser.setPhoneNumber(updatedUser.phoneNumber());
-                searchedUser.setFirstName(updatedUser.firstName());
-                searchedUser.setLastName(updatedUser.lastName());
-                System.out.println("MENTES");
+        if (id == null || updatedUser == null) {
+            return ResponseEntity.status(422).build();
+        }
+        User searchedUser = userRepository.findById(id).orElse(null);
+        if (searchedUser == null || searchedUser.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        }
+        if (!isEmailValid(updatedUser.email())) {
+            return ResponseEntity.status(415).body("invalidEmail");
+        } else {
+            searchedUser.setEmail(updatedUser.email());
+            searchedUser.setPhoneNumber(updatedUser.phoneNumber());
+            searchedUser.setFirstName(updatedUser.firstName());
+            searchedUser.setLastName(updatedUser.lastName());
+            System.out.println("MENTES");
 
-                return ResponseEntity.ok().body(userRepository.save(searchedUser));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.ok().body(userRepository.save(searchedUser));
         }
     }
 
@@ -172,14 +160,14 @@ public class UserService {
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                String verificationCode = generateVerificationCode();
+                String vCode = generateVerificationCode();
                 try {
-                    emailSender.sendVerificationCodeForPasswordReset(email, verificationCode);
+                    emailSender.sendVerificationCodeForPasswordReset(email, vCode);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return ResponseEntity.internalServerError().build();
                 }
-                searchedUser.setVerificationCode(passwordEncoder.encode(verificationCode));
+                searchedUser.setVCode(passwordEncoder.encode(vCode));
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
@@ -188,9 +176,9 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> checkVerificationCode(String verificationCode, String email) {
+    public ResponseEntity<Object> checkVerificationCode(String vCode, String email) {
         try {
-            if (verificationCode == null || email == null) {
+            if (vCode == null || email == null) {
                 return ResponseEntity.status(422).build();
             }
             if (!isEmailValid(email)) {
@@ -201,7 +189,7 @@ public class UserService {
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.internalServerError().build();
             } else {
-                return ResponseEntity.ok().body(passwordEncoder.matches(verificationCode, searchedUser.getVCode()));
+                return ResponseEntity.ok().body(passwordEncoder.matches(vCode, searchedUser.getVCode()));
             }
         } catch (Exception e) {
             e.printStackTrace();

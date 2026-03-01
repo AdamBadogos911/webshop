@@ -10,8 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.JsonNode;
 
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -60,4 +58,3 @@ public class UserController {
     }
 
 }
-

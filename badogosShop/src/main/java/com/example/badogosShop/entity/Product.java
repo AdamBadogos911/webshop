@@ -3,7 +3,10 @@ package com.example.badogosShop.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -19,7 +22,13 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "getMostViewedProducts", procedureName = "getMostViewedProducts", resultClasses = Product.class)
+        @NamedStoredProcedureQuery(name = "getMostViewedProducts", procedureName = "getMostViewedProducts", resultClasses = Product.class),
+        @NamedStoredProcedureQuery(name = "getOrderedProductOfMonth", procedureName = "getOrderedProductOfMonth", parameters = {
+                @StoredProcedureParameter(name = "monthNumber", mode = ParameterMode.IN, type = Integer.class)
+        }, resultClasses = Integer.class),
+        @NamedStoredProcedureQuery(name = "getProductById", procedureName = "getProductById", parameters = {
+                @StoredProcedureParameter(name = "idIN", mode = ParameterMode.IN, type = Integer.class)
+        }, resultClasses = Product.class)
 })
 public class Product {
 
@@ -72,7 +81,7 @@ public class Product {
     @Column(name = "view_count")
     private Long viewCount;
 
-    @OneToOne(cascade = {})
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "detail_id")
     private Details detail;
 
@@ -100,4 +109,16 @@ public class Product {
     @JsonIgnore
     private List<CartProduct> cartProductList;
 
+    public Product(String name, Brand brand, Integer amount, Integer price, Details detail, String stockKeepingUnit, String description) {
+        this.name = name;
+        this.brand = brand;
+        this.amount = amount;
+        this.price = price;
+        this.detail = detail;
+        this.stockKeepingUnit = stockKeepingUnit;
+        this.isDeleted = false;
+        this.description = description;
+    }
+
 }
+

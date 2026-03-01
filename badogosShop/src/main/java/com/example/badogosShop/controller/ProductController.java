@@ -1,15 +1,12 @@
 package com.example.badogosShop.controller;
 
+import com.example.badogosShop.dto.ProductDto;
 import com.example.badogosShop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/product")
@@ -42,5 +39,16 @@ public class ProductController {
     public ResponseEntity<Object> getMostViewedProducts() {
         return productService.getMostViewedProducts();
     }
-}
 
+    @PostMapping
+    public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto) {
+        return productService.addProduct(productDto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateProduct(@PathVariable("id") Integer id, @RequestBody ProductDto updatedProduct) {
+        return productService.updateProduct(id, updatedProduct);
+    }
+
+
+}

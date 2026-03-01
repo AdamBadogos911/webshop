@@ -1,10 +1,13 @@
 package com.example.badogosShop.service;
 
+mport com.example.badogosShop.config.email.EmailSender;
 import com.example.badogosShop.config.email.EmailSender;
 import com.example.badogosShop.entity.*;
 import com.example.badogosShop.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +19,6 @@ import java.util.regex.Pattern;
 @Service
 @Transactional
 @RequiredArgsConstructor
-
 public class OrderService {
 
     private final OrderHistoryRepository orderHistoryRepository;
@@ -26,30 +28,30 @@ public class OrderService {
     private final AddressTypeRepository addressTypeRepository;
     private final ProductRepository productRepository;
     private final CartRepository basketRepository;
+    private final TransportDetailRepository transportDetailRepository;
+    private final BillingDetailRepository billingDetailRepository;
     private final EmailSender emailSender;
 
     public ResponseEntity<Object> getOrderHistoryByUserId(Integer userId) {
         try {
-            if(userId == null) {
+            if (userId == null) {
                 return ResponseEntity.status(422).build();
             }
-
-            User searchedUser = userRepository.getUserById(userId).orElse(null);
+            User searchedUser = userRepository.findById(userId).orElse(null);
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
 
-            return ResponseEntity.internalServerError().build()
+            return ResponseEntity.ok().body(searchedUser.getOrderHistoryList());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
 
-
     public ResponseEntity<Object> cancelOrder(Integer orderId, Integer cancelerUserId) {
         try {
-            if (orderid == null) {
+            if (orderId == null) {
                 return ResponseEntity.status(422).build();
             }
             OrderHistory searchedOrderHistory = orderHistoryRepository.findById(orderId).orElse(null);
@@ -75,22 +77,12 @@ public class OrderService {
             searchedOrderHistory.setCanceledAt(LocalDateTime.now());
             searchedOrderHistory.setIsCanceled(true);
             orderHistoryRepository.save(searchedOrderHistory);
-            return ResponseEntity.ok().body();
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
-
-    public ResponseEntity<Object> getAllOrder() {
-        try {
-            return ResponseEntity.ok().body(orderHistoryRepository.findAll());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
 
     public ResponseEntity<Object> sendOrder(OrderHistory newOrder, Integer basketId) {
         try {
@@ -99,7 +91,7 @@ public class OrderService {
             }
 
             if (newOrder.getOrderUser() != null) {
-                User searchedUser = userRepository.getUserById(newOrder.getOrderUser().getId()).orElse(null));
+                User searchedUser = userRepository.findById(newOrder.getOrderUser().getId()).orElse(null);
                 if (searchedUser == null || searchedUser.getIsDeleted()) {
                     return ResponseEntity.status(404).body("userNotFound");
                 }
@@ -123,8 +115,10 @@ public class OrderService {
             } else if (!isBillingDetailValid(newOrder.getOrderBillingDetail())) {
                 return ResponseEntity.status(415).body("invalidBillingDetails");
             } else if (!isTransportDetailValid(newOrder.getOrderTransportDetail())) {
-                return ResponseEntity.status(415).body("invalidBillingDetails");
+                return ResponseEntity.status(415).body("invalidTransportDetails");
             }
+
+
 
             int sumPrice = 0;
             List<OrderProduct> orderedProductList = new ArrayList<>();
@@ -146,9 +140,12 @@ public class OrderService {
             }
 
             System.out.println(sumPrice);
-
+            newOrder.setOrderTransportDetail(transportDetailRepository.save(newOrder.getOrderTransportDetail()));
+            newOrder.setOrderBillingDetail(billingDetailRepository.save(newOrder.getOrderBillingDetail()));
             newOrder.setProducts(orderedProductList);
             newOrder.setStatus(statusRepository.findById(1).get());
+            newOrder.setIsCanceled(false);
+            newOrder.setOrderId(123);
             orderHistoryRepository.save(newOrder);
 
             return ResponseEntity.ok().build();
@@ -158,62 +155,75 @@ public class OrderService {
         }
     }
 
-    public ResponseEntity<Object> getAllOrderHistory() {
-        return null;
+    public ResponseEntity<Object> getAllOrderHistory(Pageable pageable) {
+        try {
+            Page<OrderHistory> returnList = orderHistoryRepository.findAll(pageable);
+            return ResponseEntity.ok().body(returnList.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
+
+
     public Boolean isBillingDetailValid(BillingDetail billingDetail) {
-        if (billingDetail.getId() != null ) {
+        if (billingDetail.getId() != null) {
             return false;
         }
-        AddressType serchedAddressType = addressTypeRepository.findById(billingDetail.getBillingAddressType().getId()).orElse(null);
+        AddressType searchedAddressType = addressTypeRepository.findById(billingDetail.getBillingAddressType().getId()).orElse(null);
         if (searchedAddressType == null) {
             return false;
-        } else if (!isValidAddress(billingDetail.getPostCode(), billingDetail.getTown())) {
-            return false;
         }
-
+        else if (!isValidAddress(billingDetail.getPostCode(), billingDetail.getTown())) {
+           return false;
+       }
         if (billingDetail.getTaxNumber() != null) {
             if (!isValidTaxNumber(billingDetail.getTown())) {
                 return false;
             }
         }
+
         return true;
     }
 
     public Boolean isTransportDetailValid(TransportDetail transportDetail) {
         if (transportDetail.getId() != null) {
             return false;
-        } else if (!isValidAddress(transportDetail.getPostCode(), transportDetail.getTown())) {
+        }
+        AddressType searchedAddressType = addressTypeRepository.findById(transportDetail.getTransportAddressType().getId()).orElse(null);
+        if (searchedAddressType == null) {
+            return false;
+        }
+       else if (!isValidAddress(transportDetail.getPostCode(), transportDetail.getTown())) {
             return false;
         }
         return true;
     }
 
-    public Boolean isValidAddress(Integer postCode, String town) {
-        ArrayList<List<String>> townList = new ArrayList<>();
-
-        try {
-            File txt = new File("src/main/java/com/example/bookStore/service/telepulesek.txt");
-            Scanner reader = new Scanner(txt);
-
-            while (reader.hasNextLine()) {
-                townList.add(Arrays.stream(reader.nextLine().split("\t")).toList().subList(0, 2));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        for (List<String> i : townList) {
-            if (i.get(0).equals(postCode.toString()) && i.get(1).toLowerCase().equals(town.toLowerCase())) {
-                return true;
-            }
-        }
-
-        return false;
-
-    }
+//    public Boolean isValidAddress(Integer postCode, String town) {
+//        ArrayList<List<String>> townList = new ArrayList<>();
+//
+//        try {
+//            File txt = new File("src/main/java/com/example/bookStore/service/telepulesek.txt");
+//            Scanner reader = new Scanner(txt);
+//
+//            while (reader.hasNextLine()) {
+//                townList.add(Arrays.stream(reader.nextLine().split("\t")).toList().subList(0, 2));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//
+//        for (List<String> i : townList) {
+//            if (i.get(0).equals(postCode.toString()) && i.get(1).toLowerCase().equals(town.toLowerCase())) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     public Boolean isValidTaxNumber(String taxNumber) {
         ArrayList<String> taxNumbersOfArea = new ArrayList<>(Arrays.asList("02", "22", "03", "23", "04", "24", "05", "25", "06", "26", "07", "27", "08", "28", "09", "29", "10", "30", "11", "31", "12", "32", "13", "33", "14", "34", "15", "35", "16", "36", "17", "37", "18", "38", "19", "39", "20", "40", "41", "42", "43", "44", "51"));
@@ -227,7 +237,6 @@ public class OrderService {
             return false;
         }
         return true;
-
     }
 
     public Boolean isEmailValid(String email) {
@@ -241,6 +250,7 @@ public class OrderService {
     public Boolean isPhoneValid(String phoneNumber) {
         ArrayList<String> phoneServiceCodes = new ArrayList<String>(Arrays.asList("30", "20", "70", "50", "31"));
         return phoneServiceCodes.contains(phoneNumber.substring(0, 2)) && phoneNumber.length() == 9;
+        return true;
     }
 
     public String generateVerificationCode() {
@@ -252,8 +262,4 @@ public class OrderService {
 
         return verificationCode;
     }
-
-
 }
-
-

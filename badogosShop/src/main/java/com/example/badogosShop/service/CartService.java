@@ -20,7 +20,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
+@Transactional
 public class CartService {
 
     private final CartRepository cartRepository;
@@ -143,6 +143,7 @@ public class CartService {
                 return ResponseEntity.status(415).body("");
             }
 
+//            List<BasketProduct> products = searchedBasket.getProductList();
             cartProductRepository.save(new CartProduct(amount, searchedProduct, searchedCart));
             cartRepository.save(searchedCart);
             return ResponseEntity.ok().build();

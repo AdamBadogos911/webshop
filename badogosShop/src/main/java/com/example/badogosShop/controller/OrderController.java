@@ -4,16 +4,16 @@ import com.example.badogosShop.entity.OrderHistory;
 import com.example.badogosShop.service.OrderService;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
-
 public class OrderController {
 
-    private OrderService orderService;
+    private final OrderService orderService;
 
     @GetMapping("/user/{id}")
     public ResponseEntity<Object> getOrderHistoryByUserId(@PathVariable("id") Integer userId) {
@@ -25,14 +25,14 @@ public class OrderController {
         return orderService.cancelOrder(orderId, requestBody.get("cancelerUserId").asInt());
     }
 
-    @GetMapping("")
-    public ResponseEntity<Object> getAllOrder() {
-        return orderService.getAllOrder();
+    @GetMapping
+    public ResponseEntity<Object> getAllOrder(Pageable  pageable) {
+        return orderService.getAllOrderHistory(pageable);
     }
 
-    @PostMapping("/basket/{id}")
-    public ResponseEntity<Object> sendOrder(@RequestBody OrderHistory newOrder, @PathVariable("id") Integer baskedId) {
-        return orderService.sendOrder(newOrder, baskedId);
+    @PostMapping("/cart/{id}")
+    public ResponseEntity<Object> sendOrder(@RequestBody OrderHistory newOrder, @PathVariable("id") Integer basketId) {
+        return orderService.sendOrder(newOrder, basketId);
     }
-
 }
+

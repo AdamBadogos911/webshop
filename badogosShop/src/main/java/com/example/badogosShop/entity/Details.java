@@ -51,10 +51,29 @@ public class Details {
     @Null
     private Boolean isSet;
 
-    @OneToOne(mappedBy = "detail", cascade = {})
+    @OneToOne(mappedBy = "detail", cascade = CascadeType.ALL)
     @JsonIgnore
     private Product product;
 
+    public Details(Double weightInKg, String material, Double lengthInCm, Double heightInCm, Double widthInCm, String size, Boolean isSet) {
+        this.weightInKg = weightInKg;
+        this.material = material;
+        this.lengthInCm = lengthInCm;
+        this.heightInCm = heightInCm;
+        this.widthInCm = widthInCm;
+        this.size = size;
+        this.isSet = isSet;
+    }
 
+    public Details(Integer id, Double weightInKg, String material, Double lengthInCm, Double heightInCm, Double widthInCm, String size, Boolean isSet, Product product) {
+        this.id = id;
+        this.weightInKg = weightInKg;
+        this.material = material;
+        this.lengthInCm = lengthInCm;
+        this.heightInCm = heightInCm;
+        this.widthInCm = widthInCm;
+        this.size = size;
+        this.isSet = isSet;
+        this.product = product;
+    }
 }
-

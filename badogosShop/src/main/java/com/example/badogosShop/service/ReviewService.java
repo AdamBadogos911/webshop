@@ -33,7 +33,7 @@ public class ReviewService {
             }
 
             Product searchedProduct = productRepository.findById(newReview.getProduct().getId()).orElse(null);
-            User author = userRepository.getUserById(newReview.getAuthor().getId()).orElse(null);
+            User author = userRepository.findById(newReview.getAuthor().getId()).orElse(null);
 
             if (searchedProduct == null || searchedProduct.getIsDeleted()) {
                 return ResponseEntity.status(404).body("bookNotFound");
@@ -129,3 +129,4 @@ public class ReviewService {
         }
     }
 }
+

@@ -1,7 +1,11 @@
 package com.example.badogosShop.service;
 
+import com.example.badogosShop.dto.ProductDto;
+import com.example.badogosShop.entity.Brand;
 import com.example.badogosShop.entity.Category;
+import com.example.badogosShop.entity.Details;
 import com.example.badogosShop.entity.Product;
+import com.example.badogosShop.repository.BrandRepository;
 import com.example.badogosShop.repository.CategoryRepository;
 import com.example.badogosShop.repository.ProductRepository;
 
@@ -19,13 +23,15 @@ import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
+@Transactional
 public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final BrandRepository brandRepository;
 
     public ResponseEntity<Object> getProductsByCategory(Pageable pageable, Integer categoryId) {
         try {
@@ -81,6 +87,9 @@ public class ProductService {
             if (searchedProduct == null || searchedProduct.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
+            searchedProduct.setViewCount(searchedProduct.getViewCount() + 1);
+            productRepository.save(searchedProduct);
+
             return ResponseEntity.ok().body(searchedProduct);
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -88,11 +97,63 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Object> addProduct() {
-        return null;
+    public ResponseEntity<Object> getMostViewedProducts() {
+        try {
+            return ResponseEntity.ok().body(productRepository.getMostViewedProducts());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
-    public ResponseEntity<Object> updateProduct() {
-        return null;
+    public ResponseEntity<Object> getStatistic(Integer monthNumber) {
+        try {
+            List<Integer> orderedProductOfMonth = productRepository.getOrderedProductOfMonth(monthNumber);
+
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> addProduct(ProductDto newProductDto) {
+        Brand searchedBrand = brandRepository.getBrandById(newProductDto.brandId()).orElse(null);
+        if (searchedBrand == null || searchedBrand.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Product newProduct = new Product(
+                newProductDto.name(),
+                searchedBrand,
+                newProductDto.amount(),
+                newProductDto.price(),
+                new Details(newProductDto.weightInKg(), newProductDto.material(), newProductDto.lengthInCm(), newProductDto.heightInCm(), newProductDto.widthInCm(), newProductDto.size(), newProductDto.isSet()),
+                newProductDto.stockKeepingUnit(),
+                newProductDto.description());
+
+        return ResponseEntity.ok().body(productRepository.save(newProduct));
+    }
+
+    public ResponseEntity<Object> updateProduct(Integer id, ProductDto updatedProductDto) {
+        Product searchedProduct = productRepository.getProductById(id).orElse(null);
+        if (searchedProduct == null || searchedProduct.getIsDeleted()) {
+            return ResponseEntity.status(404).body("productNotFound");
+        }
+
+        Brand searchedBrand = brandRepository.getBrandById(updatedProductDto.brandId()).orElse(null);
+        if (searchedBrand == null || searchedBrand.getIsDeleted()) {
+            return ResponseEntity.status(404).body("brandNotFound");
+        }
+
+        searchedProduct.setName(updatedProductDto.name());
+        searchedProduct.setBrand(searchedBrand);
+        searchedProduct.setAmount(updatedProductDto.amount());
+        searchedProduct.setPrice(updatedProductDto.price());
+        searchedProduct.setDetail(new Details(searchedProduct.getDetail().getId() ,updatedProductDto.weightInKg(), updatedProductDto.material(), updatedProductDto.lengthInCm(), updatedProductDto.heightInCm(), updatedProductDto.widthInCm(), updatedProductDto.size(), updatedProductDto.isSet(), searchedProduct));
+        searchedProduct.setStockKeepingUnit(updatedProductDto.stockKeepingUnit());
+        searchedProduct.setDescription(updatedProductDto.description());
+
+        return ResponseEntity.ok().body(productRepository.save(searchedProduct));
     }
 }

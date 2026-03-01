@@ -19,7 +19,12 @@ import java.util.List;
 @Setter
 @ToString
 @NoArgsConstructor
-
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllBrand", procedureName = "getAllBrand", resultClasses = Brand.class),
+        @NamedStoredProcedureQuery(name = "getBrandById", procedureName = "getBrandById", parameters = {
+                @StoredProcedureParameter(name = "idIN", mode = ParameterMode.IN, type = Integer.class)
+        }, resultClasses = Brand.class)
+})
 public class Brand {
 
     @Id
@@ -35,7 +40,7 @@ public class Brand {
     @Column(name = "is_deleted")
     @NotNull
     @JsonIgnore
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
@@ -48,3 +53,4 @@ public class Brand {
 
 
 }
+

@@ -10,19 +10,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/review")
 @RequiredArgsConstructor
-
 public class ReviewController {
 
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
 
-    @PostMapping("")
+    @PostMapping
     private ResponseEntity<Object> addReview(@RequestBody Review newReview) {
         return reviewService.addReview(newReview);
     }
 
-    @PutMapping("")
+    @PutMapping
     private ResponseEntity<Object> updateReview(@RequestBody JsonNode updatedReview) {
-        return reviewService.updateReview(updatedReview.get("id").asInt(0), updatedReview.get("reviewText").asText(null) );
+        return reviewService.updateReview(updatedReview.get("id").asInt(0), updatedReview.get("reviewText").asText(null));
     }
 
     @DeleteMapping("/{id}")
@@ -32,13 +31,12 @@ public class ReviewController {
 
     @GetMapping("/user/{id}")
     private ResponseEntity<Object> getReviewsByUser(@PathVariable("id") Integer id) {
-        return reviewService.getReviewByUser(id);
+        return reviewService.gerReviewByUser(id);
     }
 
     @GetMapping("/product/{id}")
     private ResponseEntity<Object> getReviewByProduct(@PathVariable("id") Integer id) {
         return reviewService.getReviewByProductId(id);
     }
-
-
 }
+
