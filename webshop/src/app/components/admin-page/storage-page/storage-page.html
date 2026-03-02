@@ -27,7 +27,6 @@
               <td>{{product.price}}</td>
               <td>{{product.amount}}</td>
               <td></td>
-
               <td>
                 <button (click)="selectedProduct = product; showEditor = true">
                   <span class="material-symbols-outlined">menu</span>
@@ -37,12 +36,10 @@
           }
         </tbody>
       </table>
-
       <button (click)="showEditor = true">Termék hozzáadása</button>
     </div>
   </div>
 </div>
-
 @if (showEditor) {
   <app-product-editor [product]="selectedProduct" (save)="addProductToList($event)"/>
 }

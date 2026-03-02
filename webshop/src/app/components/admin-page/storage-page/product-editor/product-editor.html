@@ -1,9 +1,100 @@
-<div class="container-fluid" id="mainContainer">
+<div class="container-fluid d-flex justify-content-center align-items-center" id="mainContainer">
   <div class="row">
     <div class="col-lg-12">
       <div class="container-fluid" id="secondContainer">
         <form class="container-fluid" [formGroup]="editorForm">
-
+          <div class="row">
+            <div class="col-lg-2">
+              <label>Cikkszám</label>
+              <input type="text" class="form-control" formControlName="stockKeepingUnit">
+            </div>
+            <div class="col-lg-2">
+              <label>Terméknév</label>
+              <input type="text" class="form-control" formControlName="name">
+            </div>
+            <div class="col-lg-2">
+              <label>Márka</label>
+              <select name="" id="" class="form-select" formControlName="brand">
+                <option value="">Válaszd ki a márkát</option>
+                @for (brand of brands; track $index) {
+                  <option [value]="brand.id">{{brand.name}}</option>
+                }
+              </select>
+            </div>
+            <div class="col-lg-2">
+              <label>Raktáron</label>
+              <div>
+                <button>-</button>
+                <input type="number" formControlName="amount">
+                <button>+</button>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <label>Bruttó Ár</label>
+              <input type="number" class="form-control" formControlName="price">
+            </div>
+            <div class="col-lg-2">
+              <label for="">Kategória</label>
+              <select name="" id="" class="form-select" formControlName="category">
+                <option value="" selected disabled>Válaszd ki a kategóriát</option>
+                @for (category of categories; track $index) {
+                  <option [value]="category.id">{{category.name}}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2">
+              <label>Súly</label>
+              <input type="number" name="" id="" class="form-control" formControlName="weightInKg">
+            </div>
+            <div class="col-lg-2">
+              <label>Hossz</label>
+              <input type="number" name="" id="" class="form-control" formControlName="lengthInCm">
+            </div>
+            <div class="col-lg-2">
+              <label>Szélesség</label>
+              <input type="number" name="" id="" class="form-control" formControlName="widthInCm">
+            </div>
+            <div class="col-lg-2">
+              <label>Magasság</label>
+              <input type="number" name="" id="" class="form-control" formControlName="heightInCm">
+            </div>
+            <div class="col-lg-2">
+              <label>Méret</label>
+              <input type="number" name="" id="" class="form-control" formControlName="size">
+            </div>
+            <div class="col-lg-2">
+              <label>Anyaga</label>
+              <input type="text" name="" id="" class="form-control" formControlName="material">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <label for="">Leirás</label>
+              <textarea name="" id="" class="form-control" formControlName="description"></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <label for="">Képek</label>
+              <input type="file" name="" id="">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div>
+                <input type="radio" name="" id="">
+                <label for="">Szett-ben áruljuk</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 d-flex justify-content-between">
+              <button>Mégse</button>
+              <button (click)="saveChanges()">Adatok mentése</button>
+            </div>
+          </div>
         </form>
       </div>
     </div>
