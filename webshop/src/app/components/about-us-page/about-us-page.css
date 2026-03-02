@@ -1,0 +1,17 @@
+.container-fluid {
+  min-height: 50vh;
+}
+
+h1 {
+  margin: 30px;
+  text-align: center;
+}
+
+img {
+  margin: 10px;
+}
+
+p {
+  margin: 20px;
+  text-align: justify;
+}
