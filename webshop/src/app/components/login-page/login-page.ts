@@ -17,8 +17,8 @@ export class LoginPage {
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      email: new FormControl("test@gmail.com", [Validators.required, Validators.email]),
-      password: new FormControl("test5.Asd", [Validators.required, Validators.minLength(8)])
+      email: new FormControl("", [Validators.required, Validators.email]),
+      password: new FormControl("", [Validators.required, Validators.minLength(8)])
     })
   }
 
