@@ -4,7 +4,7 @@
   width: 100%;
   height: 100px;
   margin-top: 20px;
-  position: fixed;
+  position: relative;
   bottom: 0;
 }
 
@@ -28,6 +28,9 @@ button {
   margin: 5px;
   padding: 5px;
   border-radius: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  align-items: center;
+  vertical-align: middle;
 }
 
 p {
@@ -47,6 +50,16 @@ p {
 }
 
 .email {
-  background-color: #2F75EC;
+  background-color: #48616D;
   height: 34px;
+  color: white;
+}
+
+.fb {
+  height: 34px;
+  background-color: #48616D;
+}
+.fb img{
+  height: 24px;
+  margin-bottom: 4px;
 }
