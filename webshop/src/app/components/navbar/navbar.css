@@ -59,7 +59,9 @@ li:hover {
 
 .icon-button span {
   vertical-align: middle;
-  text-align: right
+  text-align: right;
+  color: white;
+  margin: 2px;
 }
 
 .nav-item span{

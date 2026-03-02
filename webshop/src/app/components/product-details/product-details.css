@@ -5,6 +5,9 @@
   padding: 5px 10px;
   color: #fff;
   font-size: x-large;
+  justify-content: center;
+  float: right;
+  margin: 10px;
 }
 
 .carousel-indicators {
@@ -57,4 +60,10 @@ p {
   font-size: large;
   display: block;
   justify-self: right;
+}
+
+.price {
+  font-family: 'Rubik', sans-serif;
+  font-weight: medium ;
+  font-size: 25px;
 }

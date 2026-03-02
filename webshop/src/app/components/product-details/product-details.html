@@ -61,8 +61,9 @@
       @if (selectedProduct.brand.name.toString() != "non") {
         <h3 class="text-lg-start text-center">{{ selectedProduct.brand.name }}</h3>
       }
+
       <div class="w-100 d-flex justify-content-between align-items-center">
-        <h4>{{ selectedProduct.price }},-FT</h4>
+        <h4 class="price">{{ selectedProduct.price }},-FT</h4>
         <select #amountSelect>
           <option value="1" selected>1 db</option>
           <option value="2">2 db</option>
@@ -71,7 +72,7 @@
           <option value="5">5 db</option>
         </select>
       </div>
-      <button id="buyButton" (click)="addToCart(+amountSelect.value)">Vásárlás</button>
+      <button id="buyButton" (click)="addToCart(+amountSelect.value)">Kosárba</button>
     </div>
   </div>
 
@@ -110,12 +111,12 @@
   </div>
 
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-md-12 col-sm-12">
       <h1>Hasonló termékek:</h1>
       <div class="container-fluid">
         <div class="row">
           @for (product of similarProducts; track $index) {
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
               <app-product-card [product]="product" />
             </div>
           }
