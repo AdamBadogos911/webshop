@@ -58,8 +58,9 @@
 
     <div class="col-lg-6 col-md-6 col-sm-6">
       <h1 class="text-lg-start text-center">{{ selectedProduct.name }}</h1>
-      <h3 class="text-lg-start text-center">{{ selectedProduct.brand.name }}</h3>
-
+      @if (selectedProduct.brand.name.toString() != "non") {
+        <h3 class="text-lg-start text-center">{{ selectedProduct.brand.name }}</h3>
+      }
       <div class="w-100 d-flex justify-content-between align-items-center">
         <h4>{{ selectedProduct.price }},-FT</h4>
         <select #amountSelect>

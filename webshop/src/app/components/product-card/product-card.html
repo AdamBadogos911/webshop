@@ -2,7 +2,11 @@
   <div class="row">
     <div class="kep col-lg-12 d-flex flex-column justify-content-center align-items-center">
       <img src="assets/kulcskeszlet.png" alt="Keszlet" class="img-fluid my-4">
-      <h4 class="w-100 text-lg-start text-center">{{product().brand.name}} - {{product().name}}</h4>
+      @if (product().brand.name.toString() == "non"){
+        <h4 class="w-100 text-lg-start text-center">{{product().name}}</h4>
+      } @else {
+        <h4 class="w-100 text-lg-start text-center">{{product().brand.name}} - {{product().name}}</h4>
+      }
     </div>
   </div>
 
