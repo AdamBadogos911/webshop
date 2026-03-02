@@ -1,0 +1,12 @@
+h1 {
+  margin: 50px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' ,
+  'opsz' 50;
+  font-size: 80px;
+}
