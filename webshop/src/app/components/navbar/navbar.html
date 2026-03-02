@@ -3,9 +3,6 @@
     <a routerLink="/homePage" class="navbar-brand">
       <img src="" alt="Logo">
     </a>
-    <form id="search" action="" role="search">
-      <input class="form-control shadow" type="search" placeholder="Keresés" aria-label="Keresés">
-    </form>
 
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto">
@@ -18,6 +15,12 @@
         <li class="nav-item">
           <a routerLink="/aboutUs">Rólunk</a>
         </li>
+
+        @if (userService.user?.role?.name == "ROLE_admin") {
+          <li class="nav-item">
+            <a routerLink="/adminPage">Admin</a>
+          </li>
+        }
       </ul>
     </div>
 
