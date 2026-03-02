@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 27, 2026 at 07:59 AM
+-- Generation Time: Mar 02, 2026 at 12:01 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1207,7 +1207,9 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 (33, '1/2\"', 30, 0, NULL),
 (34, '3/4\"', 30, 0, NULL),
 (35, 'Műanyag', 32, 0, NULL),
-(36, 'Egyenes', 32, 0, NULL);
+(36, 'Egyenes', 32, 0, NULL),
+(37, 'Bőr', 9, 0, NULL),
+(38, 'Poliészter', 9, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1382,7 +1384,30 @@ INSERT INTO `details` (`id`, `size`, `material`, `weight`, `length`, `height`, `
 (148, 'Normál', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (149, 'Vastag', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (150, '1\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(151, '', 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL);
+(151, '', 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(152, 'Normál', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(153, 'Vastag', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(154, 'Vastag vegyes', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(155, '1\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(156, NULL, 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(157, NULL, 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(158, 'normál', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(159, 'vastag', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(160, NULL, 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(161, NULL, 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(162, '1/2\"', NULL, NULL, 2000, NULL, NULL, NULL, NULL),
+(163, '1/2\"', NULL, NULL, 5000, NULL, NULL, NULL, NULL),
+(164, '3/4\"', NULL, NULL, 2000, NULL, NULL, NULL, NULL),
+(165, '3/4\"', NULL, NULL, 5000, NULL, NULL, NULL, NULL),
+(166, NULL, 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(167, NULL, 'Műanyag', NULL, NULL, NULL, NULL, NULL, NULL),
+(168, '1/2\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(169, '3/4\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(170, '1/2\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(171, '3/4\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(172, '1\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(173, NULL, 'Gumi', NULL, NULL, NULL, NULL, NULL, NULL),
+(174, NULL, 'Gumi', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1655,7 +1680,30 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (148, 'Kuplung normál', 'Kuplung normál', 300, 0, '2026-02-24 12:12:33', NULL, NULL, 0, 100, 148, '88888888148', 3, 25, 0),
 (149, 'Kuplung vastag', 'Kuplung vastag', 450, 0, '2026-02-24 12:12:33', NULL, NULL, 0, 100, 149, '88888888149', 3, 25, 0),
 (150, 'Kuplung 1\"', 'Kuplung 1\"', 600, 0, '2026-02-24 12:12:33', NULL, NULL, 0, 100, 150, '88888888150', 3, 25, 0),
-(151, 'Kuplung elzárható', 'Kuplung elzárható', 800, 0, '2026-02-24 12:12:33', NULL, NULL, 0, 100, 151, '88888888151', 3, 25, 0);
+(151, 'Kuplung elzárható', 'Kuplung elzárható', 800, 0, '2026-02-24 12:12:33', NULL, NULL, 0, 100, 151, '88888888151', 3, 25, 0),
+(152, ',,Y\" elágazó normál ', ',,Y\" elágazó normál ', 400, 0, '2026-03-02 09:10:49', NULL, NULL, 0, 100, 152, '88888888152', 3, 26, 0),
+(153, ',,Y\" elágazó vastag', ',,Y\" elágazó vastag', 450, 0, '2026-03-02 09:10:49', NULL, NULL, 0, 100, 153, '88888888153', 3, 26, 0),
+(154, ',,Y\" elágazó vastag vegyes', ',,Y\" elágazó vastag vegyes', 450, 0, '2026-03-02 09:10:49', NULL, NULL, 0, 100, 154, '88888888154', 3, 26, 0),
+(155, ',,Y\" elágazó 1\"', ',,Y\" elágazó 1\"', 900, 0, '2026-03-02 09:10:49', NULL, NULL, 0, 100, 155, '88888888155', 3, 26, 0),
+(156, ',,Y\" elágazó elzárható', ',,Y\" elágazó elzárható', 2200, 0, '2026-03-02 09:10:49', NULL, NULL, 0, 100, 156, '88888888156', 3, 26, 0),
+(157, 'Elosztó 4-es', 'Elosztó 4-es', 4200, 0, '2026-03-02 09:14:45', NULL, NULL, 0, 100, 157, '88888888157', 3, 27, 0),
+(158, 'Sugárcső normál', 'Sugárcső normál', 550, 0, '2026-03-02 09:20:57', NULL, NULL, 0, 100, 158, '88888888158', 3, 28, 0),
+(159, 'Sugárcső vastag', 'Sugárcső vastag', 1200, 0, '2026-03-02 09:20:57', NULL, NULL, 0, 100, 159, '88888888159', 3, 28, 0),
+(160, 'Öntöző pisztoly 8 funkciós', 'Öntöző pisztoly 8 funkciós', 1950, 0, '2026-03-02 09:24:10', NULL, NULL, 0, 100, 160, '88888888160', 3, 29, 0),
+(161, 'Öntöző pisztoly sugár', 'Öntöző pisztoly sugár', 1500, 0, '2026-03-02 09:24:10', NULL, NULL, 0, 100, 161, '88888888161', 3, 29, 0),
+(162, 'Tömlő 1/2\" 20m', 'Tömlő 1/2\" 20m', 4900, 0, '2026-03-02 09:32:40', NULL, NULL, 0, 100, 162, '88888888162', 3, 33, 0),
+(163, 'Tömlő 1/2\" 50m', 'Tömlő 1/2\" 50m', 12500, 0, '2026-03-02 09:32:40', NULL, NULL, 0, 100, 163, '88888888163', 3, 33, 0),
+(164, 'Tömlő 3/4\" 25m', 'Tömlő 3/4\" 25m', 12500, 0, '2026-03-02 09:32:40', NULL, NULL, 0, 100, 164, '88888888164', 3, 34, 0),
+(165, 'Tömlő 3/4\" 50m', 'Tömlő 3/4\" 50m', 24000, 0, '2026-03-02 09:32:40', NULL, NULL, 0, 100, 165, '88888888165', 3, 34, 0),
+(166, 'Öntöző Helikopteres', 'Öntöző Helikopteres', 2200, 0, '2026-03-02 09:36:08', NULL, NULL, 0, 100, 166, '88888888166', 3, 31, 0),
+(167, 'Öntöző Szektoros', 'Öntöző Szektoros', 1600, 0, '2026-03-02 09:36:08', NULL, NULL, 0, 100, 167, '88888888167', 3, 31, 0),
+(168, 'Kerticsapok Műanyag 1/2\"', 'Kerticsapok Műanyag 1/2\"', 1350, 0, '2026-03-02 09:41:50', NULL, NULL, 0, 100, 168, '88888888168', 3, 35, 0),
+(169, 'Kerticsapok Műanyag 3/4\"', 'Kerticsapok Műanyag 3/4\"', 1350, 0, '2026-03-02 09:41:50', NULL, NULL, 0, 100, 169, '88888888169', 3, 35, 0),
+(170, 'Kerticsapok Egyenes 1/2\"', 'Kerticsapok Egyenes 1/2\"', 900, 0, '2026-03-02 09:41:50', NULL, NULL, 0, 100, 170, '88888888170', 3, 36, 0),
+(171, 'Kerticsapok Egyenes 3/4\"', 'Kerticsapok Egyenes 3/4\"', 1000, 0, '2026-03-02 09:41:50', NULL, NULL, 0, 100, 171, '88888888171', 3, 36, 0),
+(172, 'Kerticsapok Egyenes 1\"', 'Kerticsapok Egyenes 1\"', 1400, 0, '2026-03-02 09:41:50', NULL, NULL, 0, 100, 172, '88888888172', 3, 36, 0),
+(173, 'Tömítés klt.', 'Tömítés klt.', 350, 0, '2026-03-02 09:45:46', NULL, NULL, 0, 100, 173, '88888888173', 3, 32, 0),
+(174, '\"O\" gyűrű', '\"O\" gyűrű', 80, 0, '2026-03-02 09:45:46', NULL, NULL, 0, 10000, 174, '88888888174', 3, 32, 0);
 
 -- --------------------------------------------------------
 
@@ -1828,18 +1876,18 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`, `v_code`) VALUES
-(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, '2025-11-23 18:50:57', NULL, NULL),
-(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
-(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
+(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
+(3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', '2025-11-23 18:50:57', NULL, NULL),
+(4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
+(5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
+(6, 'Email4@gmail.com', 'alma5678', 'Teszt4', 'Teszt4', '+11111111114', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
+(7, 'Email5@gmail.com', 'alma5678', 'Teszt5', 'Teszt5', '+11111111115', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
+(8, 'Email6@gmail.com', 'alma5678', 'Teszt6', 'Teszt6', '+11111111116', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
+(9, 'Email7@gmail.com', 'alma5678', 'Teszt7', 'Teszt7', '+11111111117', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:58:14', NULL, NULL, NULL),
+(10, 'Email8@gmail.com', 'alma5678', 'Teszt8', 'Teszt8', '+11111111118', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:58:14', NULL, NULL, NULL),
+(11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:58:14', NULL, NULL, NULL),
+(12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:58:14', NULL, NULL, NULL),
 (13, 'asdadasad@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$ojdkmaYKQNEw75vyk4Azlg$gTqHjf8YOMxUS8etGkpbOThqEslHT4oC1vqpX97ecaA', 'adadadasd', 'asdadsa', '-', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, '2026-02-23 12:24:25', NULL, NULL),
 (14, 'test@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$AlmRO5ZErc7T8cCdEge4VQ$Dcnfht4865P16+AY+i0bYh+uYnYiTbqFB/UhjsGKY7g', 'testUpdate', 'test', '06706285232', 'http://localhost:8080/pfp/14464639745_1052396210015983_856568762032357262_n.jpg', 1, 0, NULL, '2026-02-17 19:41:18', NULL, NULL),
 (15, 'test2@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$ohREETSjVyYm+Rf48odKFA$6YuNM79joGYzr9nxAhYx88LFuiOzlTc6vj9xmemcXzU', 'test2U', 'test2', NULL, 'http://localhost:8080/pfp/15464639745_1052396210015983_856568762032357262_n.jpg', 2, 0, NULL, '2026-02-17 18:35:06', NULL, NULL),
@@ -2026,13 +2074,13 @@ ALTER TABLE `cart_product`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `details`
 --
 ALTER TABLE `details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
 
 --
 -- AUTO_INCREMENT for table `order_history`
@@ -2056,7 +2104,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
 
 --
 -- AUTO_INCREMENT for table `product_image`
