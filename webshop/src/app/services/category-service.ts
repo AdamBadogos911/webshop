@@ -17,4 +17,8 @@ export class CategoryService {
   getAllSubCategoryFromMainCategory(mainCategoryId: number): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseURL}/main/${mainCategoryId}/sub`)
   }
+
+  getAllCategory():Observable<Category[]> {
+    return this.http.get<Category[]>(this.baseURL)
+  }
 }

@@ -3,6 +3,23 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 
+interface productDto {
+  name: string,
+  brandId: string,
+  amount: string,
+  price: number,
+  weightInKg: number,
+  material: string,
+  lengthInCm: number,
+  heightInCm: number,
+  widthInCm: number,
+  size: string,
+  isSet: boolean,
+  stockKeepingUnit: string,
+  description: string,
+  categoryId: number
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -25,5 +42,13 @@ export class ProductService {
 
   getAllProduct(): Observable<Product[]> {
     return this.http.get<Product[]>(this.baseUrl)
+  }
+
+  addProduct(newProduct: productDto):Observable<Product> {
+    return this.http.post<Product>(this.baseUrl, newProduct)
+  }
+
+  updateProduct(id: number, updatedProduct: productDto):Observable<Product> {
+    return this.http.put<Product>(`${this.baseUrl}/${id}`, updatedProduct)
   }
 }
