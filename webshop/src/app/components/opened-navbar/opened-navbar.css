@@ -41,7 +41,7 @@
   background-color: #D9D9D9;
 }
 .subCategory button:hover {
-  text-decoration: underline;
+  font-size: large;
 }
 
 button {
