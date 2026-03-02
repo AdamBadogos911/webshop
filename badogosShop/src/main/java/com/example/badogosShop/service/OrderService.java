@@ -1,6 +1,5 @@
 package com.example.badogosShop.service;
 
-mport com.example.badogosShop.config.email.EmailSender;
 import com.example.badogosShop.config.email.EmailSender;
 import com.example.badogosShop.entity.*;
 import com.example.badogosShop.repository.*;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -165,8 +163,6 @@ public class OrderService {
         }
     }
 
-
-
     public Boolean isBillingDetailValid(BillingDetail billingDetail) {
         if (billingDetail.getId() != null) {
             return false;
@@ -175,9 +171,9 @@ public class OrderService {
         if (searchedAddressType == null) {
             return false;
         }
-        else if (!isValidAddress(billingDetail.getPostCode(), billingDetail.getTown())) {
-           return false;
-       }
+//        else if (!isValidAddress(billingDetail.getPostCode(), billingDetail.getTown())) {
+//            return false;
+//        }
         if (billingDetail.getTaxNumber() != null) {
             if (!isValidTaxNumber(billingDetail.getTown())) {
                 return false;
@@ -195,9 +191,9 @@ public class OrderService {
         if (searchedAddressType == null) {
             return false;
         }
-       else if (!isValidAddress(transportDetail.getPostCode(), transportDetail.getTown())) {
-            return false;
-        }
+//        else if (!isValidAddress(transportDetail.getPostCode(), transportDetail.getTown())) {
+//            return false;
+//        }
         return true;
     }
 
@@ -248,8 +244,8 @@ public class OrderService {
     }
 
     public Boolean isPhoneValid(String phoneNumber) {
-        ArrayList<String> phoneServiceCodes = new ArrayList<String>(Arrays.asList("30", "20", "70", "50", "31"));
-        return phoneServiceCodes.contains(phoneNumber.substring(0, 2)) && phoneNumber.length() == 9;
+//        ArrayList<String> phoneServiceCodes = new ArrayList<String>(Arrays.asList("30", "20", "70", "50", "31"));
+//        return phoneServiceCodes.contains(phoneNumber.substring(0, 2)) && phoneNumber.length() == 9;
         return true;
     }
 

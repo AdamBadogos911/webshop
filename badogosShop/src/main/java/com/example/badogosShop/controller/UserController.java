@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.JsonNode;
 
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -49,7 +51,7 @@ public class UserController {
 
     @PostMapping("/check")
     private ResponseEntity<Object> checkVerificationCode(@RequestBody JsonNode requestBody) {
-        return userService.checkVerificationCode(requestBody.get("vCode").asText(null), requestBody.get("email").asText(null));
+        return userService.checkVerificationCode(requestBody.get("verificationCode").asText(null), requestBody.get("email").asText(null));
     }
 
     @PatchMapping("/password")
@@ -58,3 +60,4 @@ public class UserController {
     }
 
 }
+

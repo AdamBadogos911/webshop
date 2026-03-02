@@ -85,7 +85,7 @@ public class Product {
     @JoinColumn(name = "detail_id")
     private Details detail;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
@@ -109,7 +109,7 @@ public class Product {
     @JsonIgnore
     private List<CartProduct> cartProductList;
 
-    public Product(String name, Brand brand, Integer amount, Integer price, Details detail, String stockKeepingUnit, String description) {
+    public Product(String name, Brand brand, Integer amount, Integer price, Details detail, String stockKeepingUnit, String description, Category category) {
         this.name = name;
         this.brand = brand;
         this.amount = amount;
@@ -118,6 +118,7 @@ public class Product {
         this.stockKeepingUnit = stockKeepingUnit;
         this.isDeleted = false;
         this.description = description;
+        this.category = category;
     }
 
 }

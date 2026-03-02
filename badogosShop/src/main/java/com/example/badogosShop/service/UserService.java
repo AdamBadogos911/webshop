@@ -27,7 +27,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final CartRepository cartRepository;
     private final EmailSender emailSender;
-
+    
     public ResponseEntity<Object> login(String email, String password) {
         try {
             if (email == null || password == null) {
@@ -167,7 +167,7 @@ public class UserService {
                     e.printStackTrace();
                     return ResponseEntity.internalServerError().build();
                 }
-                searchedUser.setVCode(passwordEncoder.encode(vCode));
+                searchedUser.setVerificationCode(passwordEncoder.encode(vCode));
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
@@ -189,7 +189,7 @@ public class UserService {
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.internalServerError().build();
             } else {
-                return ResponseEntity.ok().body(passwordEncoder.matches(vCode, searchedUser.getVCode()));
+                return ResponseEntity.ok().body(passwordEncoder.matches(vCode, searchedUser.getVerificationCode()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -271,4 +271,3 @@ public class UserService {
         return verificationCode;
     }
 }
-

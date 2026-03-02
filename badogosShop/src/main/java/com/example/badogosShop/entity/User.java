@@ -78,9 +78,9 @@ public class User {
     @Column(name = "register_finished_at")
     private Date registerFinishedAt;
 
-    @Column(name = "v_code")
+    @Column(name = "verification_code")
     @Null
-    private String vCode;
+    private String verificationCode;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnoreProperties({"author"})

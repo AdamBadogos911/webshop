@@ -13,6 +13,8 @@ public record ProductDto(
         String size,
         Boolean isSet,
         String stockKeepingUnit,
-        String description
+        String description,
+        Integer categoryId
 ) {
 }
+

@@ -10,7 +10,6 @@ import com.example.badogosShop.repository.CategoryRepository;
 import com.example.badogosShop.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -18,10 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.validation.ConstraintViolationException;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -69,13 +64,9 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Object> getAllProduct(Pageable pageable) {
+    public ResponseEntity<Object> getAllProduct() {
         try {
-            Page<Product> pages = productRepository.findAll(pageable);
-            HttpHeaders header = new HttpHeaders();
-            header.add("TotalPage", pages.getTotalPages() + "");
-
-            return new ResponseEntity<>(pages.toList(), header, HttpStatus.OK);
+            return ResponseEntity.ok(productRepository.findAll().stream().filter(p -> !p.getIsDeleted()).toList());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
@@ -120,7 +111,12 @@ public class ProductService {
     public ResponseEntity<Object> addProduct(ProductDto newProductDto) {
         Brand searchedBrand = brandRepository.getBrandById(newProductDto.brandId()).orElse(null);
         if (searchedBrand == null || searchedBrand.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body("brandNotFound");
+        }
+
+        Category searchedCategory = categoryRepository.findById(newProductDto.categoryId()).orElse(null);
+        if (searchedCategory == null || searchedCategory.getIsDeleted()) {
+            return ResponseEntity.status(404).body("categoryNotFound");
         }
 
         Product newProduct = new Product(
@@ -130,7 +126,8 @@ public class ProductService {
                 newProductDto.price(),
                 new Details(newProductDto.weightInKg(), newProductDto.material(), newProductDto.lengthInCm(), newProductDto.heightInCm(), newProductDto.widthInCm(), newProductDto.size(), newProductDto.isSet()),
                 newProductDto.stockKeepingUnit(),
-                newProductDto.description());
+                newProductDto.description(),
+                searchedCategory);
 
         return ResponseEntity.ok().body(productRepository.save(newProduct));
     }
@@ -146,6 +143,11 @@ public class ProductService {
             return ResponseEntity.status(404).body("brandNotFound");
         }
 
+        Category searchedCategory = categoryRepository.findById(updatedProductDto.categoryId()).orElse(null);
+        if (searchedCategory == null || searchedCategory.getIsDeleted()) {
+            return ResponseEntity.status(404).body("categoryNotFound");
+        }
+
         searchedProduct.setName(updatedProductDto.name());
         searchedProduct.setBrand(searchedBrand);
         searchedProduct.setAmount(updatedProductDto.amount());
@@ -153,6 +155,7 @@ public class ProductService {
         searchedProduct.setDetail(new Details(searchedProduct.getDetail().getId() ,updatedProductDto.weightInKg(), updatedProductDto.material(), updatedProductDto.lengthInCm(), updatedProductDto.heightInCm(), updatedProductDto.widthInCm(), updatedProductDto.size(), updatedProductDto.isSet(), searchedProduct));
         searchedProduct.setStockKeepingUnit(updatedProductDto.stockKeepingUnit());
         searchedProduct.setDescription(updatedProductDto.description());
+        searchedProduct.setCategory(searchedCategory);
 
         return ResponseEntity.ok().body(productRepository.save(searchedProduct));
     }

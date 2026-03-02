@@ -31,12 +31,12 @@ public class ReviewController {
 
     @GetMapping("/user/{id}")
     private ResponseEntity<Object> getReviewsByUser(@PathVariable("id") Integer id) {
-        return reviewService.gerReviewByUser(id);
+        return reviewService.getReviewsByUser(id);
     }
 
     @GetMapping("/product/{id}")
-    private ResponseEntity<Object> getReviewByProduct(@PathVariable("id") Integer id) {
-        return reviewService.getReviewByProductId(id);
+    private ResponseEntity<Object> getReviewsByProduct(@PathVariable("id") Integer id) {
+        return reviewService.getReviewsByProductId(id);
     }
 }
 

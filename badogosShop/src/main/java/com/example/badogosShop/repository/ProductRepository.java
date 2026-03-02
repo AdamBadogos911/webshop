@@ -16,7 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Page<Product> findByCategory(Category category, Pageable pageable);
 
-    @Procedure(name = "getOrderedProductOfMonth", procedureName = "getOrderedProductOfMonth")
+    @Procedure(name = "getMostViewedProducts", procedureName = "getMostViewedProducts")
     List<Product> getMostViewedProducts();
 
     @Procedure(name = "getOrderedProductOfMonth", procedureName = "getOrderedProductOfMonth")

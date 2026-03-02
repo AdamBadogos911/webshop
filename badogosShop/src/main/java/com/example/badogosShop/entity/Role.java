@@ -3,7 +3,9 @@ package com.example.badogosShop.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,7 +25,6 @@ public class Role {
     @NotNull
     private String name;
 
-
     @OneToMany(
             mappedBy = "role",
             cascade = {}
@@ -32,6 +33,7 @@ public class Role {
     private List<User> users;
 
     public Role(Integer id, String name) {
+
         this.id = id;
         this.name = name;
     }

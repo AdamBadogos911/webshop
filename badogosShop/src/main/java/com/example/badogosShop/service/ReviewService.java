@@ -93,7 +93,7 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<Object> getReviewByProductId(Integer id) {
+    public ResponseEntity<Object> getReviewsByProductId(Integer id) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -112,7 +112,7 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<Object> gerReviewByUser(Integer id) {
+    public ResponseEntity<Object> getReviewsByUser(Integer id) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
