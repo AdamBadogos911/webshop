@@ -17,7 +17,7 @@
   <div class="productCards">
     <div class="row">
       @for (product of products; track $index) {
-        <div class="col-lg-3">
+        <div class="col-lg-3 d-flex justify-content-center align-items-center">
           <app-product-card [product]="product" />
         </div>
       }
