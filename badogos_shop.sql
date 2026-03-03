@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 03, 2026 at 07:22 AM
+-- Generation Time: Mar 03, 2026 at 06:01 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1723,16 +1723,49 @@ CREATE TABLE `product_image` (
 --
 
 INSERT INTO `product_image` (`id`, `image_path`, `placement`, `product_id`) VALUES
-(1, 'http://localhost:8080/products/kepneve', 1, 1),
-(2, 'http://localhost:8080/products/kepneve', 2, 1),
-(3, 'http://localhost:8080/products/kepneve', 3, 1),
-(4, 'http://localhost:8080/products/kepneve', 3, 4),
-(5, 'http://localhost:8080/products/kepneve', 4, 5),
-(6, 'http://localhost:8080/products/kepneve', 5, 6),
-(7, 'http://localhost:8080/products/kepneve', 6, 7),
-(8, 'http://localhost:8080/products/kepneve', 7, 8),
-(9, 'http://localhost:8080/products/kepneve', 8, 9),
-(10, 'http://localhost:8080/products/kepneve', 9, 9);
+(1, 'http://localhost:8080/products/racsni_1.4.jpg', 1, 1),
+(2, 'http://localhost:8080/products/racsni_3.8.jpg', 1, 2),
+(3, 'http://localhost:8080/products/racsni_1.2.jpg', 1, 3),
+(4, 'http://localhost:8080/products/racsni_1.4.jpg', 1, 4),
+(5, 'http://localhost:8080/products/racsni_3.8_gumi.jpg', 1, 5),
+(6, 'http://localhost:8080/products/racsni_1.2_gumi.jpg', 1, 6),
+(7, 'http://localhost:8080/products/racsni_toldo1.jpg', 1, 7),
+(8, 'http://localhost:8080/products/racsni_toldo1.jpg', 1, 8),
+(9, 'http://localhost:8080/products/racsni_toldo1.jpg', 1, 9),
+(10, 'http://localhost:8080/products/racsni_toldo1.jpg', 1, 9),
+(11, 'http://localhost:8080/products/racsni_toldo1.jpg', 1, 11),
+(12, 'http://localhost:8080/products/racsni_toldo2.jpg', 1, 12),
+(13, 'http://localhost:8080/products/racsni_toldo2.jpg', 1, 13),
+(14, 'http://localhost:8080/products/racsni_toldo2.jpg', 1, 14),
+(15, 'http://localhost:8080/products/racsni_toldo2.jpg', 1, 15),
+(16, 'http://localhost:8080/products/racsni_toldo3.jpg', 1, 16),
+(17, 'http://localhost:8080/products/racsni_toldo3.jpg', 1, 17),
+(18, 'http://localhost:8080/products/racsni_toldo3.jpg', 1, 18),
+(19, 'http://localhost:8080/products/racsni_toldo1.jpg', 1, 19),
+(20, 'http://localhost:8080/products/racsni_toldo1.jpg', 1, 20),
+(21, 'http://localhost:8080/products/racsni_toldo1.jpg', 1, 21),
+(22, 'http://localhost:8080/products/racsni_fix-hajtoszar1.jpg', 1, 22),
+(23, 'http://localhost:8080/products/racsni_fix-hajtoszar1.jpg', 1, 23),
+(24, 'http://localhost:8080/products/racsni_fix-hajtoszar3.jpg', 1, 24),
+(25, 'http://localhost:8080/products/racsni_fix-hajtoszar2.jpg', 1, 25),
+(26, 'http://localhost:8080/products/racsni_fix-hajtoszar1.jpg', 1, 26),
+(27, 'http://localhost:8080/products/racsni_adapter1.jpg', 1, 115),
+(28, 'http://localhost:8080/products/racsni_adapter2.jpg', 1, 116),
+(29, 'http://localhost:8080/products/racsni_adapter3.jpg', 1, 117),
+(30, 'http://localhost:8080/products/racsni_adapter1.jpg', 1, 118),
+(31, 'http://localhost:8080/products/racsni_adapter2.jpg', 1, 119),
+(32, 'http://localhost:8080/products/racsni_adapter3.jpg', 1, 120),
+(33, 'http://localhost:8080/products/racsni_adapter1.jpg', 1, 121),
+(34, 'http://localhost:8080/products/racsni_adapter2.jpg', 1, 122),
+(35, 'http://localhost:8080/products/racsni_csuklo1.jpg', 1, 123),
+(36, 'http://localhost:8080/products/racsni_csuklo2.jpg', 1, 124),
+(37, 'http://localhost:8080/products/racsni_csuklo3.jpg', 1, 125),
+(38, 'http://localhost:8080/products/racsni_1.4.jpg', 1, 126),
+(39, 'racsni_3.8_gumi.jpg', 1, 127),
+(40, 'racsni_1.2_gumi.jpg', 1, 128),
+(41, 'http://localhost:8080/products/racsni_1.4.jpg', 1, 129),
+(42, 'racsni_3.8_gumi.jpg', 1, 130),
+(43, 'racsni_1.2_gumi.jpg', 1, 131);
 
 -- --------------------------------------------------------
 
@@ -2110,7 +2143,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `review`
