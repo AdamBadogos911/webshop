@@ -1,3 +1,7 @@
 #infoDiv {
   height: 600px;
 }
+
+.container-fluid {
+  min-height: 83vh;
+}

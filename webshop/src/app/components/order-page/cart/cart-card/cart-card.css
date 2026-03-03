@@ -1,0 +1,13 @@
+.container-fluid {
+  background-color: #B7B7B7;
+  margin: 20px 0;
+  width: 100%;
+  align-self: center;
+  border-radius: 25px;
+}
+
+button {
+  border: none;
+  margin: 10px;
+  background-color: transparent;
+}
