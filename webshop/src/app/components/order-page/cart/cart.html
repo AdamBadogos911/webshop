@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" style="min-height: 100vh;">
   <div class="row">
     <div class="col-lg-12">
       <h1 class="text-lg-start text-center">Kosár</h1>
@@ -14,12 +14,12 @@
 
     <div class="col-lg-5">
       <div class="h-100" id="infoDiv">
-        <h1>Rendelés összege</h1>
+        <h1>Rendelés összege: {{sumPrice}} </h1>
         <hr>
-        <p><span>Résszösszeg: </span> <span>,-Ft</span></p>
-        <p><span>Szállitási költség: </span> <span>1 890,-Ft</span></p>
+        <p><span>Résszösszeg: </span> <span>{{sumPrice}},-Ft</span></p>
+        <p><span>Szállitási költség: </span> <span>1890,-Ft</span></p>
         <hr>
-        <span><span>Végösszeg: </span> <span>,-Ft</span></span>
+        <span><span>Végösszeg: </span> <span>{{sumPrice + 1890}},-Ft</span></span>
         <div class="w-100 d-flex justify-content-center align-items-center">
           <button routerLink="/orderPage/transportDetails">Tovább a fizetéshez</button>
         </div>

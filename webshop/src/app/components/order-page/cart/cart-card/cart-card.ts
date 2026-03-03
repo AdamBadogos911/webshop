@@ -14,6 +14,7 @@ export class CartCard {
   cartService = inject(CartService)
   userService = inject(UserService)
   changeAmount = output<number>()
+  delete = output()
 
   changeAmountOfProduct(plusValue: 1 | -1) {
     this.cartService.changeAmountOfProduct(this.userService.user?.id!, this.cartProduct().id!, this.cartProduct().amount + plusValue).subscribe({
@@ -31,6 +32,8 @@ export class CartCard {
     this.cartService.deleteProductFromCart(this.cartProduct().id!, this.userService.user?.id!).subscribe({
       next: response => {
         this.cartService.usersCart.cartProductList = this.cartService.usersCart.cartProductList?.filter((cp) => cp.id != this.cartProduct().id)
+      }, complete: () => {
+        this.delete.emit()
       }
     })
   }

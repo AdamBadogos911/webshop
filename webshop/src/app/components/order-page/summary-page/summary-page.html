@@ -54,15 +54,21 @@
                   @for (item of cartService.usersCart.cartProductList; track $index) {
                     <tr>
                       <td scope="row">{{item.cartProduct.name}}</td>
-                      <td>{{item.cartProduct.price}}</td>
-                      <td>{{item.amount}}</td>
+                      <td>{{item.cartProduct.price}},-Ft</td>
+                      <td>{{item.amount}} db</td>
                       <td>{{item.cartProduct.price * item.amount}},-Ft</td>
                     </tr>
                   }
+                  <tr>
+                    <td>Szállítás</td>
+                    <td>1890,-Ft</td>
+                    <td></td>
+                    <td>1890,-Ft</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
-            <p class="text-end">Végösszeg: ,-Ft</p>
+            <p class="text-end">Végösszeg: {{sumPrice + 1890}},-Ft</p>
           </div>
         </div>
 

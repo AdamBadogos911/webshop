@@ -17,10 +17,19 @@ export class SummaryPage implements OnInit {
   transportAddress: string = ""
   billingAddress: string = ""
   router = inject(Router)
+  sumPrice: number = 0
 
   ngOnInit(): void {
     this.transportAddress = this.orderService.actualOrder.orderTransportDetail?.postCode + " " + this.orderService.actualOrder.orderTransportDetail?.town + this.orderService.actualOrder.orderTransportDetail?.address + this.orderService.actualOrder.orderTransportDetail?.houseNumber
     this.billingAddress = this.orderService.actualOrder.orderBillingDetail?.postCode + " " + this.orderService.actualOrder.orderBillingDetail?.town + this.orderService.actualOrder.orderBillingDetail?.address + this.orderService.actualOrder.orderBillingDetail?.houseNumber
+    this.calculatePrice()
+  }
+
+  calculatePrice() {
+    this.sumPrice = 0;
+    this.cartService.usersCart.cartProductList.forEach((cp) => {
+      this.sumPrice += cp.amount * cp.cartProduct.price;
+    });
   }
 
   sendOrder() {
