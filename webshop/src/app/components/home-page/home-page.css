@@ -40,3 +40,7 @@
 p .mb-5 {
   margin: 5px;
 }
+
+#mainContainer {
+  min-height: 100vh;
+}
