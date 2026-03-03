@@ -15,3 +15,8 @@ p {
   margin: 20px;
   text-align: justify;
 }
+
+#logo {
+  height: 40px;
+  margin: 10px;
+}
