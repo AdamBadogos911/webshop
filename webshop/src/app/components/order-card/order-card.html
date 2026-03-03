@@ -1,23 +1,28 @@
 <div class="container-fluid">
   <div class="row">
-      <div class="col-lg-2">
-        <p class="m-0 text-center">Rendelés dátuma:</p>
-        <p class="m-0 text-center">{{orderHistory().orderedAt | date: "yyyy-MM-dd"}}</p>
-      </div>
-      <div class="col-lg-2">
-        <p class="m-0 text-center">Állapot:</p>
-        <p class="m-0 text-center">{{orderHistory().status?.name}}</p>
-      </div>
-      <div class="col-lg-4">
-        <p class="m-0 text-center">Szállitási cím:</p>
-        <p class="m-0 text-center">{{transportAddress}}</p>
-      </div>
-      <div class="col-lg-2">
-        <p class="m-0 text-center">Termékek:</p>
-        <p class="m-0 text-center">{{orderHistory().products?.length}} db</p>
-      </div>
-      <div class="col-lg-2">
-
-      </div>
+    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+      <p class="m-0 text-center">Rendelési azonosító:</p>
+      <p class="m-0 text-center">{{orderHistory().id}}</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+      <p class="m-0 text-center">Állapot:</p>
+      <p class="m-0 text-center">{{orderHistory().status?.name}}</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+      <p class="m-0 text-center">Rendelés dátuma:</p>
+      <p class="m-0 text-center">{{orderHistory().orderedAt | date: "yyyy-MM-dd"}}</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+      <p class="m-0 text-center">Megrendelő:</p>
+      <p class="m-0 text-center">Kiss Pista</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+      <p class="m-0 text-center">Szállitási cím:</p>
+      <p class="m-0 text-center">{{transportAddress}}</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+      <p class="m-0 text-center">Termékek:</p>
+      <p class="m-0 text-center">{{orderHistory().products?.length}} db</p>
+    </div>
   </div>
 </div>
