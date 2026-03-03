@@ -1,0 +1,15 @@
+.container-fluid {
+  background-color: #B7B7B7;
+  margin: 20px 0;
+  width: 100%;
+  align-self: center;
+  border-radius: 25px;
+}
+
+button {
+  border: none;
+  background-color: #48616D;
+  color: white;
+  border-radius: 10px;
+  padding: 5px 10px;
+}

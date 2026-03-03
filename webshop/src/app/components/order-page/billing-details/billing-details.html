@@ -1,4 +1,4 @@
-<div class="container-fluid" style="height: 100vh;">
+<div class="container-fluid">
   <div class="row h-100">
     <div class="col-lg-12 d-flex justify-content-center align-items-center">
       <form class="container-fluid" id="formContainer" [formGroup]="form">
@@ -47,13 +47,13 @@
         @if (isCompany) {
           <div class="row">
             <div class="col-lg-12 mb-2">
-              <input type="text" class="form-control" placeholder="Cég név" formControlName="companyName">
+              <input type="text" class="form-control" placeholder="Cég név*" formControlName="companyName">
             </div>
           </div>
 
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-2">
-              <input type="text" class="form-control" placeholder="Adószám" formControlName="taxNumber">
+              <input type="text" class="form-control" placeholder="Adószám*" formControlName="taxNumber">
             </div>
           </div>
         }
