@@ -1,0 +1,26 @@
+.container-fluid {
+  min-height: 100vh;
+  margin-top: 10px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+.col-lg-4 {
+  background-color: #B7B7B7;
+  padding: 10px;
+  border-radius: 15px;
+  width: 450px;
+  margin: 10px;
+}
+
+img {
+  border-radius: 10px;
+}
+
+label {
+  font-size: larger;
+  margin-top: 5px;
+}
