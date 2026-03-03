@@ -1,4 +1,4 @@
-<div class="container-fluid" style="height: 100vh;">
+<div class="container-fluid" style="min-height: 100vh;">
   <div class="row h-100">
     <div class="col-lg-12 d-flex justify-content-center align-items-center">
       <div class="container-fluid" id="formContainer">
@@ -12,25 +12,25 @@
           <div class="col-lg-12">
             <form class="container-fluid" [formGroup]="detailsForm">
               <div class="row">
-                <div class="col-lg-6 mb-3">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-3">
                   <label for="firstName">Vezetéknév</label>
                   <input type="text" class="form-control" placeholder="Vezetéknév*" formControlName="firstName">
                 </div>
-                <div class="col-lg-6 mb-3">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-3">
                   <label for="lastName">Keresztnév</label>
                   <input type="text" class="form-control" placeholder="Keresztnév*" formControlName="lastName">
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-12 mb-3">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-3">
                   <label for="">E-mail cím:</label>
                   <input type="text" class="form-control" placeholder="E-mail cím*" formControlName="email">
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-12 mb-3">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-3">
                   <label for="">Telefonszám:</label>
                   <input type="text" class="form-control" placeholder="Telefonszám*" formControlName="phoneNumber">
                 </div>
@@ -42,22 +42,22 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-3 mb-3">
+              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 mb-3">
                 <label for="">Irányitószám:</label>
                 <input type="text" class="form-control" placeholder="Irányitó szám*" formControlName="postCode">
               </div>
-              <div class="col-lg-9 mb-3">
+              <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6 mb-3">
                 <label for="">Város:</label>
                 <input type="text" class="form-control" placeholder="Város*" formControlName="town">
               </div>
             </div>
             <div class="row">
 
-              <div class="col-lg-7 mb-3">
+              <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 mb-3">
                 <label for="">Közterület neve:</label>
                 <input type="text" class="form-control" placeholder="Közterület neve*" formControlName="address">
               </div>
-              <div class="col-lg-3 mb-3">
+              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 mb-3">
                 <label for="">Közterület típus megadása:</label>
                 <select name="" id="" class="form-select" formControlName="addressType">
                   <option value="null" selected disabled>Közterület típus*</option>
@@ -66,13 +66,13 @@
                   }
                 </select>
               </div>
-              <div class="col-lg-2 mb-3">
+              <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 mb-3">
                 <label for="">Házszám:</label>
                 <input type="number" name="" id="" class="form-control" placeholder="Házszám*" formControlName="houseNumber">
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-12 mb-3">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-3">
                 <label for="Megjegyzés:"></label>
                 <textarea name="" id="" class="form-control" placeholder="Megjegyzés" formControlName="other"></textarea>
               </div>
@@ -82,7 +82,7 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-12 d-flex justify-content-between">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex justify-content-between">
             <button routerLink="/orderPage/basket">Vissza</button>
             <button (click)="continue()" [disabled]="detailsForm.invalid">Tovább</button>
           </div>

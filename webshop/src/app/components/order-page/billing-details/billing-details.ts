@@ -2,14 +2,14 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OtherService } from '../../../services/other-service';
 import { OrderService } from '../../../services/order-service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AddressType } from '../../../models/addressType.model';
 import { PaymentMethod } from '../../../models/paymentMethod.model';
 import { BillingDetail } from '../../../models/billingDetails.model';
 
 @Component({
   selector: 'app-billing-details',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './billing-details.html',
   styleUrl: './billing-details.css',
 })
