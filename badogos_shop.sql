@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 02, 2026 at 12:01 PM
+-- Generation Time: Mar 03, 2026 at 07:22 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1723,16 +1723,16 @@ CREATE TABLE `product_image` (
 --
 
 INSERT INTO `product_image` (`id`, `image_path`, `placement`, `product_id`) VALUES
-(1, '', 1, 1),
-(2, '', 99, 2),
-(3, '', 2, 3),
-(4, '', 3, 4),
-(5, '', 4, 5),
-(6, '', 5, 6),
-(7, '', 6, 7),
-(8, '', 7, 8),
-(9, '', 8, 9),
-(10, '', 9, 9);
+(1, 'http://localhost:8080/products/kepneve', 1, 1),
+(2, 'http://localhost:8080/products/kepneve', 2, 1),
+(3, 'http://localhost:8080/products/kepneve', 3, 1),
+(4, 'http://localhost:8080/products/kepneve', 3, 4),
+(5, 'http://localhost:8080/products/kepneve', 4, 5),
+(6, 'http://localhost:8080/products/kepneve', 5, 6),
+(7, 'http://localhost:8080/products/kepneve', 6, 7),
+(8, 'http://localhost:8080/products/kepneve', 7, 8),
+(9, 'http://localhost:8080/products/kepneve', 8, 9),
+(10, 'http://localhost:8080/products/kepneve', 9, 9);
 
 -- --------------------------------------------------------
 
@@ -2074,7 +2074,7 @@ ALTER TABLE `cart_product`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `details`
