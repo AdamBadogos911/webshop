@@ -22,6 +22,7 @@ export class ProductEditor implements OnInit {
   editorForm!: FormGroup
   brands: Brand[] = []
   categories: Category[] = []
+  close = output()
 
   ngOnInit(): void {
     this.otherService.getAllBrand().subscribe({

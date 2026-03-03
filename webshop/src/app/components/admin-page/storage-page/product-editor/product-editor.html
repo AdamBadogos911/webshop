@@ -61,8 +61,8 @@
               <input type="number" name="" id="" class="form-control" formControlName="heightInCm">
             </div>
             <div class="col-lg-2">
-              <label>Méret</label>
-              <input type="number" name="" id="" class="form-control" formControlName="size">
+              <label for="size">Méret</label>
+              <input type="number" name="" id="size" class="form-control" formControlName="size">
             </div>
             <div class="col-lg-2">
               <label>Anyaga</label>
@@ -91,7 +91,7 @@
           </div>
           <div class="row">
             <div class="col-lg-12 d-flex justify-content-between">
-              <button>Mégse</button>
+              <button (click)="close.emit()">Mégse</button>
               <button (click)="saveChanges()">Adatok mentése</button>
             </div>
           </div>
