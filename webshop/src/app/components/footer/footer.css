@@ -59,8 +59,14 @@ p {
 .fb {
   height: 34px;
   background-color: #48616D;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
 }
 .fb img{
   height: 24px;
-  margin-bottom: 4px;
+  margin: 0;
+
 }
