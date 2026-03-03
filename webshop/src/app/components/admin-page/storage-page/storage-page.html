@@ -1,11 +1,43 @@
-<div class="container fluid">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-md-12 col-sm-12">
       <h1>Termékek</h1>
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 justify-content-center alin-items-center">
+      <div class="row">
+        <div class="sorting col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <h5>Rendezés</h5>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <button>Cikkszám</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <button>Termék név</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <button>Márka</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <button>Raktáron</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 newProduct">
+          <button (click)="selectedProduct = null ;showEditor = true">Termék hozzáadása +</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
       <table>
         <thead>
           <tr>
@@ -20,26 +52,29 @@
         </thead>
         <tbody>
           @for (product of products; track $index) {
-            <tr>
-              <td>{{product.stockKeepingUnit}}</td>
-              <td>{{product.name}}</td>
-              <td>{{product.brand.name}}</td>
-              <td>{{product.price}}</td>
-              <td>{{product.amount}}</td>
-              <td></td>
-              <td>
-                <button (click)="selectedProduct = product; showEditor = true">
-                  <span class="material-symbols-outlined">menu</span>
-                </button>
-              </td>
-            </tr>
+          <tr>
+            <td>{{product.stockKeepingUnit}}</td>
+            <td>{{product.name}}</td>
+            @if (product.brand.name == "non") {
+            <td> --- </td>
+            } @else {
+            <td>{{product.brand.name}}</td>
+            }
+            <td>{{product.price}} Ft</td>
+            <td>{{product.amount}} db</td>
+            <td></td>
+            <td>
+              <button (click)="selectedProduct = product; showEditor = true">
+                <span class="material-symbols-outlined">menu</span>
+              </button>
+            </td>
+          </tr>
           }
         </tbody>
       </table>
-      <button (click)="showEditor = true">Termék hozzáadása</button>
     </div>
   </div>
 </div>
 @if (showEditor) {
-  <app-product-editor [product]="selectedProduct" (save)="addProductToList($event)"/>
+<app-product-editor [product]="selectedProduct" (save)="addProductToList($event)" (close)="showEditor = false" />
 }
