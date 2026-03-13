@@ -14,7 +14,7 @@
               <label for="pfpInput">
                 <img [src]="userService.user?.pfpPath" alt="Profilkép">
               </label>
-              <h1>Üdv, {{userService.user?.firstName}} {{userService.user?.lastName}}</h1>
+              <h1>Üdv, {{userService.user?.lastName}} {{userService.user?.firstName}}</h1>
             </div>
             <button (click)="logout()">Kijelentkezés</button>
           </div>

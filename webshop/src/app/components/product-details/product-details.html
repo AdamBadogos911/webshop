@@ -85,8 +85,12 @@
 
       <div class="col-lg-12 col-md-12 col-sm-12 dr">
         @if (showReviews) {
-          @for (review of reviews; track $index) {
-            <app-review-card [review]="review" [parentComponent]="'productDetails'"/>
+          @if (reviews.length != 0) {
+            @for (review of reviews; track $index) {
+              <app-review-card [review]="review" [parentComponent]="'productDetails'"/>
+            }
+          } @else {
+            <h4>Nincsenek még értékelések.</h4>
           }
           <div class="col-lg-12 col-md-12 col-sm-12">
             @if (isShowReviewForm) {
@@ -101,7 +105,7 @@
                 </select>
               </form>
             }
-            <button id="reviewButton" [disabled]="reviewForm.invalid && isShowReviewForm" (click)="handleReviewCreat()">Vélemény írása</button>
+            <button id="reviewButton" [disabled]="reviewForm.invalid && isShowReviewForm" (click)="handleReviewCreate()">Vélemény írása</button>
           </div>
         } @else {
           <p>{{selectedProduct.description}}</p>
