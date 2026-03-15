@@ -1,7 +1,3 @@
-h1 {
-  margin: 50px;
-}
-
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
@@ -9,4 +5,19 @@ h1 {
   'GRAD' ,
   'opsz' 50;
   font-size: 80px;
+}
+
+.container-fluid {
+  height: 87vh;
+}
+
+button {
+  background-color: #48616D;
+  border-radius: 20px;
+  display: block;
+  margin: 10px auto;
+  padding: 5px;
+  width: 150px;
+  border: none;
+  color: white;
 }
