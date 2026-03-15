@@ -24,15 +24,6 @@ input {
   border: none;
 }
 
-button {
-  background-color: #6BCBE8;
-  border-radius: 20px;
-  display: block;
-  padding: 5px;
-  width: 150px;
-  border: none;
-}
-
 #register {
   height: 100%;
   padding: auto;
