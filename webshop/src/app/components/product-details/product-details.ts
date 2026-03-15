@@ -1,4 +1,4 @@
-import { Component, inject, InjectionToken, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ReviewService } from '../../services/review-service';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
