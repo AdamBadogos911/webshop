@@ -4,7 +4,15 @@
       <!-- <img [src]="review().product.images[0].imagePath" alt=""> -->
        <img src="" alt="">
       <div class="col-lg-12 col-md-12 col-sm-12">
-        <h4>{{review().product.name}}</h4>
+        <div class="d-flex justify-content-between align-items-center">
+          <h4>{{review().product.name}}</h4>
+          <div class="d-flex flex-row">
+                @for (rating of ratingList; track $index) {
+                  <img class="img-fluid" style="width: 24px; height:
+                  24px;" [src]="rating === 1 ? '/assets/star.svg' : '/assets/star-outline.svg'" alt="">
+                }
+              </div>
+        </div>
         <p>{{review().reviewText}}</p>
       </div>
     </div>
@@ -12,9 +20,17 @@
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-lg-start align-items-center">
         <img [src]="review().author.pfpPath" alt="">
-        <div class="row m-1">
-          <div class="col-lg-12">
-            <h5 class="m-1">{{review().author.lastName}} {{review().author.firstName}}</h5>
+        <div class="row m-1 w-100">
+          <div class="col-lg-12 w-100">
+            <div class="d-flex flex-lg-row flex-column justify-content-between align-items-center">
+              <h5 class="m-1">{{review().author.lastName}} {{review().author.firstName}}</h5>
+              <div class="d-flex flex-row">
+                @for (rating of ratingList; track $index) {
+                  <img class="img-fluid" style="width: 24px; height:
+                  24px;" [src]="rating === 1 ? '/assets/star.svg' : '/assets/star-outline.svg'" alt="">
+                }
+              </div>
+            </div>
             <span>{{review().reviewText}}</span>
           </div>
         </div>
