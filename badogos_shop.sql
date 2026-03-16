@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 03, 2026 at 06:01 PM
+-- Generation Time: Mar 16, 2026 at 08:54 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1536,7 +1536,7 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 100, 4, '888888884', 3, 21, 0),
 (5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 2, 5, '888888885', 3, 21, 0),
 (6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 09:09:07', '2025-12-04 09:34:05', NULL, 0, 300, 6, '888888886', 3, 21, 0),
-(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', 3, 2, 8),
+(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', 3, 2, 9),
 (8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', 3, 2, 9),
 (9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 09:10:55', '2025-12-22 20:07:32', NULL, 0, 10, 9, '888888889', 3, 2, 0),
 (10, '1/4\" 15 cm-es racsnitoldó', '1/4\" 15 cm-es racsnitoldó', 2100, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 10, '8888888810', 3, 2, 0),
@@ -1653,7 +1653,7 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (121, 'Adapter 3/4\" - 1/2\"', 'Adapter 3/4\" - 1/2\"', 3600, 0, '2026-02-23 09:24:41', NULL, NULL, 0, 100, 121, '88888888121', 3, 3, 0),
 (122, 'Adapter 1\" - 3/4\"', 'Adapter 1\" - 3/4\"', 7500, 0, '2026-02-23 09:24:41', NULL, NULL, 0, 100, 122, '88888888122', 3, 3, 0),
 (123, 'Csuklo 1/4\"', 'Csuklo 1/4\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 100, 123, '88888888123', 3, 4, 0),
-(124, 'Csuklo 3/8\"', 'Csuklo 3/8\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 0, 124, '88888888124', 3, 4, 0),
+(124, 'Csuklo 3/8\"', 'Csuklo 3/8\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 0, 124, '88888888124', 3, 4, 2),
 (125, 'Csuklo 1/2\"', 'Csuklo 1/2\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 100, 125, '88888888125', 3, 4, 0),
 (126, 'Jobi racsni 1/4\"', 'Jobi racsni 1/4\"', 4000, 0, '2026-02-23 10:13:07', NULL, NULL, 0, 100, 126, '88888888126', 1, 21, 0),
 (127, 'Jobi racsni 3/8\"', 'Jobi racsni 3/8\"', 5000, 0, '2026-02-23 10:13:07', NULL, NULL, 0, 100, 127, '88888888127', 1, 21, 0),
@@ -1901,14 +1901,14 @@ CREATE TABLE `user` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT NULL,
   `register_finished_at` timestamp NULL DEFAULT NULL,
-  `v_code` longtext
+  `verificationCode` longtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`, `v_code`) VALUES
+INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`, `verificationCode`) VALUES
 (1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
 (2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
 (3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', '2025-11-23 18:50:57', NULL, NULL),
