@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -51,7 +52,11 @@ public class SecurityConfig {
                     }
                 }))
                 .authorizeHttpRequests((requests) ->
-                        requests.anyRequest().permitAll()
+                        requests
+                                .requestMatchers("/user/login", "/user/register", "/user/verificationCode", "/user/check", "/user/password").permitAll()
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/actuator/health").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/product/**", "/category/**", "/brand", "/paymentMethods", "/addressType", "/review/**", "/pfp/**", "/products/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
                 .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
@@ -81,7 +86,11 @@ public class SecurityConfig {
                     }
                 }))
                 .authorizeHttpRequests((requests) ->
-                        requests.anyRequest().permitAll()
+                        requests
+                                .requestMatchers("/user/login", "/user/register", "/user/verificationCode", "/user/check", "/user/password").permitAll()
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/actuator/health").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/product/**", "/category/**", "/brand", "/paymentMethods", "/addressType", "/review/**", "/pfp/**", "/products/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .formLogin(f -> f.disable())
                 .csrf(crs -> crs.disable())
