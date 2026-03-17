@@ -64,7 +64,7 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Object> getAllProduct() {
+    public ResponseEntity<Object> getAllProducts() {
         try {
             return ResponseEntity.ok(productRepository.findAll().stream().filter(p -> !p.getIsDeleted()).toList());
         } catch (Exception e) {

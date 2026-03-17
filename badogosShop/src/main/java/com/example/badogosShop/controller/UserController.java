@@ -3,11 +3,11 @@ package com.example.badogosShop.controller;
 import com.example.badogosShop.dto.UserUpdate;
 import com.example.badogosShop.entity.User;
 import com.example.badogosShop.service.UserService;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tools.jackson.databind.JsonNode;
 
 
 import java.util.Map;
@@ -44,7 +44,7 @@ public class UserController {
         return userService.changePfp(newPfpImage, id);
     }
 
-    @GetMapping("/vCode")
+    @GetMapping("/verificationCode")
     private ResponseEntity<Object> getVerificationCode(@RequestParam("email") String email) {
         return userService.getVerificationCode(email);
     }

@@ -41,7 +41,6 @@ public class UserService {
             if (!passwordEncoder.matches(password, searchedUser.getPassword())) {
                 return ResponseEntity.notFound().build();
             } else {
-                System.out.println("successfullyLogin");
                 searchedUser.setLastLogin(LocalDateTime.now());
                 return ResponseEntity.ok().body(userRepository.save(searchedUser));
             }
@@ -96,7 +95,6 @@ public class UserService {
             searchedUser.setPhoneNumber(updatedUser.phoneNumber());
             searchedUser.setFirstName(updatedUser.firstName());
             searchedUser.setLastName(updatedUser.lastName());
-            System.out.println("MENTES");
 
             return ResponseEntity.ok().body(userRepository.save(searchedUser));
         }
@@ -176,9 +174,9 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> checkVerificationCode(String vCode, String email) {
+    public ResponseEntity<Object> checkVerificationCode(String verificationCode, String email) {
         try {
-            if (vCode == null || email == null) {
+            if (verificationCode == null || email == null) {
                 return ResponseEntity.status(422).build();
             }
             if (!isEmailValid(email)) {
@@ -189,7 +187,7 @@ public class UserService {
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.internalServerError().build();
             } else {
-                return ResponseEntity.ok().body(passwordEncoder.matches(vCode, searchedUser.getVerificationCode()));
+                return ResponseEntity.ok().body(passwordEncoder.matches(verificationCode, searchedUser.getVerificationCode()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -262,7 +260,7 @@ public class UserService {
     }
 
     public String generateVerificationCode() {
-        String characters = "!@#$%&*()-+={}[]|\\/:;'\"<>,.?~" + "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÜŰÚÖÓŐÍ" + "0123456789" + "abcdefghijklmnopqrstuvxyzéáíúöőüű";
+        String characters = "!@#$%&*()-+={}[]|\\/:;'\"<>,.?~" + "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÜŰÚÖÓŐÍ" + "0123456789" + "abcdefghijklmnopqrstuvwxyzéáíúöőüű";
         String verificationCode = "";
         while (verificationCode.length() != 10) {
             verificationCode += String.valueOf(characters.charAt(new Random().nextInt(0, characters.length())));

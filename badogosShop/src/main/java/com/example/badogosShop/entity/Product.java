@@ -90,7 +90,7 @@ public class Product {
     private Brand brand;
 
     @OneToMany(mappedBy = "product")
-    private List<ProductImages> images;
+    private List<ProductImage> images;
 
     @OneToMany(mappedBy = "product")
     @JsonIgnore

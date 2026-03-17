@@ -8,16 +8,15 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "product_images")
+@Table(name = "product_image")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 
-public class ProductImages {
+public class ProductImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

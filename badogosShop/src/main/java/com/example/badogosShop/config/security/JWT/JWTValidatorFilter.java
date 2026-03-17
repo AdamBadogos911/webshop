@@ -23,7 +23,7 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
     private static final String AUTHORIZATION = "Authorization";
-    private static final String BEARER = "Bearer ";
+    private static final String BEARER = "Bearer";
     private final ObjectMapper mapper;
 
     @Override
@@ -54,9 +54,8 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         System.out.println(request.getServletPath());
         ArrayList<String> allowedUrlPaths = new ArrayList<String>(Arrays.asList(
-                "/users/register/student",
-                "/users/register/instructor",
-                "/users/login"
+                "/user/register",
+                "/user/login"
         ));
 
         return allowedUrlPaths.contains(request.getServletPath());

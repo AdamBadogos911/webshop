@@ -42,7 +42,7 @@ public class JWTGeneratorFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return !request.getServletPath().equals("/users/login");
+        return !request.getServletPath().equals("/user/login");
     }
 
     private String generateRefreshToken(String email){
