@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 16, 2026 at 08:54 AM
+-- Generation Time: Mar 17, 2026 at 10:23 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -300,10 +300,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `userIdIN` INT(11))
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `geSubcatByPrimCat` (IN `primCategoryIdIN` INT(11))   BEGIN
-	SELECT * FROM category WHERE category.category_id = primCategoryIdIN;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAddressXuserById` (IN `AddressXuserIdIN` INT(11))   BEGIN
 	SELECT* FROM `address_user`
     WHERE `address_user`.`is_deleted`=0 AND `address_user`.`id`=AddressXuserIdIN
@@ -418,6 +414,10 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReviewByUserId` (IN `userIdIN` INT(11))   BEGIN
 	SELECT * FROM `review`
     WHERE `review`.`user_id`=userIdIN AND `review`.`is_deleted`=0;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSubcatByPrimCat` (IN `primCategoryIdIN` INT(11))   BEGIN
+	SELECT * FROM category WHERE category.category_id = primCategoryIdIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getTransportDetailsById` (IN `transportDetailsIdIN` INT(11))   BEGIN
