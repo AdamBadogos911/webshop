@@ -22,4 +22,8 @@ export class OrderService {
   getAllOrderHistory():Observable<OrderHistory[]> {
     return this.http.get<OrderHistory[]>(`${this.baseUrl}`)
   }
+
+  getStatistic(): Observable<{income: number, numberOfOrder: number, averageOrderedPrice: number, numberOfSoldProduct: number}> {
+    return this.http.get<{income: number, numberOfOrder: number, averageOrderedPrice: number, numberOfSoldProduct: number}>(`${this.baseUrl}/statistic`)
+  }
 }
