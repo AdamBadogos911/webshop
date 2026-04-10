@@ -1,39 +1,37 @@
-<nav class="navbar position-fixed sticky-top navbar-expand-lg">
-  <div class="container-fluid">
-    <a routerLink="/homePage" class="navbar-brand">
-      <img src="assets/logo.png" alt="Logo" id="logo">
-    </a>
+<nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" routerLink="">
+          <img alt="Logo" id="logo" src="assets/logo.png" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link text-center" (mouseover)="handleNavbar()" (mouseleave)="navbarIsOpen = false">Termékeink</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-center" routerLink="/aboutUs">Rólunk</a>
+            </li>
+            @if (userService.user?.role?.name == "ROLE_admin")
+            {<li class="nav-item">
+              <a class="nav-link" routerLink="/adminPage">Admin</a>
+            </li>}
+          </ul>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Termék keresése név vagy cikkszám alapján">
+            <button class="icon-button" (click)="navigateWithUserIcon()">
+              <span>{{userService.user?.firstName}}</span>
+              <span class="material-symbols-outlined">
+                person
+              </span>
+            </button>
 
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <span (mouseover)="handleNavbar()">Termékeink</span>
-        </li>
-        <!--<li class="nav-item">
-          <a routerLink="">Ajánlatok</a>
-        </li>-->
-        <li class="nav-item">
-          <a routerLink="/aboutUs">Rólunk</a>
-        </li>
-
-        @if (userService.user?.role?.name == "ROLE_admin") {
-          <li class="nav-item">
-            <a routerLink="/adminPage">Admin</a>
-          </li>
-        }
-      </ul>
-    </div>
-
-      <button class="icon-button" (click)="navigateWithUserIcon()">
-        <span>{{userService.user?.firstName}}</span>
-        <span class="material-symbols-outlined">
-          person
-        </span>
-      </button>
-
-    <button class="icon-button" routerLink="/orderPage/cart">
-      <span class="material-symbols-outlined">shopping_cart</span>
-    </button>
-
-  </div>
-</nav>
+          <button class="icon-button" routerLink="/orderPage/cart">
+            <span class="material-symbols-outlined">shopping_cart</span>
+          </button>
+          </form>
+        </div>
+      </div>
+    </nav>

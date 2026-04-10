@@ -15,9 +15,8 @@ export class Navbar {
   router = inject(Router)
 
   handleNavbar() {
-    this.navbarIsOpen = !this.navbarIsOpen
+    this.navbarIsOpen = true
     this.openNavBar.emit(this.navbarIsOpen)
-
   }
 
   navigateWithUserIcon() {
