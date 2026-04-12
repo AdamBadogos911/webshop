@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 17, 2026 at 10:23 AM
+-- Generation Time: Apr 12, 2026 at 10:21 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -491,6 +491,60 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `searchByProductSKU` (IN `Stock_Keeping_Unit` VARCHAR(255))   BEGIN
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `statistic_avg_order_price` (IN `monthIN` INT, IN `yearIN` INT)   BEGIN 
+	SELECT SUM(p.price * op.amount) 
+    / 
+    COUNT(DISTINCT oh.id)
+    FROM order_history oh 
+    INNER JOIN order_product op ON 
+    oh.id = op.order_id
+    INNER JOIN product p ON 
+    p.id = op.product_id
+    WHERE 
+	MONTH(oh.ordered_at) = monthIN
+	AND 
+    YEAR(oh.ordered_at) = yearIN
+    ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `statistic_count_orders` (IN `monthIN` INT, IN `yearIN` INT)   BEGIN 
+	SELECT COUNT(oh.id) FROM order_history oh 
+    INNER JOIN order_product op ON 
+    oh.id = op.order_id
+    INNER JOIN product p ON 
+    p.id = op.product_id
+    WHERE 
+	MONTH(oh.ordered_at) = monthIN
+	AND 
+    YEAR(oh.ordered_at) = yearIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `statistic_sum_profit` (IN `monthIN` INT, IN `yearIN` INT)   BEGIN 
+	SELECT SUM(p.price * op.amount) FROM order_history oh 
+    INNER JOIN order_product op ON 
+    oh.id = op.order_id
+    INNER JOIN product p ON 
+    p.id = op.product_id
+    WHERE 
+	MONTH(oh.ordered_at) = monthIN
+	AND 
+    YEAR(oh.ordered_at) = yearIN
+	;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `statistic_sum_sold_items` (IN `monthIN` INT, IN `yearIN` INT)   BEGIN 
+	SELECT SUM(op.amount) FROM order_history oh 
+    INNER JOIN order_product op ON 
+    oh.id = op.order_id
+    INNER JOIN product p ON 
+    p.id = op.product_id
+    WHERE 
+	MONTH(oh.ordered_at) = monthIN
+	AND 
+    YEAR(oh.ordered_at) = yearIN
+	;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateAddress` (IN `addressIdIN` INT(11), IN `cityIN` VARCHAR(100), IN `postalCodeIN` INT(4), IN `nameOfPublicAreaIN` VARCHAR(100), IN `houseNumberIN` INT(4))   BEGIN
@@ -1209,7 +1263,11 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 (35, 'Műanyag', 32, 0, NULL),
 (36, 'Egyenes', 32, 0, NULL),
 (37, 'Bőr', 9, 0, NULL),
-(38, 'Poliészter', 9, 0, NULL);
+(38, 'Poliészter', 9, 0, NULL),
+(39, 'Dugófej 1/2\"', 6, 0, NULL),
+(40, 'Dugófej 1/4\"', 6, 0, NULL),
+(41, 'Dugófej 3/8\"', 6, 0, NULL),
+(42, 'Dugófej 3/4\"', 6, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1407,7 +1465,19 @@ INSERT INTO `details` (`id`, `size`, `material`, `weight`, `length`, `height`, `
 (171, '3/4\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (172, '1\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (173, NULL, 'Gumi', NULL, NULL, NULL, NULL, NULL, NULL),
-(174, NULL, 'Gumi', NULL, NULL, NULL, NULL, NULL, NULL);
+(174, NULL, 'Gumi', NULL, NULL, NULL, NULL, NULL, NULL),
+(175, '8', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(176, '9', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(177, '10', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(178, '11', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(179, '12', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(180, '13', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(181, '14', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(182, '15', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(183, '16', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(184, '17', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(185, '18', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL),
+(186, '19', 'Fém', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1703,7 +1773,19 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (171, 'Kerticsapok Egyenes 3/4\"', 'Kerticsapok Egyenes 3/4\"', 1000, 0, '2026-03-02 09:41:50', NULL, NULL, 0, 100, 171, '88888888171', 3, 36, 0),
 (172, 'Kerticsapok Egyenes 1\"', 'Kerticsapok Egyenes 1\"', 1400, 0, '2026-03-02 09:41:50', NULL, NULL, 0, 100, 172, '88888888172', 3, 36, 0),
 (173, 'Tömítés klt.', 'Tömítés klt.', 350, 0, '2026-03-02 09:45:46', NULL, NULL, 0, 100, 173, '88888888173', 3, 32, 0),
-(174, '\"O\" gyűrű', '\"O\" gyűrű', 80, 0, '2026-03-02 09:45:46', NULL, NULL, 0, 10000, 174, '88888888174', 3, 32, 0);
+(174, '\"O\" gyűrű', '\"O\" gyűrű', 80, 0, '2026-03-02 09:45:46', NULL, NULL, 0, 10000, 174, '88888888174', 3, 32, 0),
+(175, 'Dugófej 1/2\" 6 lapos 8-as', 'Dugófej 1/2\" 6 lapos 8-as', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 175, '88888888175', 3, 39, 0),
+(176, 'Dugófej 1/2\" 6 lapos 9-es', 'Dugófej 1/2\" 6 lapos 9-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 176, '88888888176', 3, 39, 0),
+(177, 'Dugófej 1/2\" 6 lapos 10-es', 'Dugófej 1/2\" 6 lapos 10-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 177, '88888888177', 3, 39, 0),
+(178, 'Dugófej 1/2\" 6 lapos 11-es', 'Dugófej 1/2\" 6 lapos 11-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 178, '88888888178', 3, 39, 0),
+(179, 'Dugófej 1/2\" 6 lapos 12-es', 'Dugófej 1/2\" 6 lapos 12-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 179, '88888888179', 3, 39, 0),
+(180, 'Dugófej 1/2\" 6 lapos 13-as', 'Dugófej 1/2\" 6 lapos 13-as', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 180, '88888888180', 3, 39, 0),
+(181, 'Dugófej 1/2\" 6 lapos 14-es', 'Dugófej 1/2\" 6 lapos 14-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 181, '88888888181', 3, 39, 0),
+(182, 'Dugófej 1/2\" 6 lapos 15-ös', 'Dugófej 1/2\" 6 lapos 15-ös', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 182, '88888888182', 3, 39, 0),
+(183, 'Dugófej 1/2\" 6 lapos 16-os', 'Dugófej 1/2\" 6 lapos 16-os', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 183, '88888888183', 3, 39, 0),
+(184, 'Dugófej 1/2\" 6 lapos 17-es', 'Dugófej 1/2\" 6 lapos 17-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 184, '88888888184', 3, 39, 0),
+(185, 'Dugófej 1/2\" 6 lapos 18-as', 'Dugófej 1/2\" 6 lapos 18-as', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 185, '88888888185', 3, 39, 0),
+(186, 'Dugófej 1/2\" 6 lapos 19-es', 'Dugófej 1/2\" 6 lapos 19-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 186, '88888888186', 3, 39, 0);
 
 -- --------------------------------------------------------
 
@@ -1910,7 +1992,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`, `verificationCode`) VALUES
 (1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
-(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
+(2, 'JánosTesztel@gmail.com', 'alma5678.', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/default.png', 2, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
 (3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', '2025-11-23 18:50:57', NULL, NULL),
 (4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
 (5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
@@ -2107,13 +2189,13 @@ ALTER TABLE `cart_product`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `details`
 --
 ALTER TABLE `details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
 
 --
 -- AUTO_INCREMENT for table `order_history`
@@ -2137,7 +2219,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
 
 --
 -- AUTO_INCREMENT for table `product_image`
