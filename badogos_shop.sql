@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 12, 2026 at 10:21 AM
+-- Generation Time: Apr 14, 2026 at 01:48 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -491,6 +491,16 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `searchByProductSKU` (IN `Stock_Keeping_Unit` VARCHAR(255))   BEGIN
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `searchProduct` (IN `searchTerm` VARCHAR(100))   BEGIN 
+	SELECT * FROM product
+    WHERE 
+    (product.name LIKE CONCAT(searchTerm, '', '%')
+    OR 
+    product.stock_keeping_unit LIKE CONCAT(searchTerm, '', '%'))
+    AND 
+    product.is_deleted = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `statistic_avg_order_price` (IN `monthIN` INT, IN `yearIN` INT)   BEGIN 
@@ -1119,7 +1129,8 @@ INSERT INTO `cart` (`id`, `user_id`, `last_modified_at`, `created_at`) VALUES
 (10, 10, NULL, '2025-11-20 16:34:21'),
 (11, 13, NULL, '2026-02-20 08:09:44'),
 (12, 16, NULL, '2026-02-22 17:46:38'),
-(13, 17, NULL, '2026-02-23 12:25:31');
+(13, 14, NULL, '2026-02-23 12:25:31'),
+(14, 18, NULL, '2026-04-14 13:16:48');
 
 -- --------------------------------------------------------
 
@@ -1508,18 +1519,18 @@ CREATE TABLE `order_history` (
 --
 
 INSERT INTO `order_history` (`id`, `first_name`, `last_name`, `phone`, `email`, `user_id`, `billing_detail_id`, `transport_detail_id`, `payment_method_id`, `status_id`, `ordered_at`, `canceled_at`, `is_canceled`, `canceler_user_id`, `order_id`) VALUES
-(1, '', '', '', '', 1, 1, 1, 1, 7, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(2, '', '', '', '', 1, 1, 1, 1, 1, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(3, '', '', '', '', 1, 1, 1, 1, 6, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(4, '', '', '', '', 3, 1, 1, 1, 2, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(5, '', '', '', '', 1, 1, 1, 1, 5, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(6, '', '', '', '', 1, 1, 1, 1, 3, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(7, '', '', '', '', 1, 1, 1, 1, 3, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(8, '', '', '', '', 1, 1, 1, 1, 4, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(9, '', '', '', '', 1, 1, 1, 1, 7, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(10, '', '', '', '', 1, 1, 1, 1, 6, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(11, '', '', '', '', 1, 1, 1, 1, 6, '2025-11-21 12:22:28', NULL, 0, NULL, 0),
-(12, '', '', '', '', 1, 1, 1, 1, 1, '2025-11-21 12:22:28', NULL, 0, NULL, 0);
+(1, '', '', '', '', 1, 1, 1, 1, 7, '2025-11-11 19:29:51', NULL, 0, NULL, 0),
+(2, '', '', '', '', 1, 1, 1, 1, 1, '2025-11-20 19:29:51', NULL, 0, NULL, 0),
+(3, '', '', '', '', 1, 1, 1, 1, 6, '2025-11-21 19:29:51', NULL, 0, NULL, 0),
+(4, '', '', '', '', 3, 1, 1, 1, 2, '2026-04-07 18:29:51', NULL, 0, NULL, 0),
+(5, '', '', '', '', 1, 1, 1, 1, 5, '2026-04-07 18:29:51', NULL, 0, NULL, 0),
+(6, '', '', '', '', 1, 1, 1, 1, 3, '2026-04-07 18:29:51', NULL, 0, NULL, 0),
+(7, '', '', '', '', 1, 1, 1, 1, 3, '2026-04-07 18:29:51', NULL, 0, NULL, 0),
+(8, '', '', '', '', 1, 1, 1, 1, 4, '2026-04-07 18:29:51', NULL, 0, NULL, 0),
+(9, '', '', '', '', 1, 1, 1, 1, 7, '2026-04-07 18:29:51', NULL, 0, NULL, 0),
+(10, '', '', '', '', 1, 1, 1, 1, 6, '2026-04-07 18:29:51', NULL, 0, NULL, 0),
+(11, '', '', '', '', 1, 1, 1, 1, 6, '2026-04-07 18:29:51', NULL, 0, NULL, 0),
+(12, '', '', '', '', 1, 1, 1, 1, 1, '2026-04-07 18:29:51', NULL, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1606,8 +1617,8 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (4, '1/4\" Racsni Króm, gumírozott markolattal', '1/4\" Racsni Króm, gumírozott markolattal', 1500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 100, 4, '888888884', 3, 21, 0),
 (5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 2, 5, '888888885', 3, 21, 0),
 (6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 09:09:07', '2025-12-04 09:34:05', NULL, 0, 300, 6, '888888886', 3, 21, 0),
-(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', 3, 2, 9),
-(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', 3, 2, 9),
+(7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', 3, 2, 8),
+(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', 3, 2, 19),
 (9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 09:10:55', '2025-12-22 20:07:32', NULL, 0, 10, 9, '888888889', 3, 2, 0),
 (10, '1/4\" 15 cm-es racsnitoldó', '1/4\" 15 cm-es racsnitoldó', 2100, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 10, '8888888810', 3, 2, 0),
 (11, '1/4\" 23 cm-es racsnitoldó', '1/4\" 23 cm-es racsnitoldó', 2300, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 11, '8888888811', 3, 2, 0),
@@ -1705,7 +1716,7 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (103, 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 2300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 103, '88888888103', 3, 19, 0),
 (104, 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 2900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 104, '88888888104', 3, 19, 0),
 (105, 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 3400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 105, '88888888104', 3, 19, 0),
-(106, 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 101, 106, '88888888106', 3, 20, 8),
+(106, 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 101, 106, '88888888106', 3, 20, 11),
 (107, 'Fűnyíró damil alumíniumos 15 méteres 2mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2mm-es ', 900, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 107, '88888888107', 3, 20, 2),
 (108, 'Fűnyíró damil alumíniumos 15 méteres 2.4mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2.4mm-es ', 1200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 108, '88888888108', 3, 20, 1),
 (109, 'Fűnyíró damil alumíniumos 15 méteres 2.7mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2.7mm-es ', 1500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 109, '88888888109', 3, 20, 0),
@@ -1723,7 +1734,7 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (121, 'Adapter 3/4\" - 1/2\"', 'Adapter 3/4\" - 1/2\"', 3600, 0, '2026-02-23 09:24:41', NULL, NULL, 0, 100, 121, '88888888121', 3, 3, 0),
 (122, 'Adapter 1\" - 3/4\"', 'Adapter 1\" - 3/4\"', 7500, 0, '2026-02-23 09:24:41', NULL, NULL, 0, 100, 122, '88888888122', 3, 3, 0),
 (123, 'Csuklo 1/4\"', 'Csuklo 1/4\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 100, 123, '88888888123', 3, 4, 0),
-(124, 'Csuklo 3/8\"', 'Csuklo 3/8\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 0, 124, '88888888124', 3, 4, 2),
+(124, 'Csuklo 3/8\"', 'Csuklo 3/8\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 0, 124, '88888888124', 3, 4, 0),
 (125, 'Csuklo 1/2\"', 'Csuklo 1/2\"', 2000, 0, '2026-02-23 09:30:36', NULL, NULL, 0, 100, 125, '88888888125', 3, 4, 0),
 (126, 'Jobi racsni 1/4\"', 'Jobi racsni 1/4\"', 4000, 0, '2026-02-23 10:13:07', NULL, NULL, 0, 100, 126, '88888888126', 1, 21, 0),
 (127, 'Jobi racsni 3/8\"', 'Jobi racsni 3/8\"', 5000, 0, '2026-02-23 10:13:07', NULL, NULL, 0, 100, 127, '88888888127', 1, 21, 0),
@@ -1774,18 +1785,17 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (172, 'Kerticsapok Egyenes 1\"', 'Kerticsapok Egyenes 1\"', 1400, 0, '2026-03-02 09:41:50', NULL, NULL, 0, 100, 172, '88888888172', 3, 36, 0),
 (173, 'Tömítés klt.', 'Tömítés klt.', 350, 0, '2026-03-02 09:45:46', NULL, NULL, 0, 100, 173, '88888888173', 3, 32, 0),
 (174, '\"O\" gyűrű', '\"O\" gyűrű', 80, 0, '2026-03-02 09:45:46', NULL, NULL, 0, 10000, 174, '88888888174', 3, 32, 0),
-(175, 'Dugófej 1/2\" 6 lapos 8-as', 'Dugófej 1/2\" 6 lapos 8-as', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 175, '88888888175', 3, 39, 0),
-(176, 'Dugófej 1/2\" 6 lapos 9-es', 'Dugófej 1/2\" 6 lapos 9-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 176, '88888888176', 3, 39, 0),
-(177, 'Dugófej 1/2\" 6 lapos 10-es', 'Dugófej 1/2\" 6 lapos 10-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 177, '88888888177', 3, 39, 0),
-(178, 'Dugófej 1/2\" 6 lapos 11-es', 'Dugófej 1/2\" 6 lapos 11-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 178, '88888888178', 3, 39, 0),
-(179, 'Dugófej 1/2\" 6 lapos 12-es', 'Dugófej 1/2\" 6 lapos 12-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 179, '88888888179', 3, 39, 0),
-(180, 'Dugófej 1/2\" 6 lapos 13-as', 'Dugófej 1/2\" 6 lapos 13-as', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 180, '88888888180', 3, 39, 0),
-(181, 'Dugófej 1/2\" 6 lapos 14-es', 'Dugófej 1/2\" 6 lapos 14-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 181, '88888888181', 3, 39, 0),
-(182, 'Dugófej 1/2\" 6 lapos 15-ös', 'Dugófej 1/2\" 6 lapos 15-ös', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 182, '88888888182', 3, 39, 0),
-(183, 'Dugófej 1/2\" 6 lapos 16-os', 'Dugófej 1/2\" 6 lapos 16-os', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 183, '88888888183', 3, 39, 0),
-(184, 'Dugófej 1/2\" 6 lapos 17-es', 'Dugófej 1/2\" 6 lapos 17-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 184, '88888888184', 3, 39, 0),
-(185, 'Dugófej 1/2\" 6 lapos 18-as', 'Dugófej 1/2\" 6 lapos 18-as', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 185, '88888888185', 3, 39, 0),
-(186, 'Dugófej 1/2\" 6 lapos 19-es', 'Dugófej 1/2\" 6 lapos 19-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 186, '88888888186', 3, 39, 0);
+(180, 'Dugófej 1/2\" 6 lapos 8-as', 'Dugófej 1/2\" 6 lapos 8-as', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 175, '88888888175', 3, 39, 0),
+(181, 'Dugófej 1/2\" 6 lapos 9-es', 'Dugófej 1/2\" 6 lapos 9-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 176, '88888888176', 3, 39, 0),
+(182, 'Dugófej 1/2\" 6 lapos 10-es', 'Dugófej 1/2\" 6 lapos 10-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 177, '88888888177', 3, 39, 0),
+(183, 'Dugófej 1/2\" 6 lapos 11-es', 'Dugófej 1/2\" 6 lapos 11-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 178, '88888888178', 3, 39, 0),
+(184, 'Dugófej 1/2\" 6 lapos 12-es', 'Dugófej 1/2\" 6 lapos 12-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 179, '88888888179', 3, 39, 0),
+(185, 'Dugófej 1/2\" 6 lapos 13-as', 'Dugófej 1/2\" 6 lapos 13-as', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 180, '88888888180', 3, 39, 0),
+(186, 'Dugófej 1/2\" 6 lapos 14-es', 'Dugófej 1/2\" 6 lapos 14-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 181, '88888888181', 3, 39, 0),
+(187, 'Dugófej 1/2\" 6 lapos 15-ös', 'Dugófej 1/2\" 6 lapos 15-ös', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 182, '88888888182', 3, 39, 0),
+(188, 'Dugófej 1/2\" 6 lapos 16-os', 'Dugófej 1/2\" 6 lapos 16-os', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 183, '88888888183', 3, 39, 0),
+(189, 'Dugófej 1/2\" 6 lapos 17-es', 'Dugófej 1/2\" 6 lapos 17-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 184, '88888888184', 3, 39, 0),
+(190, 'Dugófej 1/2\" 6 lapos 18-as', 'Dugófej 1/2\" 6 lapos 18-as', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 185, '88888888185', 3, 39, 0);
 
 -- --------------------------------------------------------
 
@@ -1879,9 +1889,9 @@ INSERT INTO `review` (`id`, `product_id`, `user_id`, `review_text`, `rate`, `cre
 (5, 5, 5, '(Teszt5)', 5, '2025-11-19 09:56:35', NULL, 0, NULL),
 (6, 6, 6, '(Teszt6)', 4, '2025-11-19 09:56:35', NULL, 0, NULL),
 (7, 7, 7, '(Teszt7)', 5, '2025-11-19 09:58:38', NULL, 0, NULL),
-(8, 8, 8, '(Teszt8)', 5, '2025-11-19 09:58:38', NULL, 0, NULL),
+(8, 8, 8, '(Teszt8)', 3, '2025-11-19 09:58:38', NULL, 0, NULL),
 (9, 9, 9, '(Teszt9)', 5, '2025-11-19 09:59:34', NULL, 0, NULL),
-(10, 9, 10, '(Teszt10)', 5, '2025-11-19 09:59:34', NULL, 0, NULL),
+(10, 9, 14, '(Teszt10)', 5, '2025-11-19 09:59:34', NULL, 0, NULL),
 (11, 3, 8, 'tessszt', 5, '2025-11-20 11:25:21', NULL, 0, NULL),
 (12, 106, 13, 'Teszt ', 4, '2026-02-22 17:22:15', NULL, 0, NULL),
 (13, 106, 16, 'lalalala', 3, '2026-02-22 17:47:10', NULL, 0, NULL);
@@ -1983,16 +1993,16 @@ CREATE TABLE `user` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT NULL,
   `register_finished_at` timestamp NULL DEFAULT NULL,
-  `verificationCode` longtext
+  `v_code` longtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`, `verificationCode`) VALUES
+INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone_number`, `pfp_path`, `role_id`, `is_deleted`, `deleted_at`, `last_login`, `register_finished_at`, `v_code`) VALUES
 (1, 'TesztElek@gmail.com', 'alma5678', 'Teszt', 'Elek', NULL, 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
-(2, 'JánosTesztel@gmail.com', 'alma5678.', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/default.png', 2, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
+(2, 'JánosTesztel@gmail.com', 'alma5678', 'Teszt', 'János', NULL, 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
 (3, 'Email1@gmail.com', 'alma5678', 'Teszt1', 'Teszt1', '+11111111111', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', '2025-11-23 18:50:57', NULL, NULL),
 (4, 'Email2@gmail.com', 'alma5678', 'Teszt2', 'Teszt2', '+11111111112', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
 (5, 'Email3@gmail.com', 'alma5678', 'Teszt3', 'Teszt3', '+11111111113', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:56:27', NULL, NULL, NULL),
@@ -2004,10 +2014,11 @@ INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`, `phone
 (11, 'Email9@gmail.com', 'alma5678', 'Teszt9', 'Teszt9', '+11111111119', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:58:14', NULL, NULL, NULL),
 (12, 'Email10@gmail.com', 'alma5678', 'Teszt10', 'Teszt10', '+11111111110', 'http://localhost:8080/pfp/default.png', 1, 1, '2026-03-02 11:58:14', NULL, NULL, NULL),
 (13, 'asdadasad@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$ojdkmaYKQNEw75vyk4Azlg$gTqHjf8YOMxUS8etGkpbOThqEslHT4oC1vqpX97ecaA', 'adadadasd', 'asdadsa', '-', 'http://localhost:8080/pfp/default.png', 1, 0, NULL, '2026-02-23 12:24:25', NULL, NULL),
-(14, 'test@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$AlmRO5ZErc7T8cCdEge4VQ$Dcnfht4865P16+AY+i0bYh+uYnYiTbqFB/UhjsGKY7g', 'testUpdate', 'test', '06706285232', 'http://localhost:8080/pfp/14464639745_1052396210015983_856568762032357262_n.jpg', 1, 0, NULL, '2026-02-17 19:41:18', NULL, NULL),
-(15, 'test2@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$ohREETSjVyYm+Rf48odKFA$6YuNM79joGYzr9nxAhYx88LFuiOzlTc6vj9xmemcXzU', 'test2U', 'test2', NULL, 'http://localhost:8080/pfp/15464639745_1052396210015983_856568762032357262_n.jpg', 2, 0, NULL, '2026-02-17 18:35:06', NULL, NULL),
+(14, 'test@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$AlmRO5ZErc7T8cCdEge4VQ$Dcnfht4865P16+AY+i0bYh+uYnYiTbqFB/UhjsGKY7g', 'testUpdate', 'test', '06706285232', 'http://localhost:8080/pfp/14464639745_1052396210015983_856568762032357262_n.jpg', 1, 0, NULL, '2026-03-14 14:55:38', NULL, NULL),
+(15, 'test2@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$ohREETSjVyYm+Rf48odKFA$6YuNM79joGYzr9nxAhYx88LFuiOzlTc6vj9xmemcXzU', 'test2U', 'test2', NULL, 'http://localhost:8080/pfp/15464639745_1052396210015983_856568762032357262_n.jpg', 2, 0, NULL, '2026-04-07 18:29:58', NULL, NULL),
 (16, 'lalala@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$cc9rixcvbHAmCVQnUcyw2w$ABFHiZsUcEDHaw3e2Ge8OxDpPZCf5uaOv4D7Kjd+9dE', 'Teszt', 'lalala', NULL, 'assets/pfp/default.png', 1, 0, NULL, '2026-02-22 17:46:53', NULL, NULL),
-(17, 'asd1@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$1uX4hdH8FJtHFxj1ymEHJw$NOPftVu6YUoQFwdSsOcTAX0AgzWwW2d4lJccYkHWluc', 'qewqweqeasdadasd', 'qeqweqweqwqeqwe', NULL, 'assets/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL);
+(17, 'asd1@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$1uX4hdH8FJtHFxj1ymEHJw$NOPftVu6YUoQFwdSsOcTAX0AgzWwW2d4lJccYkHWluc', 'qewqweqeasdadasd', 'qeqweqweqwqeqwe', NULL, 'assets/pfp/default.png', 1, 0, NULL, NULL, NULL, NULL),
+(18, 'EngedjBe1234567@gmail.com', '$argon2id$v=19$m=4096,t=3,p=1$60Da5W9NbGXlXFCtqEOKXA$Cpp6UqruejIb6aUtvZt3/SyRqxytNmsnMAXxriznw7E', 'Be1234567.', 'Engedj', NULL, 'http://localhost:8080/pfp/default.png', 2, 0, NULL, '2026-04-14 13:41:07', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -2177,7 +2188,7 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `cart_product`
@@ -2219,7 +2230,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
 
 --
 -- AUTO_INCREMENT for table `product_image`
@@ -2255,7 +2266,7 @@ ALTER TABLE `transport_detail`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
