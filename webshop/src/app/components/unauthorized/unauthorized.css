@@ -1,0 +1,23 @@
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 550,
+  'GRAD' 0,
+  'opsz' 24;
+  font-size: 48px;
+}
+
+.container-fluid {
+  height: 87vh;
+}
+
+button {
+  background-color: #48616D;
+  border-radius: 20px;
+  display: block;
+  margin: 10px auto;
+  padding: 5px;
+  width: 150px;
+  border: none;
+  color: white;
+}
