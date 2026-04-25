@@ -21,10 +21,6 @@ body {
   padding: 0;
 }
 
-#main {
-  margin-top: 42px;
-}
-
 app-navbar {
   position: sticky;
   top: 0px;

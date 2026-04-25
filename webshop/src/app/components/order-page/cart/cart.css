@@ -3,6 +3,6 @@
 }
 
 .container-fluid {
-  min-height: 100vh;
+  min-height: calc(100vh - 63px - 90px);
   margin-top: 10px;
 }

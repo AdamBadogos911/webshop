@@ -8,7 +8,7 @@
 }
 
 .container-fluid {
-  height: 87vh;
+  min-height: calc(100vh - 63px - 90px);
 }
 
 button {

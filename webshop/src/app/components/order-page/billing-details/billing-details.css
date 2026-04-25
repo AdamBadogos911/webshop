@@ -4,6 +4,7 @@
   width: 100%;
   align-self: center;
   border-radius: 25px;
+  min-height: calc(100vh - 63px - 90px);
 }
 
 button {

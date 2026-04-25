@@ -1,11 +1,10 @@
-#register {
-  height: 100%;
+#login {
+  min-height: calc(100vh - 63px - 90px);
 }
 
 form {
   background-color: #BFBFC0;
   border-radius: 20px;
-  height: 550px;
   width: 400px;
 }
 
@@ -13,39 +12,14 @@ form {
   margin: 0 15px;
 }
 
-label {
-  font-size: large;
-  margin: 5px;
-  width: 150px;
-}
-
 input {
   border-radius: 25px;
   border: none;
 }
 
-#register {
-  height: 100%;
-  padding: auto;
-}
-
 h1 {
   margin: 20px;
   text-align: center;
-}
-
-form {
-  background-color: #BFBFC0;
-  border-radius: 20px;
-  margin: 10px auto;
-  width: fit-content;
-  padding: 5px;
-}
-
-label {
-  font-size: large;
-  margin: 5px;
-  width: 150px;
 }
 
 input {
@@ -66,6 +40,16 @@ button {
   width: 150px;
   border: none;
   color: white;
+}
+
+a {
+  color: black;
+  text-decoration: underline;
+  font-size: medium;
+}
+
+a:hover {
+  text-decoration: dotted underline;
 }
 
 #password.shadow {
@@ -93,8 +77,4 @@ button {
   text-decoration:dotted underline;
 }
 
-@media screen and (max-width: 450px) {
-  form {
-    width: 100%;
-  }
-}
+

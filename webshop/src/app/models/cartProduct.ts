@@ -7,5 +7,5 @@ export class CartProduct {
     public amount: number,
     public cartProduct: Product,
     public cart: Cart
-  ) { }
+  ) {}
 }
