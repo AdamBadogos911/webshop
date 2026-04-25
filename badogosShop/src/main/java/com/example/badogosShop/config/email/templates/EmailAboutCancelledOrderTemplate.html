@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #dc3545;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #dc3545;
+            margin: 0;
+        }
+        .content {
+            padding: 20px 0;
+        }
+        .order-details {
+            background-color: #fff5f5;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .order-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .order-details td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-details td:first-child {
+            font-weight: bold;
+            width: 40%;
+        }
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 12px;
+        }
+        .warning-badge {
+            display: inline-block;
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>❌ Rendelés Törlése</h1>
+        </div>
+        
+        <div class="content">
+            <p>Szia!</p>
+            
+            <p>Értesítünk, hogy a rendelésed sikeresen törölve lett.</p>
+            
+            <div class="warning-badge">Rendelés Törölve</div>
+            
+            <h3>Törölt Rendelés Adatai:</h3>
+            
+            <div class="order-details">
+                <table>
+                    <tr>
+                        <td>Rendelés ID:</td>
+                        <td>%ORDER_ID%</td>
+                    </tr>
+                    <tr>
+                        <td>Eredeti Megrendelés Dátuma:</td>
+                        <td>%ORDER_DATE%</td>
+                    </tr>
+                    <tr>
+                        <td>Törlés Dátuma:</td>
+                        <td>%CANCELLATION_DATE%</td>
+                    </tr>
+                    <tr>
+                        <td>Teljes Ár:</td>
+                        <td>%TOTAL_PRICE% Ft</td>
+                    </tr>
+                    <tr>
+                        <td>Visszatérítés Status:</td>
+                        <td>Feldolgozás alatt (3-5 munkanap)</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <h3>Mi történik most?</h3>
+            <ul>
+                <li>A rendelés törlésre került az adatbázisunk</li>
+                <li>Az összeg visszatérítésre kerül az eredeti fizetési módba</li>
+                <li>A visszatérítés feldolgozása 3-5 munkanapot vehet igénybe</li>
+                <li>Értesítést küldünk, amikor a visszatérítés megtörtént</li>
+            </ul>
+            
+            <h3>Van valami kérdésed?</h3>
+            <p>Amennyiben a törlés után odaléptél volna vagy lenne kérdésed, 
+            vedd fel velünk a kapcsolatot:</p>
+            <ul>
+                <li>Email: support@badogosshop.hu</li>
+                <li>Telefon: +36 1 234 5678</li>
+                <li>Ügyfélszolgálat: 8:00 - 20:00 (hétfőtől péntekig)</li>
+            </ul>
+            
+            <p>Mindig szívesen segítünk!</p>
+            
+            <p>
+                <strong>Üdvözlettel,</strong><br>
+                BadogosShop Csapat
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2026 BadogosShop. Minden jog fenntartva.</p>
+            <p>Ez egy automatikusan generált email. Kérjük ne válaszolj erre az emailre.</p>
+        </div>
+    </div>
+</body>
+</html>

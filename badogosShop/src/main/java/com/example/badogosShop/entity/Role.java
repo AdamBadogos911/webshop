@@ -2,10 +2,9 @@ package com.example.badogosShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -13,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"users"})
 @AllArgsConstructor
 public class Role {
     @Id
@@ -21,21 +20,16 @@ public class Role {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name="name")
+    @Column(name = "name")
     @NotNull
     private String name;
 
-    @OneToMany(
-            mappedBy = "role",
-            cascade = {}
-    )
+    @OneToMany(mappedBy = "role", cascade = {})
     @JsonIgnore
     private List<User> users;
 
     public Role(Integer id, String name) {
-
         this.id = id;
         this.name = name;
     }
 }
-

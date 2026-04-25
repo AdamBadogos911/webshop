@@ -2,20 +2,18 @@ package com.example.badogosShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-
 @Entity
 @Table(name = "product_image")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"product"})
 @NoArgsConstructor
-
 public class ProductImage {
 
     @Id
@@ -34,5 +32,4 @@ public class ProductImage {
     @JoinColumn(name = "product_id")
     @JsonIgnore
     private Product product;
-
 }

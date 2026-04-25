@@ -3,14 +3,15 @@ package com.example.badogosShop.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 @Table(name = "product")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"detail", "brand", "images", "productReviewList", "orderHistoryList", "category", "cartProductList"})
 @NoArgsConstructor
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getMostViewedProducts", procedureName = "getMostViewedProducts", resultClasses = Product.class),
@@ -47,23 +48,23 @@ public class Product {
 
     @Column(name = "price")
     @NotNull
-    @Size(max = 7)
+    @Min(0)
+    @Max(9999999)
     private Integer price;
 
     @Column(name = "discount")
     @NotNull
-    @Size(max = 2)
-    private Integer discount;
+    @Min(0)
+    @Max(99)
+    private Integer discount = 0;
 
     @Column(name = "created_at")
     private Date createdAt;
 
     @Column(name = "updated_at")
-    @Null
     private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
-    @Null
     private LocalDateTime deletedAt;
 
     @Column(name = "is_deleted")
@@ -79,7 +80,7 @@ public class Product {
     private String stockKeepingUnit;
 
     @Column(name = "view_count")
-    private Long viewCount;
+    private Long viewCount = 0L;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "detail_id")
@@ -119,7 +120,8 @@ public class Product {
         this.isDeleted = false;
         this.description = description;
         this.category = category;
+        this.discount = 0;
+        this.viewCount = 0L;
+        this.createdAt = new Date();
     }
-
 }
-

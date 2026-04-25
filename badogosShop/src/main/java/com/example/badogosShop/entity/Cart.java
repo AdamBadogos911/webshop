@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "cart")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"cartUser", "cartProductList"})
 @NoArgsConstructor
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getCartByUserId", procedureName = "getCartByUserId", parameters = {
@@ -50,5 +50,6 @@ public class Cart {
 
     public Cart(User cartUser) {
         this.cartUser = cartUser;
+        this.createdAt = new Date();
     }
 }

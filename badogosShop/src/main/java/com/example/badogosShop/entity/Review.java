@@ -1,16 +1,15 @@
 package com.example.badogosShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -18,9 +17,8 @@ import java.util.Date;
 @Table(name = "review")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"product", "author"})
 @NoArgsConstructor
-
 public class Review {
 
     @Id
@@ -34,7 +32,8 @@ public class Review {
 
     @Column(name = "rate")
     @NotNull
-    @Size(max = 1)
+    @Min(1)
+    @Max(5)
     private Integer rating;
 
     @Column(name = "created_at")
@@ -44,11 +43,9 @@ public class Review {
     private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
-    @Null
     private LocalDateTime deletedAt;
 
     @Column(name = "updated_at")
-    @Null
     private LocalDateTime updatedAt;
 
     @ManyToOne()
@@ -60,5 +57,4 @@ public class Review {
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"cart", "savedDetails", "orderHistoryList", "reviewList"})
     private User author;
-
 }

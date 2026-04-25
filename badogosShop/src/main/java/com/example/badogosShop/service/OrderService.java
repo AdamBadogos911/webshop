@@ -1,19 +1,24 @@
 package com.example.badogosShop.service;
 
 import com.example.badogosShop.config.email.EmailSender;
+import com.example.badogosShop.config.security.SecurityUtils;
+import com.example.badogosShop.dto.OrderHistoryResponse;
+import com.example.badogosShop.dto.OrderRequest;
+import com.example.badogosShop.dto.OrderResponse;
 import com.example.badogosShop.entity.*;
+import com.example.badogosShop.exception.*;
 import com.example.badogosShop.repository.*;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.regex.Pattern;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -25,237 +30,255 @@ public class OrderService {
     private final PaymentMethodRepository paymentMethodRepository;
     private final AddressTypeRepository addressTypeRepository;
     private final ProductRepository productRepository;
-    private final CartRepository basketRepository;
+    private final CartRepository cartRepository;
     private final TransportDetailRepository transportDetailRepository;
     private final BillingDetailRepository billingDetailRepository;
     private final EmailSender emailSender;
+    private final SecurityUtils securityUtils;
+    private final ValidationUtils validationUtils;
 
-    public ResponseEntity<Object> getOrderHistoryByUserId(Integer userId) {
-        try {
-            if (userId == null) {
-                return ResponseEntity.status(422).build();
-            }
-            User searchedUser = userRepository.findById(userId).orElse(null);
-            if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            }
+    @Transactional(readOnly = true)
+    public List<OrderHistoryResponse> getOrderHistoryByUserId(Integer userId) {
+        if (userId == null) throw new InvalidInputException();
 
-            return ResponseEntity.ok().body(searchedUser.getOrderHistoryList());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        User searchedUser = userRepository.findById(userId).orElse(null);
+        if (searchedUser == null || Boolean.TRUE.equals(searchedUser.getIsDeleted())) {
+            throw new ResourceNotFoundException("userNotFound");
         }
+        if (!securityUtils.canAccessUser(searchedUser)) throw new ForbiddenOperationException();
+
+        return searchedUser.getOrderHistoryList().stream()
+                .map(OrderHistoryResponse::fromEntity)
+                .toList();
     }
 
-    public ResponseEntity<Object> cancelOrder(Integer orderId, Integer cancelerUserId) {
-        try {
-            if (orderId == null) {
-                return ResponseEntity.status(422).build();
-            }
-            OrderHistory searchedOrderHistory = orderHistoryRepository.findById(orderId).orElse(null);
-            if (searchedOrderHistory == null || searchedOrderHistory.getIsCanceled()) {
-                return ResponseEntity.status(404).body("orderNotFound");
-            }
+    // Fix #30: cancelOrder most a generált orderId alapján keres, nem DB PK alapján
+    public void cancelOrder(Integer orderId, Integer cancelerUserId) {
+        if (orderId == null) throw new InvalidInputException();
 
-            if (cancelerUserId != 0) {
-                User cancelerUser = userRepository.getUserById(cancelerUserId).orElse(null);
-                if (cancelerUser == null || cancelerUser.getIsDeleted()) {
-                    return ResponseEntity.status(404).body("userNotFound");
+        OrderHistory searchedOrderHistory = orderHistoryRepository.findByOrderId(orderId).orElse(null);
+        if (searchedOrderHistory == null || Boolean.TRUE.equals(searchedOrderHistory.getIsCanceled())) {
+            throw new ResourceNotFoundException("orderNotFound");
+        }
+        if (searchedOrderHistory.getOrderUser() != null && !securityUtils.canAccessUser(searchedOrderHistory.getOrderUser())) {
+            throw new ForbiddenOperationException();
+        }
+
+        String authenticatedEmail = securityUtils.getAuthenticatedEmail();
+        if (authenticatedEmail != null) {
+            User cancelerUser = userRepository.findByEmail(authenticatedEmail).orElse(null);
+            if (cancelerUser != null && !Boolean.TRUE.equals(cancelerUser.getIsDeleted())) {
+                if (cancelerUserId != null && cancelerUserId != 0 && !securityUtils.isAdmin() && !cancelerUserId.equals(cancelerUser.getId())) {
+                    throw new ForbiddenOperationException();
                 }
                 searchedOrderHistory.setCancelerUser(cancelerUser);
             }
-
-            try {
-                emailSender.sendEmailAboutCancelledOrder(searchedOrderHistory.getEmail());
-            } catch (Exception e) {
-                return ResponseEntity.internalServerError().body("emailSenderError");
-            }
-
-            searchedOrderHistory.setStatus(statusRepository.findById(3).get());
-            searchedOrderHistory.setCanceledAt(LocalDateTime.now());
-            searchedOrderHistory.setIsCanceled(true);
-            orderHistoryRepository.save(searchedOrderHistory);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
         }
-    }
 
-    public ResponseEntity<Object> sendOrder(OrderHistory newOrder, Integer basketId) {
-        try {
-            if (newOrder == null || basketId == null) {
-                return ResponseEntity.status(422).build();
-            }
+        Status canceledStatus = statusRepository.findById(OrderStatusConstants.CANCELED).orElse(null);
+        if (canceledStatus == null) {
+            throw new ResourceNotFoundException("statusNotFound");
+        }
 
-            if (newOrder.getOrderUser() != null) {
-                User searchedUser = userRepository.findById(newOrder.getOrderUser().getId()).orElse(null);
-                if (searchedUser == null || searchedUser.getIsDeleted()) {
-                    return ResponseEntity.status(404).body("userNotFound");
-                }
-            }
-
-            PaymentMethod searchedPaymentMethod = paymentMethodRepository.findById(newOrder.getPaymentMethod().getId()).orElse(null);
-            Cart searchedBasket = basketRepository.findById(basketId).orElse(null);
-
-            if (searchedPaymentMethod == null) {
-                return ResponseEntity.status(404).body("paymentMethodNotFound");
-            } else if (searchedBasket == null) {
-                return ResponseEntity.status(404).body("basketNotFound");
-            }
-
-            if (newOrder.getId() != null) {
-                return ResponseEntity.status(415).body("invalidObject");
-            } else if (!isEmailValid(newOrder.getEmail().trim())) {
-                return ResponseEntity.status(415).body("invalidEmail");
-            } else if (!isPhoneValid(newOrder.getPhone())) {
-                return ResponseEntity.status(415).body("invalidPhone");
-            } else if (!isBillingDetailValid(newOrder.getOrderBillingDetail())) {
-                return ResponseEntity.status(415).body("invalidBillingDetails");
-            } else if (!isTransportDetailValid(newOrder.getOrderTransportDetail())) {
-                return ResponseEntity.status(415).body("invalidTransportDetails");
-            }
-
-
-
-            int sumPrice = 0;
-            List<OrderProduct> orderedProductList = new ArrayList<>();
-            for (int i = 0; i < searchedBasket.getCartProductList().size(); i++) {
-                CartProduct productFromBasket = searchedBasket.getCartProductList().get(i);
-                Product product = productFromBasket.getCartProduct();
-                product.setAmount(product.getAmount() - productFromBasket.getAmount());
-
-                orderedProductList.add(new OrderProduct(productFromBasket.getAmount(), product));
+        // Készlet visszaállítása a lemondott rendelésből
+        if (searchedOrderHistory.getProducts() != null) {
+            for (OrderProduct orderProduct : searchedOrderHistory.getProducts()) {
+                if (orderProduct == null || orderProduct.getOrderProduct() == null || orderProduct.getAmount() == null) continue;
+                Product product = orderProduct.getOrderProduct();
+                product.setAmount(product.getAmount() + orderProduct.getAmount());
                 productRepository.save(product);
-                sumPrice += (product.getPrice() * productFromBasket.getAmount());
-            }
-
-            try {
-                emailSender.sendEmailAboutOrderWithVerificationCode(newOrder.getEmail(), generateVerificationCode());
-            } catch (Exception e) {
-                e.printStackTrace();
-                return ResponseEntity.internalServerError().body("emailSenderError");
-            }
-
-            System.out.println(sumPrice);
-            newOrder.setOrderTransportDetail(transportDetailRepository.save(newOrder.getOrderTransportDetail()));
-            newOrder.setOrderBillingDetail(billingDetailRepository.save(newOrder.getOrderBillingDetail()));
-            newOrder.setProducts(orderedProductList);
-            newOrder.setStatus(statusRepository.findById(1).get());
-            newOrder.setIsCanceled(false);
-            newOrder.setOrderId(123);
-            orderHistoryRepository.save(newOrder);
-
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<Object> getAllOrderHistory(Pageable pageable) {
-        try {
-            Page<OrderHistory> returnList = orderHistoryRepository.findAll(pageable);
-            return ResponseEntity.ok().body(returnList.toList());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public Boolean isBillingDetailValid(BillingDetail billingDetail) {
-        if (billingDetail.getId() != null) {
-            return false;
-        }
-        AddressType searchedAddressType = addressTypeRepository.findById(billingDetail.getBillingAddressType().getId()).orElse(null);
-        if (searchedAddressType == null) {
-            return false;
-        }
-//        else if (!isValidAddress(billingDetail.getPostCode(), billingDetail.getTown())) {
-//            return false;
-//        }
-        if (billingDetail.getTaxNumber() != null) {
-            if (!isValidTaxNumber(billingDetail.getTown())) {
-                return false;
             }
         }
 
-        return true;
+        searchedOrderHistory.setStatus(canceledStatus);
+        searchedOrderHistory.setCanceledAt(LocalDateTime.now());
+        searchedOrderHistory.setIsCanceled(true);
+        orderHistoryRepository.save(searchedOrderHistory);
+
+        // Async email
+        emailSender.sendEmailAboutCancelledOrder(searchedOrderHistory.getEmail());
     }
 
-    public Boolean isTransportDetailValid(TransportDetail transportDetail) {
-        if (transportDetail.getId() != null) {
-            return false;
+    public OrderResponse sendOrder(OrderRequest request, Integer cartId) {
+        if (cartId == null) throw new InvalidInputException();
+
+        PaymentMethod searchedPaymentMethod = paymentMethodRepository.findById(request.paymentMethodId()).orElse(null);
+        Cart searchedCart = cartRepository.findById(cartId).orElse(null);
+
+        if (searchedPaymentMethod == null) throw new ResourceNotFoundException("paymentMethodNotFound");
+        if (searchedCart == null) throw new ResourceNotFoundException("cartNotFound");
+        if (!securityUtils.canAccessUser(searchedCart.getCartUser())) throw new ForbiddenOperationException();
+
+        // Email és telefon validáció
+        if (!validationUtils.isEmailValid(request.email().trim())) {
+            throw new BusinessValidationException("invalidEmail");
         }
-        AddressType searchedAddressType = addressTypeRepository.findById(transportDetail.getTransportAddressType().getId()).orElse(null);
-        if (searchedAddressType == null) {
-            return false;
+        if (!isPhoneValid(request.phone())) {
+            throw new BusinessValidationException("invalidPhone");
         }
-//        else if (!isValidAddress(transportDetail.getPostCode(), transportDetail.getTown())) {
-//            return false;
-//        }
-        return true;
+
+        // Billing detail mapping
+        AddressType billingAddressType = addressTypeRepository.findById(request.billingDetail().addressTypeId()).orElse(null);
+        if (billingAddressType == null) throw new ResourceNotFoundException("addressTypeNotFound");
+        if (!isValidAddress(request.billingDetail().postCode(), request.billingDetail().town())) {
+            throw new BusinessValidationException("invalidBillingDetails");
+        }
+        if (request.billingDetail().taxNumber() != null && !isValidTaxNumber(request.billingDetail().taxNumber())) {
+            throw new BusinessValidationException("invalidBillingDetails");
+        }
+
+        BillingDetail billingDetail = new BillingDetail();
+        billingDetail.setPostCode(request.billingDetail().postCode());
+        billingDetail.setTown(request.billingDetail().town());
+        billingDetail.setAddress(request.billingDetail().address());
+        billingDetail.setHouseNumber(request.billingDetail().houseNumber());
+        billingDetail.setCompanyName(request.billingDetail().companyName());
+        billingDetail.setTaxNumber(request.billingDetail().taxNumber());
+        billingDetail.setOther(request.billingDetail().other());
+        billingDetail.setBillingAddressType(billingAddressType);
+
+        // Transport detail mapping
+        AddressType transportAddressType = addressTypeRepository.findById(request.transportDetail().addressTypeId()).orElse(null);
+        if (transportAddressType == null) throw new ResourceNotFoundException("addressTypeNotFound");
+        if (!isValidAddress(request.transportDetail().postCode(), request.transportDetail().town())) {
+            throw new BusinessValidationException("invalidTransportDetails");
+        }
+
+        TransportDetail transportDetail = new TransportDetail();
+        transportDetail.setPostCode(request.transportDetail().postCode());
+        transportDetail.setTown(request.transportDetail().town());
+        transportDetail.setAddress(request.transportDetail().address());
+        transportDetail.setHouseNumber(request.transportDetail().houseNumber());
+        transportDetail.setOther(request.transportDetail().other());
+        transportDetail.setTransportAddressType(transportAddressType);
+
+        if (searchedCart.getCartProductList() == null || searchedCart.getCartProductList().isEmpty()) {
+            throw new ConflictException("cartEmpty");
+        }
+
+        // Order összeállítása
+        OrderHistory newOrder = new OrderHistory();
+        newOrder.setFirstName(request.firstName());
+        newOrder.setLastName(request.lastName());
+        newOrder.setPhone(request.phone());
+        newOrder.setEmail(request.email());
+        newOrder.setPaymentMethod(searchedPaymentMethod);
+        newOrder.setOrderUser(searchedCart.getCartUser());
+        // Fix #20: orderedAt beállítása
+        newOrder.setOrderedAt(new Date());
+
+        if (request.userId() != null) {
+            User searchedUser = userRepository.findById(request.userId()).orElse(null);
+            if (searchedUser == null || Boolean.TRUE.equals(searchedUser.getIsDeleted())) {
+                throw new ResourceNotFoundException("userNotFound");
+            }
+            if (!securityUtils.canAccessUser(searchedUser)) throw new ForbiddenOperationException();
+            newOrder.setOrderUser(searchedUser);
+        }
+
+        int sumPrice = 0;
+        List<OrderProduct> orderedProductList = new ArrayList<>();
+        for (CartProduct productFromCart : searchedCart.getCartProductList()) {
+            if (productFromCart == null || Boolean.TRUE.equals(productFromCart.getIsDeleted())) continue;
+
+            Product product = productFromCart.getCartProduct();
+            if (product == null || Boolean.TRUE.equals(product.getIsDeleted())) {
+                throw new ConflictException("productNotAvailable");
+            }
+            if (productFromCart.getAmount() == null || productFromCart.getAmount() <= 0) {
+                throw new BusinessValidationException("invalidAmount");
+            }
+            if (product.getAmount() < productFromCart.getAmount()) {
+                throw new ConflictException("insufficientStock");
+            }
+
+            product.setAmount(product.getAmount() - productFromCart.getAmount());
+            OrderProduct newOrderProduct = new OrderProduct(productFromCart.getAmount(), product);
+            newOrderProduct.setOrderHistory(newOrder);
+            newOrderProduct.setCreatedAt(new Date());
+            orderedProductList.add(newOrderProduct);
+            productRepository.save(product);
+
+            // Fix #17: Kedvezmény figyelembe vétele az összárnál
+            int discount = product.getDiscount() != null ? product.getDiscount() : 0;
+            int discountedPrice = product.getPrice() * (100 - discount) / 100;
+            sumPrice += (discountedPrice * productFromCart.getAmount());
+        }
+
+        if (orderedProductList.isEmpty()) throw new ConflictException("cartEmpty");
+
+        newOrder.setOrderTransportDetail(transportDetailRepository.save(transportDetail));
+        newOrder.setOrderBillingDetail(billingDetailRepository.save(billingDetail));
+        // Fix #1: OrderProduct-ok CascadeType.PERSIST-tel automatikusan mentődnek
+        newOrder.setProducts(orderedProductList);
+
+        Status initialStatus = statusRepository.findById(OrderStatusConstants.PENDING).orElse(null);
+        if (initialStatus == null) throw new ResourceNotFoundException("statusNotFound");
+
+        newOrder.setStatus(initialStatus);
+        newOrder.setIsCanceled(false);
+
+        // Fix #11: Egyedibb orderId generálás
+        int generatedOrderId = generateUniqueOrderId();
+        newOrder.setOrderId(generatedOrderId);
+
+        orderHistoryRepository.save(newOrder);
+        cartRepository.clearCart(cartId);
+
+        // Async email – egyszerű rendelés-megerősítő (verifikációs kód eltávolítva, mert nem volt eltárolva)
+        emailSender.sendEmailAboutOrder(newOrder.getEmail());
+
+        return new OrderResponse(newOrder.getOrderId(), sumPrice);
     }
 
-//    public Boolean isValidAddress(Integer postCode, String town) {
-//        ArrayList<List<String>> townList = new ArrayList<>();
-//
-//        try {
-//            File txt = new File("src/main/java/com/example/bookStore/service/telepulesek.txt");
-//            Scanner reader = new Scanner(txt);
-//
-//            while (reader.hasNextLine()) {
-//                townList.add(Arrays.stream(reader.nextLine().split("\t")).toList().subList(0, 2));
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//
-//        for (List<String> i : townList) {
-//            if (i.get(0).equals(postCode.toString()) && i.get(1).toLowerCase().equals(town.toLowerCase())) {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
-
-    public Boolean isValidTaxNumber(String taxNumber) {
-        ArrayList<String> taxNumbersOfArea = new ArrayList<>(Arrays.asList("02", "22", "03", "23", "04", "24", "05", "25", "06", "26", "07", "27", "08", "28", "09", "29", "10", "30", "11", "31", "12", "32", "13", "33", "14", "34", "15", "35", "16", "36", "17", "37", "18", "38", "19", "39", "20", "40", "41", "42", "43", "44", "51"));
-        ArrayList<String> typeOfTaxes = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
-
-        if (taxNumber.length() != 11) {
-            return false;
-        } else if (!typeOfTaxes.contains(String.valueOf(taxNumber.charAt(10)))) {
-            return false;
-        } else if (!taxNumbersOfArea.contains(taxNumber.substring(11))) {
-            return false;
-        }
-        return true;
+    // Fix: Pagination metaadatok megőrzése – Page-et adunk vissza DTO-val
+    @Transactional(readOnly = true)
+    public Page<OrderHistoryResponse> getAllOrderHistory(Pageable pageable) {
+        if (!securityUtils.isAdmin()) throw new ForbiddenOperationException();
+        return orderHistoryRepository.findAll(pageable)
+                .map(OrderHistoryResponse::fromEntity);
     }
 
-    public Boolean isEmailValid(String email) {
-        Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-        if (email == null || email.length() > 100) {
-            return false;
+    /**
+     * Egyedi rendelés-azonosító generálása, ütközés-ellenőrzéssel.
+     * Az OrderHistory.orderId mezőn unique constraint is van (DB szintű védelem),
+     * így még ha két szál egyszerre generálna azonos ID-t, a DB megakadályozza a duplikációt.
+     */
+    private int generateUniqueOrderId() {
+        int maxAttempts = 20;
+        for (int i = 0; i < maxAttempts; i++) {
+            int candidate = (UUID.randomUUID().hashCode() & Integer.MAX_VALUE);
+            if (candidate == 0) candidate = 1;
+            if (orderHistoryRepository.findByOrderId(candidate).isEmpty()) {
+                return candidate;
+            }
+            log.debug("OrderId ütközés, újrapróbálkozás: kísérlet {}/{}", i + 1, maxAttempts);
         }
-        return EMAIL_PATTERN.matcher(email).matches();
+        throw new ConflictException("orderIdGenerationFailed");
     }
 
-    public Boolean isPhoneValid(String phoneNumber) {
-//        ArrayList<String> phoneServiceCodes = new ArrayList<String>(Arrays.asList("30", "20", "70", "50", "31"));
-//        return phoneServiceCodes.contains(phoneNumber.substring(0, 2)) && phoneNumber.length() == 9;
-        return true;
+    private Boolean isValidAddress(Integer postCode, String town) {
+        if (postCode == null || postCode < 1000 || postCode > 9999 || town == null) return false;
+        String normalizedTown = town.trim();
+        if (normalizedTown.isEmpty() || normalizedTown.length() > 100) return false;
+        return normalizedTown.matches("^[\\p{L} .'-]+$");
     }
 
-    public String generateVerificationCode() {
-        String characters = "!@#$%&*()-+={}[]|\\/:;'\"<>,.?~" + "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÜŰÚÖÓŐÍ" + "0123456789" + "abcdefghijklmnopqrstuvxyzéáíúöőüű";
-        String verificationCode = "";
-        while (verificationCode.length() != 10) {
-            verificationCode += String.valueOf(characters.charAt(new Random().nextInt(0, characters.length())));
-        }
+    private Boolean isValidTaxNumber(Long taxNumber) {
+        if (taxNumber == null || taxNumber < 0) return false;
+        String taxNumberAsText = String.valueOf(taxNumber);
+        List<String> taxNumbersOfArea = List.of("02", "22", "03", "23", "04", "24", "05", "25", "06", "26", "07", "27", "08", "28", "09", "29", "10", "30", "11", "31", "12", "32", "13", "33", "14", "34", "15", "35", "16", "36", "17", "37", "18", "38", "19", "39", "20", "40", "41", "42", "43", "44", "51");
+        List<String> typeOfTaxes = List.of("1", "2", "3", "4", "5");
+        if (taxNumberAsText.length() != 11) return false;
+        if (!typeOfTaxes.contains(String.valueOf(taxNumberAsText.charAt(10)))) return false;
+        return taxNumbersOfArea.contains(taxNumberAsText.substring(8, 10));
+    }
 
-        return verificationCode;
+    private Boolean isPhoneValid(String phoneNumber) {
+        if (phoneNumber == null) return false;
+        String normalizedPhone = phoneNumber.trim();
+        if (normalizedPhone.length() != 9 || !normalizedPhone.chars().allMatch(Character::isDigit)) return false;
+        List<String> phoneServiceCodes = List.of("30", "20", "70", "50", "31");
+        return phoneServiceCodes.contains(normalizedPhone.substring(0, 2));
     }
 }

@@ -2,12 +2,12 @@ package com.example.badogosShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -15,7 +15,7 @@ import java.util.Date;
 @Table(name = "cart_product")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"cartProduct", "cart"})
 @NoArgsConstructor
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "deleteProductFromCart", procedureName = "deleteProductFromCart", parameters = {
@@ -54,7 +54,7 @@ public class CartProduct {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    public CartProduct(Integer amount ,Product cartProduct, Cart cart) {
+    public CartProduct(Integer amount, Product cartProduct, Cart cart) {
         this.amount = amount;
         this.cartProduct = cartProduct;
         this.cart = cart;

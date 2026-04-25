@@ -11,9 +11,8 @@ import lombok.ToString;
 @Table(name = "address_user")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"addressUser", "savedBillingDetails", "savedTransportDetails"})
 @NoArgsConstructor
-
 public class AddressUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

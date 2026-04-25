@@ -2,13 +2,12 @@ package com.example.badogosShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,11 +15,11 @@ import java.util.List;
 @Table(name = "category")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"mainCategory", "subCategories", "productList"})
 @NoArgsConstructor
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getMainCategory", procedureName = "getMainCategory", resultClasses = Category.class),
-        @NamedStoredProcedureQuery(name = "geSubcatByPrimCat", procedureName = "geSubcatByPrimCat", parameters = {
+        @NamedStoredProcedureQuery(name = "getSubCatByPrimCat", procedureName = "getSubCatByPrimCat", parameters = {
                 @StoredProcedureParameter(name = "primCategoryIdIN", mode = ParameterMode.IN, type = Integer.class)
         }, resultClasses = Category.class)
 })
@@ -49,7 +48,6 @@ public class Category {
     private List<Category> subCategories;
 
     @Column(name = "deleted_at")
-    @Null
     @JsonIgnore
     private LocalDateTime deletedAt;
 

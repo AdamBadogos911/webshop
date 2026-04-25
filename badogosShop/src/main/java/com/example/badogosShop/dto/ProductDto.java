@@ -1,10 +1,15 @@
 package com.example.badogosShop.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+
 public record ProductDto(
-        String name,
-        Integer brandId,
-        Integer amount,
-        Integer price,
+        @NotNull @Size(min = 1, max = 255) String name,
+        @NotNull Integer brandId,
+        @NotNull @PositiveOrZero Integer amount,
+        @NotNull @Positive Integer price,
         Double weightInKg,
         String material,
         Double lengthInCm,
@@ -12,9 +17,8 @@ public record ProductDto(
         Double widthInCm,
         String size,
         Boolean isSet,
-        String stockKeepingUnit,
-        String description,
-        Integer categoryId
+        @NotNull @Size(max = 255) String stockKeepingUnit,
+        @NotNull String description,
+        @NotNull Integer categoryId
 ) {
 }
-
