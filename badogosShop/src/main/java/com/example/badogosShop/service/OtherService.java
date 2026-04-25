@@ -1,43 +1,51 @@
 package com.example.badogosShop.service;
 
-import com.example.badogosShop.entity.AddressType;
-import com.example.badogosShop.entity.Brand;
-import com.example.badogosShop.entity.PaymentMethod;
 import com.example.badogosShop.repository.AddressTypeRepository;
 import com.example.badogosShop.repository.BrandRepository;
 import com.example.badogosShop.repository.PaymentMethodRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class OtherService {
 
     private final PaymentMethodRepository paymentMethodRepository;
     private final AddressTypeRepository addressTypeRepository;
     private final BrandRepository brandRepository;
 
-    @Cacheable("paymentMethods")
-    public List<PaymentMethod> getAllPaymentMethod() {
-        return paymentMethodRepository.findAll();
+    public ResponseEntity<Object> getAllPaymentMethod() {
+        try {
+            return ResponseEntity.ok().body(paymentMethodRepository.findAll());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    public ResponseEntity<Object> getAllAddressType() {
+        try {
+            return ResponseEntity.ok().body(addressTypeRepository.findAll());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
-    @Cacheable("addressTypes")
-    public List<AddressType> getAllAddressType() {
-        return addressTypeRepository.findAll();
-    }
-
-    @Cacheable("brands")
-    public List<Brand> getAllBrand() {
-        return brandRepository.getAllBrand().stream()
-                .filter(b -> !Boolean.TRUE.equals(b.getIsDeleted()))
-                .toList();
+    public ResponseEntity<Object> getAllBrand() {
+        try {
+            return ResponseEntity.ok(brandRepository.getAllBrand());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
+

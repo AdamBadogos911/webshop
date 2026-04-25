@@ -1,25 +1,23 @@
 package com.example.badogosShop.service;
 
-import com.example.badogosShop.config.security.SecurityUtils;
-import com.example.badogosShop.dto.CartResponse;
 import com.example.badogosShop.entity.Cart;
 import com.example.badogosShop.entity.CartProduct;
 import com.example.badogosShop.entity.Product;
 import com.example.badogosShop.entity.User;
-import com.example.badogosShop.exception.*;
 import com.example.badogosShop.repository.CartProductRepository;
 import com.example.badogosShop.repository.CartRepository;
 import com.example.badogosShop.repository.ProductRepository;
 import com.example.badogosShop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -29,125 +27,129 @@ public class CartService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final CartProductRepository cartProductRepository;
-    private final SecurityUtils securityUtils;
 
-    @Transactional(readOnly = true)
-    public CartResponse getCartByUserId(Integer userId) {
-        if (userId == null) throw new InvalidInputException();
-
-        User searchedUser = userRepository.findById(userId).orElse(null);
-        if (searchedUser == null || Boolean.TRUE.equals(searchedUser.getIsDeleted())) {
-            throw new ResourceNotFoundException("userNotFound");
-        }
-        if (!securityUtils.canAccessUser(searchedUser)) {
-            throw new ForbiddenOperationException();
-        }
-
-        Cart cart = cartRepository.getCartByUserId(userId).orElse(null);
-        if (cart == null) throw new ResourceNotFoundException("cartNotFound");
-
-        cart.setCartProductList(cart.getCartProductList().stream()
-                .filter(product -> !Boolean.TRUE.equals(product.getIsDeleted()))
-                .toList());
-        return CartResponse.fromEntity(cart);
-    }
-
-    // Fix #2: Készlet NEM változik kosárműveletkor – készlet csak rendeléskor csökken
-    public void deleteProductFromCart(Integer cartProductId, Integer userId) {
-        if (cartProductId == null || userId == null) throw new InvalidInputException();
-
-        Cart searchedCart = cartRepository.getCartByUserId(userId).orElse(null);
-        if (searchedCart == null) throw new ResourceNotFoundException("cartNotFound");
-        if (!securityUtils.canAccessUser(searchedCart.getCartUser())) throw new ForbiddenOperationException();
-
-        CartProduct searchedProduct = cartProductRepository.findById(cartProductId).orElse(null);
-        if (searchedProduct == null || Boolean.TRUE.equals(searchedProduct.getIsDeleted())) {
-            throw new ResourceNotFoundException("productNotFound");
-        }
-        if (searchedProduct.getCart() == null || !searchedCart.getId().equals(searchedProduct.getCart().getId())) {
-            throw new ForbiddenOperationException();
-        }
-
-        cartProductRepository.deleteProductFromCart(searchedProduct.getId());
-        // Fix #2: Készlet visszaállítás ELTÁVOLÍTVA – a készlet nem csökkent kosárba helyezéskor,
-        // így visszaállítani sem kell törléskor.
-    }
-
-    public void changeAmountOfProduct(Integer userId, Integer productId, Integer newAmount) {
-        if (userId == null || productId == null || newAmount == null) throw new InvalidInputException();
-        if (productId == 0 || newAmount < 0) throw new InvalidInputException();
-
-        Cart searchedCart = cartRepository.getCartByUserId(userId).orElse(null);
-        CartProduct searchedBasketProduct = cartProductRepository.findById(productId).orElse(null);
-
-        if (searchedCart == null) throw new ResourceNotFoundException("cartNotFound");
-        if (!securityUtils.canAccessUser(searchedCart.getCartUser())) throw new ForbiddenOperationException();
-        if (searchedBasketProduct == null || Boolean.TRUE.equals(searchedBasketProduct.getIsDeleted())) {
-            throw new ResourceNotFoundException("productNotFound");
-        }
-        if (searchedBasketProduct.getCart() == null || !searchedCart.getId().equals(searchedBasketProduct.getCart().getId())) {
-            throw new ForbiddenOperationException();
-        }
-        // Ellenőrzés: az új mennyiség nem haladhatja meg a tényleges készletet
-        if (newAmount > searchedBasketProduct.getCartProduct().getAmount() || newAmount < 0) {
-            throw new BusinessValidationException("invalidAmount");
-        }
-        if (newAmount == 0) {
-            cartProductRepository.deleteProductFromCart(searchedBasketProduct.getId());
-            // Fix #2: Készlet visszaállítás ELTÁVOLÍTVA
-        } else {
-            searchedBasketProduct.setAmount(newAmount);
-            searchedBasketProduct.setLastModifiedAt(LocalDateTime.now());
-            cartProductRepository.save(searchedBasketProduct);
-        }
-    }
-
-    public void clearCart(Integer cartId) {
-        if (cartId == null) throw new InvalidInputException();
-        Cart searchedCart = cartRepository.findById(cartId).orElse(null);
-        if (searchedCart == null) throw new ResourceNotFoundException("cartNotFound");
-        if (!securityUtils.canAccessUser(searchedCart.getCartUser())) throw new ForbiddenOperationException();
-        cartRepository.clearCart(cartId);
-    }
-
-    // Fix #23: Duplikátum ellenőrzés – ha a termék már a kosárban van, mennyiséget növelünk
-    public void addProductToCart(Integer productId, Integer amount, Integer userId) {
-        if (productId == null || userId == null || amount == null) throw new InvalidInputException();
-        if (productId == 0 || amount <= 0) throw new InvalidInputException();
-
-        Cart searchedCart = cartRepository.getCartByUserId(userId).orElse(null);
-        if (searchedCart == null) throw new ResourceNotFoundException("cartNotFound");
-        if (!securityUtils.canAccessUser(searchedCart.getCartUser())) throw new ForbiddenOperationException();
-
-        Product searchedProduct = productRepository.findById(productId).orElse(null);
-        if (searchedProduct == null || Boolean.TRUE.equals(searchedProduct.getIsDeleted())) {
-            throw new ResourceNotFoundException("productNotFound");
-        }
-        if (amount > searchedProduct.getAmount()) {
-            throw new BusinessValidationException("invalidAmount");
-        }
-
-        // Ha a termék már a kosárban van, mennyiséget növeljük
-        CartProduct existingCartProduct = cartProductRepository
-                .findActiveByCartAndProduct(searchedCart, searchedProduct)
-                .orElse(null);
-
-        if (existingCartProduct != null) {
-            int newTotal = existingCartProduct.getAmount() + amount;
-            if (newTotal > searchedProduct.getAmount()) {
-                throw new BusinessValidationException("invalidAmount");
+    public ResponseEntity<Object> getCartByUserId(Integer userId) {
+        try {
+            if (userId == null) {
+                return ResponseEntity.status(422).build();
             }
-            existingCartProduct.setAmount(newTotal);
-            existingCartProduct.setLastModifiedAt(LocalDateTime.now());
-            cartProductRepository.save(existingCartProduct);
-        } else {
-            CartProduct newCartProduct = new CartProduct(amount, searchedProduct, searchedCart);
-            newCartProduct.setCreatedAt(new Date());
-            newCartProduct.setLastModifiedAt(LocalDateTime.now());
-            cartProductRepository.save(newCartProduct);
-        }
 
-        searchedCart.setLastModifiedAt(LocalDateTime.now());
-        cartRepository.save(searchedCart);
+            User searchedUser = userRepository.findById(userId).orElse(null);
+            if (searchedUser == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Cart cart = cartRepository.getCartByUserId(userId).orElse(null);
+            cart.setCartProductList(cart.getCartProductList().stream().filter(product -> !product.getIsDeleted()).toList());
+            return ResponseEntity.ok().body(cart);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> deleteProductFromCart(Integer cartProductId, Integer userId) {
+        try {
+            if (cartProductId == null || userId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            Cart searchedCart = cartRepository.getCartByUserId(userId).orElse(null);
+            if (searchedCart == null) {
+                return ResponseEntity.status(404).body("basketNotFound");
+            }
+            CartProduct searchedProduct = cartProductRepository.findById(cartProductId).orElse(null);
+            if (searchedProduct == null || searchedProduct.getIsDeleted()) {
+                return ResponseEntity.status(404).body("productNotFound");
+            }
+
+            cartProductRepository.deleteProductFromCart(searchedProduct.getId());
+            searchedProduct.getCartProduct().setAmount(searchedProduct.getCartProduct().getAmount() + searchedProduct.getAmount());
+            productRepository.save(searchedProduct.getCartProduct());
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> changeAmountOfProduct(Integer userId, Integer productId, Integer newAmount) {
+        try {
+            if (userId == null || productId == 0 || newAmount == -1) {
+                return ResponseEntity.status(422).build();
+            }
+
+            Cart searchedCart = cartRepository.getCartByUserId(userId).orElse(null);
+            CartProduct searchedBasketProduct = cartProductRepository.findById(productId).orElse(null);
+
+            if (searchedCart == null) {
+                return ResponseEntity.status(404).body("basketNotFound");
+            } else if (searchedBasketProduct == null || searchedBasketProduct.getIsDeleted()) {
+                return ResponseEntity.status(404).body("bookNotFound");
+            } else if (newAmount > searchedBasketProduct.getCartProduct().getAmount() || newAmount < 0) {
+                return ResponseEntity.status(415).body("invalidAmount");
+            } else if (newAmount == 0) {
+                cartProductRepository.deleteProductFromCart(searchedBasketProduct.getId());
+                searchedBasketProduct.getCartProduct().setAmount(searchedBasketProduct.getCartProduct().getAmount() + searchedBasketProduct.getAmount());
+                productRepository.save(searchedBasketProduct.getCartProduct());
+            } else {
+                searchedBasketProduct.setAmount(newAmount);
+                cartProductRepository.save(searchedBasketProduct);
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> clearCart(Integer cartId) {
+        try {
+            if (cartId == null) {
+                return ResponseEntity.status(422).build();
+            }
+            Cart searchedCart = cartRepository.findById(cartId).orElse(null);
+            if (searchedCart == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            cartRepository.clearCart(cartId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> addProductToCart(Integer productId, Integer amount, Integer userId) {
+        try {
+            if (productId == 0 || userId == null || amount == -1) {
+                return ResponseEntity.status(422).build();
+            }
+
+            Cart searchedCart = cartRepository.getCartByUserId(userId).orElse(null);
+            if (searchedCart == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Product searchedProduct = productRepository.findById(productId).orElse(null);
+            if (searchedProduct == null || searchedProduct.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (amount > searchedProduct.getAmount()) {
+                return ResponseEntity.status(415).body("");
+            }
+
+//            List<BasketProduct> products = searchedBasket.getProductList();
+            cartProductRepository.save(new CartProduct(amount, searchedProduct, searchedCart));
+            cartRepository.save(searchedCart);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

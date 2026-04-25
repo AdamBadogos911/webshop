@@ -11,9 +11,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
@@ -21,36 +23,28 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
     private static final String AUTHORIZATION = "Authorization";
-    private static final String REFRESH_TOKEN = "refreshToken";
     private static final String BEARER = "Bearer ";
+    private final ObjectMapper mapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(AUTHORIZATION);
+        System.out.println("header: " + header);
         if (header != null && header.startsWith(BEARER)) {
-            String jwt = header.substring(BEARER.length()).trim();
-            UserDetails principal = null;
+            String jwt = header.substring(BEARER.length());
+            System.out.println(jwt);
+            UserDetails principal;
             try {
                 principal = jwtService.parseJwt(jwt);
             } catch (Exception e) {
-                String refreshToken = request.getHeader(REFRESH_TOKEN);
-                if (refreshToken != null && !refreshToken.isBlank()) {
-                    try {
-                        principal = jwtService.parseRefreshToken(refreshToken);
-                        String newJwt = jwtService.createJwtToken(principal);
-                        response.setHeader(AUTHORIZATION, BEARER + newJwt);
-                        response.setHeader(REFRESH_TOKEN, jwtService.createRefreshToken(principal));
-                    } catch (Exception ignored) {
-                        SecurityContextHolder.clearContext();
-                    }
-                }
+                String newJwt = jwtService.regenerateJwtToken(request.getHeader("refreshToken"));
+                principal = jwtService.parseJwt(newJwt);
+                response.setHeader("Bearer ", newJwt);
             }
 
-            if (principal != null) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
@@ -58,10 +52,12 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        List<String> allowedUrlPaths = List.of(
-                "/user/register",
-                "/user/login"
-        );
+        System.out.println(request.getServletPath());
+        ArrayList<String> allowedUrlPaths = new ArrayList<String>(Arrays.asList(
+                "/users/register/student",
+                "/users/register/instructor",
+                "/users/login"
+        ));
 
         return allowedUrlPaths.contains(request.getServletPath());
     }

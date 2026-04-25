@@ -3,15 +3,14 @@ package com.example.badogosShop.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.List;
 @Table(name = "product")
 @Getter
 @Setter
-@ToString(exclude = {"detail", "brand", "images", "productReviewList", "orderHistoryList", "category", "cartProductList"})
+@ToString
 @NoArgsConstructor
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getMostViewedProducts", procedureName = "getMostViewedProducts", resultClasses = Product.class),
@@ -29,6 +28,10 @@ import java.util.List;
         }, resultClasses = Integer.class),
         @NamedStoredProcedureQuery(name = "getProductById", procedureName = "getProductById", parameters = {
                 @StoredProcedureParameter(name = "idIN", mode = ParameterMode.IN, type = Integer.class)
+        }, resultClasses = Product.class),
+
+        @NamedStoredProcedureQuery(name = "searchProduct", procedureName = "searchProduct", parameters = {
+                @StoredProcedureParameter(name = "searchTerm", mode = ParameterMode.IN, type = String.class)
         }, resultClasses = Product.class)
 })
 public class Product {
@@ -48,23 +51,23 @@ public class Product {
 
     @Column(name = "price")
     @NotNull
-    @Min(0)
-    @Max(9999999)
+    @Size(max = 7)
     private Integer price;
 
     @Column(name = "discount")
     @NotNull
-    @Min(0)
-    @Max(99)
-    private Integer discount = 0;
+    @Size(max = 2)
+    private Integer discount;
 
     @Column(name = "created_at")
     private Date createdAt;
 
     @Column(name = "updated_at")
+    @Null
     private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
+    @Null
     private LocalDateTime deletedAt;
 
     @Column(name = "is_deleted")
@@ -80,7 +83,7 @@ public class Product {
     private String stockKeepingUnit;
 
     @Column(name = "view_count")
-    private Long viewCount = 0L;
+    private Long viewCount;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "detail_id")
@@ -91,7 +94,7 @@ public class Product {
     private Brand brand;
 
     @OneToMany(mappedBy = "product")
-    private List<ProductImage> images;
+    private List<ProductImages> images;
 
     @OneToMany(mappedBy = "product")
     @JsonIgnore
@@ -120,8 +123,7 @@ public class Product {
         this.isDeleted = false;
         this.description = description;
         this.category = category;
-        this.discount = 0;
-        this.viewCount = 0L;
-        this.createdAt = new Date();
     }
+
 }
+

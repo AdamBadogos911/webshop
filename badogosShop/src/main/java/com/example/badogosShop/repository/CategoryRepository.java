@@ -13,5 +13,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     List<Category> getAllMainCategory();
 
     @Procedure(name = "getSubCatByPrimCat", procedureName = "getSubCatByPrimCat")
-    List<Category> getAllSubCategoryFromMainCategory(@Param("primCategoryIdIN") Integer mainCategoryId);
+    List<Category> getAllSubCategoryFromMainCategory(@Param("primCategoryIdIn") Integer mainCategoryId);
+
 }

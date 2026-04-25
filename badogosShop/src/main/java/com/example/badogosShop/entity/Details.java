@@ -7,12 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.Null;
+
 @Entity
 @Table(name = "details")
 @Getter
 @Setter
-@ToString(exclude = {"product"})
+@ToString
 @NoArgsConstructor
+
 public class Details {
 
     @Id
@@ -21,24 +24,31 @@ public class Details {
     private Integer id;
 
     @Column(name = "weight")
+    @Null
     private Double weightInKg;
 
     @Column(name = "material")
+    @Null
     private String material;
 
     @Column(name = "length")
+    @Null
     private Double lengthInCm;
 
     @Column(name = "height")
+    @Null
     private Double heightInCm;
 
     @Column(name = "width")
+    @Null
     private Double widthInCm;
 
     @Column(name = "size")
+    @Null
     private String size;
 
     @Column(name = "is_set")
+    @Null
     private Boolean isSet;
 
     @OneToOne(mappedBy = "detail", cascade = CascadeType.ALL)

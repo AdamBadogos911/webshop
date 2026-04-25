@@ -1,33 +1,34 @@
 package com.example.badogosShop.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.antlr.v4.runtime.misc.NotNull;
 
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
 @Table(name = "address_type")
 @Getter
 @Setter
-@ToString(exclude = {"billingDetails", "transportDetails"})
+@ToString
 @NoArgsConstructor
 public class AddressType {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+        @Id
+        @GeneratedValue
+        @Column(name = "id")
+        private Integer id;
 
-    @Column(name = "name")
-    @NotNull
-    @Size(max = 100)
-    private String name;
+        @Column(name = "name")
+        @NotNull
+        @Size(max = 100)
+        private String name;
 
     @OneToMany(mappedBy = "billingAddressType", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnore

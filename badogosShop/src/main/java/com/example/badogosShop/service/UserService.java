@@ -1,34 +1,23 @@
 package com.example.badogosShop.service;
 
-import com.example.badogosShop.config.security.SecurityUtils;
 import com.example.badogosShop.config.email.EmailSender;
-import com.example.badogosShop.dto.UserRegisterRequest;
-import com.example.badogosShop.dto.UserResponse;
 import com.example.badogosShop.dto.UserUpdate;
 import com.example.badogosShop.entity.Cart;
-import com.example.badogosShop.entity.Role;
 import com.example.badogosShop.entity.User;
-import com.example.badogosShop.exception.*;
 import com.example.badogosShop.repository.CartRepository;
-import com.example.badogosShop.repository.RoleRepository;
 import com.example.badogosShop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.Random;
+import java.util.regex.Pattern;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -37,222 +26,248 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CartRepository cartRepository;
-    private final RoleRepository roleRepository;
     private final EmailSender emailSender;
-    private final SecurityUtils securityUtils;
-    private final ValidationUtils validationUtils;
 
-    private static final int DEFAULT_ROLE_ID = 1;
-    private static final Set<String> ALLOWED_IMAGE_EXTENSIONS = Set.of("jpg", "jpeg", "png", "gif", "webp");
-    private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of("image/jpeg", "image/png", "image/gif", "image/webp");
+    public ResponseEntity<Object> login(String email, String password) {
+        try {
+            if (email == null || password == null) {
+                return ResponseEntity.status(422).build();
+            }
+            User searchedUser = userRepository.findByEmail(email).orElse(null);
+            if (searchedUser == null) {
+                return ResponseEntity.notFound().build();
+            }
 
-    @Value("${app.base-url:http://localhost:8080}")
-    private String baseUrl;
-
-    /**
-     * Login – a jelszó ellenőrzést a Spring Security BasicAuthenticationFilter már elvégezte.
-     * Ez a metódus csak a felhasználó adatait adja vissza és frissíti a lastLogin időpontot.
-     *
-     * @param email az autentikált felhasználó email-je (SecurityContext-ből)
-     */
-    public UserResponse login(String email) {
-        if (email == null) {
-            throw new ResourceNotFoundException("userNotFound");
+            if (!passwordEncoder.matches(password, searchedUser.getPassword())) {
+                return ResponseEntity.notFound().build();
+            } else {
+                System.out.println("successfullyLogin");
+                searchedUser.setLastLogin(LocalDateTime.now());
+                return ResponseEntity.ok().body(userRepository.save(searchedUser));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
-        User searchedUser = userRepository.findByEmail(email).orElse(null);
-        if (searchedUser == null || Boolean.TRUE.equals(searchedUser.getIsDeleted())) {
-            throw new ResourceNotFoundException("userNotFound");
-        }
-        searchedUser.setLastLogin(LocalDateTime.now());
-        return toUserResponse(userRepository.save(searchedUser));
     }
 
-    public void register(UserRegisterRequest request) {
-        if (!validationUtils.isEmailValid(request.email())) {
-            throw new BusinessValidationException("invalidEmail");
-        }
-        if (!validationUtils.isPasswordValid(request.password())) {
-            throw new BusinessValidationException("invalidPassword");
+    public ResponseEntity<Object> register(User newUser) {
+
+        if (newUser == null) {
+            return ResponseEntity.status(422).build();
         }
 
-        // Duplikált email ellenőrzés
-        if (userRepository.findByEmail(request.email()).isPresent()) {
-            throw new ConflictException("duplicateEmail");
+        if (newUser.getId() != null) {
+            return ResponseEntity.status(415).body("invalidObject");
+        } else if (!isEmailValid(newUser.getEmail())) {
+            return ResponseEntity.status(415).body("invalidEmail");
+        } else if (!isPasswordValid(newUser.getPassword())) {
+            return ResponseEntity.status(415).body("invalidPassword");
+        } else {
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            User registeredUser = userRepository.save(newUser);
+            cartRepository.save(new Cart(registeredUser));
+
+            try {
+                emailSender.sendEmailAboutRegistration(newUser.getEmail());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.internalServerError().build();
+            }
+
+            newUser.setPfpPath("http://localhost:8080/pfp/default.png");
+            return ResponseEntity.ok().build();
         }
 
-        // Role betöltése adatbázisból (nem transient objektum)
-        Role defaultRole = roleRepository.findById(DEFAULT_ROLE_ID)
-                .orElseThrow(() -> new ResourceNotFoundException("roleNotFound"));
-
-        User newUser = new User();
-        newUser.setEmail(request.email());
-        newUser.setPassword(passwordEncoder.encode(request.password()));
-        newUser.setFirstName(request.firstName());
-        newUser.setLastName(request.lastName());
-        newUser.setPhoneNumber(request.phoneNumber());
-        newUser.setPfpPath(baseUrl + "/pfp/default.png");
-        newUser.setRole(defaultRole);
-        newUser.setRegisterFinishedAt(new java.util.Date());
-
-        User registeredUser = userRepository.save(newUser);
-        cartRepository.save(new Cart(registeredUser));
-
-        // Async – háttérben küldődik, nem blokkolja a választ
-        emailSender.sendEmailAboutRegistration(request.email());
     }
 
-    public UserResponse update(Integer id, UserUpdate updatedUser) {
-        if (id == null || updatedUser == null) throw new InvalidInputException();
-
+    public ResponseEntity<Object> update(Integer id, UserUpdate updatedUser) {
+        if (id == null || updatedUser == null) {
+            return ResponseEntity.status(422).build();
+        }
         User searchedUser = userRepository.findById(id).orElse(null);
-        if (searchedUser == null || Boolean.TRUE.equals(searchedUser.getIsDeleted())) {
-            throw new ResourceNotFoundException("userNotFound");
+        if (searchedUser == null || searchedUser.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
         }
-        if (!securityUtils.canAccessUser(searchedUser)) throw new ForbiddenOperationException();
-        if (!validationUtils.isEmailValid(updatedUser.email())) {
-            throw new BusinessValidationException("invalidEmail");
+        if (!isEmailValid(updatedUser.email())) {
+            return ResponseEntity.status(415).body("invalidEmail");
+        } else {
+            searchedUser.setEmail(updatedUser.email());
+            searchedUser.setPhoneNumber(updatedUser.phoneNumber());
+            searchedUser.setFirstName(updatedUser.firstName());
+            searchedUser.setLastName(updatedUser.lastName());
+            System.out.println("MENTES");
+
+            return ResponseEntity.ok().body(userRepository.save(searchedUser));
+        }
+    }
+
+    public ResponseEntity<Object> delete(Integer id) {
+        try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+            User searchedUser = userRepository.findById(id).orElse(null);
+            if (searchedUser == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                userRepository.deleteUserById(id);
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> changePfp(MultipartFile newPfpImage, Integer id) {
+        try {
+            if (id == null || newPfpImage == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            User searchedUser = userRepository.findById(id).orElse(null);
+
+            if (searchedUser == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                String filePath = "images/pfp/" + searchedUser.getId() + newPfpImage.getOriginalFilename();
+
+                try {
+                    FileOutputStream fout = new FileOutputStream(filePath);
+                    fout.write(newPfpImage.getBytes());
+                    fout.close();
+
+                    searchedUser.setPfpPath("http://localhost:8080/pfp/" + searchedUser.getId() + newPfpImage.getOriginalFilename());
+                } catch (Exception e) {
+                    return ResponseEntity.internalServerError().body("fileUploadError");
+                }
+
+                return ResponseEntity.ok().body(userRepository.save(searchedUser));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> getVerificationCode(String email) {
+        try {
+            if (email == null) {
+                return ResponseEntity.status(422).build();
+            }
+            User searchedUser = userRepository.findByEmail(email).orElse(null);
+            if (searchedUser == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                String vCode = generateVerificationCode();
+                try {
+                    emailSender.sendVerificationCodeForPasswordReset(email, vCode);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return ResponseEntity.internalServerError().build();
+                }
+                searchedUser.setVerificationCode(passwordEncoder.encode(vCode));
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("serverError");
+        }
+    }
+
+    public ResponseEntity<Object> checkVerificationCode(String vCode, String email) {
+        try {
+            if (vCode == null || email == null) {
+                return ResponseEntity.status(422).build();
+            }
+            if (!isEmailValid(email)) {
+                return ResponseEntity.status(415).body("invalidEmail");
+            }
+
+            User searchedUser = userRepository.findByEmail(email).orElse(null);
+            if (searchedUser == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.internalServerError().build();
+            } else {
+                return ResponseEntity.ok().body(passwordEncoder.matches(vCode, searchedUser.getVerificationCode()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> changePassword(String email, String newPassword) {
+        try {
+            if (email == null || newPassword == null) {
+                return ResponseEntity.status(422).build();
+            }
+            if (!isEmailValid(email)) {
+                return ResponseEntity.status(415).body("invalidEmail");
+            }
+
+            User searchedUser = userRepository.findByEmail(email).orElse(null);
+            if (searchedUser == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.internalServerError().build();
+            }
+
+            if (!isPasswordValid(newPassword)) {
+                return ResponseEntity.status(415).body("invalidPassword");
+            } else {
+                searchedUser.setPassword(passwordEncoder.encode(newPassword));
+                userRepository.save(searchedUser);
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public Boolean isEmailValid(String email) {
+        Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+        if (email == null || email.length() > 100) {
+            return false;
+        }
+        return EMAIL_PATTERN.matcher(email).matches();
+    }
+
+    public Boolean isPasswordValid(String password) {
+        if (password.length() < 8 || password.length() > 16) {
+            return false;
         }
 
-        // Ha az email változik, ellenőrizzük a duplikációt
-        if (!searchedUser.getEmail().equalsIgnoreCase(updatedUser.email())) {
-            if (userRepository.findByEmail(updatedUser.email()).isPresent()) {
-                throw new ConflictException("duplicateEmail");
+        String specialCharacters = "\"!@#$%^&*()-_=+[]{};:,.?/\"";
+        String numbersText = "1234567890";
+        boolean specialChecker = false;
+        boolean upperCaseChecker = false;
+        boolean lowerCaseChecker = false;
+        boolean initChecker = false;
+
+        for (int i = 0; i < password.trim().length(); i++) {
+            String selectedChar = String.valueOf(password.charAt(i));
+
+            if (numbersText.contains(selectedChar)) {
+                initChecker = true;
+            } else if (specialCharacters.contains(selectedChar)) {
+                specialChecker = true;
+            } else if (selectedChar.equals(selectedChar.toUpperCase())) {
+                upperCaseChecker = true;
+            } else if (selectedChar.equals(selectedChar.toLowerCase())) {
+                lowerCaseChecker = true;
             }
         }
 
-        searchedUser.setEmail(updatedUser.email());
-        searchedUser.setPhoneNumber(updatedUser.phoneNumber());
-        searchedUser.setFirstName(updatedUser.firstName());
-        searchedUser.setLastName(updatedUser.lastName());
-        return toUserResponse(userRepository.save(searchedUser));
+        return specialChecker && upperCaseChecker && lowerCaseChecker && initChecker;
     }
 
-    public void delete(Integer id) {
-        if (id == null) throw new InvalidInputException();
-        User searchedUser = userRepository.findById(id).orElse(null);
-        if (searchedUser == null || Boolean.TRUE.equals(searchedUser.getIsDeleted())) {
-            throw new ResourceNotFoundException("userNotFound");
-        }
-        if (!securityUtils.canAccessUser(searchedUser)) throw new ForbiddenOperationException();
-        userRepository.deleteUserById(id);
-    }
-
-    public UserResponse changePfp(MultipartFile newPfpImage, Integer id) {
-        if (id == null || newPfpImage == null) throw new InvalidInputException();
-
-        User searchedUser = userRepository.findById(id).orElse(null);
-        if (searchedUser == null || Boolean.TRUE.equals(searchedUser.getIsDeleted())) {
-            throw new ResourceNotFoundException("userNotFound");
-        }
-        if (!securityUtils.canAccessUser(searchedUser)) throw new ForbiddenOperationException();
-
-        String originalFilename = newPfpImage.getOriginalFilename();
-        if (originalFilename == null || originalFilename.isBlank()) {
-            throw new BusinessValidationException("invalidFileName");
+    public String generateVerificationCode() {
+        String characters = "!@#$%&*()-+={}[]|\\/:;'\"<>,.?~" + "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÜŰÚÖÓŐÍ" + "0123456789" + "abcdefghijklmnopqrstuvxyzéáíúöőüű";
+        String verificationCode = "";
+        while (verificationCode.length() != 10) {
+            verificationCode += String.valueOf(characters.charAt(new Random().nextInt(0, characters.length())));
         }
 
-        // Fájltípus validáció
-        String contentType = newPfpImage.getContentType();
-        if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType.toLowerCase())) {
-            throw new BusinessValidationException("invalidFileType");
-        }
-
-        // Kiterjesztés validáció
-        String sanitizedFilename = Paths.get(originalFilename).getFileName().toString();
-        String extension = getFileExtension(sanitizedFilename).toLowerCase();
-        if (!ALLOWED_IMAGE_EXTENSIONS.contains(extension)) {
-            throw new BusinessValidationException("invalidFileType");
-        }
-
-        String fileName = searchedUser.getId() + "_" + sanitizedFilename;
-        Path filePath = Paths.get("images", "pfp", fileName);
-
-        try (OutputStream fout = Files.newOutputStream(filePath)) {
-            fout.write(newPfpImage.getBytes());
-        } catch (IOException e) {
-            log.error("File upload error for user {}", id, e);
-            throw new BusinessValidationException("fileUploadError");
-        }
-
-        searchedUser.setPfpPath(baseUrl + "/pfp/" + fileName);
-        return toUserResponse(userRepository.save(searchedUser));
-    }
-
-    public void getVerificationCode(String email) {
-        if (email == null) throw new InvalidInputException();
-        if (!validationUtils.isEmailValid(email)) throw new BusinessValidationException("invalidEmail");
-
-        User searchedUser = userRepository.findByEmail(email).orElse(null);
-        if (searchedUser == null || Boolean.TRUE.equals(searchedUser.getIsDeleted())) {
-            throw new ResourceNotFoundException("userNotFound");
-        }
-
-        String vCode = validationUtils.generateVerificationCode();
-        searchedUser.setVerificationCode(passwordEncoder.encode(vCode));
-        searchedUser.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15));
-        userRepository.save(searchedUser);
-
-        // Async – háttérben küldődik
-        emailSender.sendVerificationCodeForPasswordReset(email, vCode);
-    }
-
-    @Transactional(readOnly = true)
-    public Boolean checkVerificationCode(String verificationCode, String email) {
-        if (verificationCode == null || email == null) throw new InvalidInputException();
-        if (!validationUtils.isEmailValid(email)) throw new BusinessValidationException("invalidEmail");
-
-        User searchedUser = userRepository.findByEmail(email).orElse(null);
-        if (searchedUser == null || Boolean.TRUE.equals(searchedUser.getIsDeleted())) {
-            throw new ResourceNotFoundException("userNotFound");
-        }
-        return searchedUser.getVerificationCode() != null
-                && searchedUser.getVerificationCodeExpiresAt() != null
-                && searchedUser.getVerificationCodeExpiresAt().isAfter(LocalDateTime.now())
-                && passwordEncoder.matches(verificationCode, searchedUser.getVerificationCode());
-    }
-
-    public void changePassword(String email, String verificationCode, String newPassword) {
-        if (email == null || verificationCode == null || newPassword == null) throw new InvalidInputException();
-        if (!validationUtils.isEmailValid(email)) throw new BusinessValidationException("invalidEmail");
-
-        User searchedUser = userRepository.findByEmail(email).orElse(null);
-        if (searchedUser == null || Boolean.TRUE.equals(searchedUser.getIsDeleted())) {
-            throw new ResourceNotFoundException("userNotFound");
-        }
-        if (searchedUser.getVerificationCode() == null
-                || searchedUser.getVerificationCodeExpiresAt() == null
-                || searchedUser.getVerificationCodeExpiresAt().isBefore(LocalDateTime.now())
-                || !passwordEncoder.matches(verificationCode, searchedUser.getVerificationCode())) {
-            throw new ForbiddenOperationException();
-        }
-        if (!validationUtils.isPasswordValid(newPassword)) {
-            throw new BusinessValidationException("invalidPassword");
-        }
-
-        searchedUser.setPassword(passwordEncoder.encode(newPassword));
-        searchedUser.setVerificationCode(null);
-        searchedUser.setVerificationCodeExpiresAt(null);
-        userRepository.save(searchedUser);
-    }
-
-    private String getFileExtension(String filename) {
-        int lastDotIndex = filename.lastIndexOf('.');
-        if (lastDotIndex == -1 || lastDotIndex == filename.length() - 1) {
-            return "";
-        }
-        return filename.substring(lastDotIndex + 1);
-    }
-
-    private UserResponse toUserResponse(User user) {
-        return new UserResponse(
-                user.getId(),
-                user.getEmail(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getPhoneNumber(),
-                user.getPfpPath(),
-                user.getLastLogin(),
-                user.getRole() != null ? user.getRole().getName() : null
-        );
+        return verificationCode;
     }
 }

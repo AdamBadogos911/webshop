@@ -1,9 +1,8 @@
 package com.example.badogosShop.controller;
 
-import com.example.badogosShop.dto.ReviewCreateRequest;
+import com.example.badogosShop.entity.Review;
 import com.example.badogosShop.service.ReviewService;
 import com.fasterxml.jackson.databind.JsonNode;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,30 +15,28 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public ResponseEntity<?> addReview(@Valid @RequestBody ReviewCreateRequest request) {
-        return ResponseEntity.ok(reviewService.addReview(request));
+    private ResponseEntity<Object> addReview(@RequestBody Review newReview) {
+        return reviewService.addReview(newReview);
     }
 
     @PutMapping
-    public ResponseEntity<?> updateReview(@RequestBody JsonNode updatedReview) {
-        Integer id = updatedReview != null && updatedReview.has("id") ? updatedReview.get("id").asInt(0) : 0;
-        String reviewText = updatedReview != null && updatedReview.has("reviewText") ? updatedReview.get("reviewText").asText(null) : null;
-        return ResponseEntity.ok(reviewService.updateReview(id, reviewText));
+    private ResponseEntity<Object> updateReview(@RequestBody JsonNode updatedReview) {
+        return reviewService.updateReview(updatedReview.get("id").asInt(0), updatedReview.get("reviewText").asText(null));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteReview(@PathVariable("id") Integer id) {
-        reviewService.deleteReview(id);
-        return ResponseEntity.ok().build();
+    private ResponseEntity<Object> deleteReview(@PathVariable("id") Integer id) {
+        return reviewService.deleteReview(id);
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<?> getReviewsByUser(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(reviewService.getReviewsByUser(id));
+    private ResponseEntity<Object> getReviewsByUser(@PathVariable("id") Integer id) {
+        return reviewService.getReviewsByUser(id);
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<?> getReviewsByProduct(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(reviewService.getReviewsByProductId(id));
+    private ResponseEntity<Object> getReviewsByProduct(@PathVariable("id") Integer id) {
+        return reviewService.getReviewsByProductId(id);
     }
 }
+

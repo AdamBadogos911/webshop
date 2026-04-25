@@ -2,13 +2,14 @@ package com.example.badogosShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -17,8 +18,26 @@ import java.util.List;
 @Table(name = "order_history")
 @Getter
 @Setter
-@ToString(exclude = {"orderUser", "orderBillingDetail", "orderTransportDetail", "paymentMethod", "status", "cancelerUser", "products"})
+@ToString
 @NoArgsConstructor
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "statistic_sum_profit", procedureName = "statistic_sum_profit", parameters = {
+                @StoredProcedureParameter(name = "monthIN", type = Integer.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "yearIN", type = Integer.class, mode = ParameterMode.IN),
+        }, resultClasses = Long.class),
+        @NamedStoredProcedureQuery(name = "statistic_sum_sold_items", procedureName = "statistic_sum_sold_items", parameters = {
+                @StoredProcedureParameter(name = "monthIN", type = Integer.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "yearIN", type = Integer.class, mode = ParameterMode.IN),
+        }, resultClasses = Long.class),
+        @NamedStoredProcedureQuery(name = "statistic_count_orders", procedureName = "statistic_count_orders", parameters = {
+                @StoredProcedureParameter(name = "monthIN", type = Integer.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "yearIN", type = Integer.class, mode = ParameterMode.IN),
+        }, resultClasses = Long.class),
+        @NamedStoredProcedureQuery(name = "statistic_avg_order_price", procedureName = "statistic_avg_order_price", parameters = {
+                @StoredProcedureParameter(name = "monthIN", type = Integer.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "yearIN", type = Integer.class, mode = ParameterMode.IN),
+        }, resultClasses = Long.class),
+})
 public class OrderHistory {
 
     @Id
@@ -50,12 +69,14 @@ public class OrderHistory {
     private Date orderedAt;
 
     @Column(name = "canceled_at")
+    @Null
     private LocalDateTime canceledAt;
 
     @Column(name = "is_canceled")
+    @Null
     private Boolean isCanceled;
 
-    @Column(name = "order_id", unique = true)
+    @Column(name = "order_id")
     @NotNull
     private Integer orderId;
 
@@ -84,7 +105,8 @@ public class OrderHistory {
     @JoinColumn(name = "canceler_user_id")
     private User cancelerUser;
 
-    @OneToMany(mappedBy = "orderHistory", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "orderHistory", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnoreProperties({"orderHistory"})
     private List<OrderProduct> products;
+
 }

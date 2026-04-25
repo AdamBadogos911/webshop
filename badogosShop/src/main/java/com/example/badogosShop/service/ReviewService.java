@@ -1,122 +1,132 @@
 package com.example.badogosShop.service;
 
-import com.example.badogosShop.config.security.SecurityUtils;
-import com.example.badogosShop.dto.ReviewCreateRequest;
-import com.example.badogosShop.dto.ReviewResponse;
 import com.example.badogosShop.entity.Product;
 import com.example.badogosShop.entity.Review;
 import com.example.badogosShop.entity.User;
-import com.example.badogosShop.exception.BusinessValidationException;
-import com.example.badogosShop.exception.ForbiddenOperationException;
-import com.example.badogosShop.exception.ResourceNotFoundException;
 import com.example.badogosShop.repository.ProductRepository;
 import com.example.badogosShop.repository.ReviewRepository;
 import com.example.badogosShop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-    private final SecurityUtils securityUtils;
 
-    // Fix #26: Ellenőrizzük, hogy a bejelentkezett felhasználó saját nevében ír értékelést
-    public ReviewResponse addReview(ReviewCreateRequest request) {
-        Product product = productRepository.findById(request.productId()).orElse(null);
-        if (product == null || Boolean.TRUE.equals(product.getIsDeleted())) {
-            throw new ResourceNotFoundException("productNotFound");
+    public ResponseEntity<Object> addReview(Review newReview) {
+        try {
+            if (newReview == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            Product searchedProduct = productRepository.findById(newReview.getProduct().getId()).orElse(null);
+            User author = userRepository.findById(newReview.getAuthor().getId()).orElse(null);
+
+            if (searchedProduct == null || searchedProduct.getIsDeleted()) {
+                return ResponseEntity.status(404).body("bookNotFound");
+            } else if (author == null || author.getIsDeleted()) {
+                return ResponseEntity.status(404).body("authorNotFound");
+            }
+
+            if (newReview.getRating() > 5 || newReview.getRating() < 1) {
+                return ResponseEntity.status(415).body("invalidRating");
+            } else if (newReview.getId() != null) {
+                return ResponseEntity.status(415).body("invalidObject");
+            }
+
+            return ResponseEntity.ok().body(reviewRepository.save(newReview));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
-
-        User author = userRepository.findById(request.authorId()).orElse(null);
-        if (author == null || Boolean.TRUE.equals(author.getIsDeleted())) {
-            throw new ResourceNotFoundException("authorNotFound");
-        }
-
-        // Fix #26: Jogosultság ellenőrzés – csak saját névben lehet értékelést írni
-        if (!securityUtils.canAccessUser(author)) {
-            throw new ForbiddenOperationException();
-        }
-
-        Review review = new Review();
-        review.setReviewText(request.reviewText());
-        review.setRating(request.rating());
-        review.setProduct(product);
-        review.setAuthor(author);
-        // Fix #20: createdAt beállítása
-        review.setCreatedAt(new Date());
-        return ReviewResponse.fromEntity(reviewRepository.save(review));
     }
 
-    // Fix #5: Jogosultság ellenőrzés – csak a szerző vagy admin módosíthat
-    public ReviewResponse updateReview(Integer reviewId, String updatedText) {
-        if (reviewId == null || reviewId == 0 || updatedText == null) {
-            throw new BusinessValidationException("invalidInput");
-        }
-        Review searchedReview = reviewRepository.findById(reviewId).orElse(null);
-        if (searchedReview == null || Boolean.TRUE.equals(searchedReview.getIsDeleted())) {
-            throw new ResourceNotFoundException("reviewNotFound");
-        }
+    public ResponseEntity<Object> updateReview(Integer reviewId, String updatedText) {
+        try {
+            if (reviewId == 0 || updatedText == null) {
+                return ResponseEntity.status(422).build();
+            }
 
-        // Jogosultság ellenőrzés
-        if (searchedReview.getAuthor() != null && !securityUtils.canAccessUser(searchedReview.getAuthor())) {
-            throw new ForbiddenOperationException();
-        }
+            Review searchedReview = reviewRepository.findById(reviewId).orElse(null);
+            if (searchedReview == null || searchedReview.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+            searchedReview.setReviewText(updatedText.trim());
 
-        searchedReview.setReviewText(updatedText.trim());
-        searchedReview.setUpdatedAt(LocalDateTime.now());
-        return ReviewResponse.fromEntity(reviewRepository.save(searchedReview));
+            return ResponseEntity.ok().body(reviewRepository.save(searchedReview));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
-    // Fix #5: Jogosultság ellenőrzés – csak a szerző vagy admin törölhet
-    public void deleteReview(Integer id) {
-        Review searchedReview = reviewRepository.findById(id).orElse(null);
-        if (searchedReview == null || Boolean.TRUE.equals(searchedReview.getIsDeleted())) {
-            throw new ResourceNotFoundException("reviewNotFound");
-        }
+    public ResponseEntity<Object> deleteReview(Integer id) {
+        try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+            Review searchedReview = reviewRepository.findById(id).orElse(null);
+            if (searchedReview == null || searchedReview.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
 
-        // Jogosultság ellenőrzés
-        if (searchedReview.getAuthor() != null && !securityUtils.canAccessUser(searchedReview.getAuthor())) {
-            throw new ForbiddenOperationException();
+            searchedReview.setIsDeleted(true);
+            searchedReview.setDeletedAt(LocalDateTime.now());
+            reviewRepository.save(searchedReview);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
-
-        searchedReview.setIsDeleted(true);
-        searchedReview.setDeletedAt(LocalDateTime.now());
-        reviewRepository.save(searchedReview);
     }
 
-    @Transactional(readOnly = true)
-    public List<ReviewResponse> getReviewsByProductId(Integer id) {
-        Product product = productRepository.findById(id).orElse(null);
-        if (product == null || Boolean.TRUE.equals(product.getIsDeleted())) {
-            throw new ResourceNotFoundException("productNotFound");
+    public ResponseEntity<Object> getReviewsByProductId(Integer id) {
+        try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            Product searchedProduct = productRepository.findById(id).orElse(null);
+            if (searchedProduct == null || searchedProduct.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok().body(searchedProduct.getProductReviewList().stream().filter(review -> !review.getIsDeleted()));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
-        return product.getProductReviewList().stream()
-                .filter(review -> !Boolean.TRUE.equals(review.getIsDeleted()))
-                .map(ReviewResponse::fromEntity)
-                .toList();
     }
 
-    @Transactional(readOnly = true)
-    public List<ReviewResponse> getReviewsByUser(Integer id) {
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null || Boolean.TRUE.equals(user.getIsDeleted())) {
-            throw new ResourceNotFoundException("userNotFound");
+    public ResponseEntity<Object> getReviewsByUser(Integer id) {
+        try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+            User searchedUser = userRepository.findById(id).orElse(null);
+            if (searchedUser == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok().body(searchedUser.getReviewList().stream().filter(review -> !review.getIsDeleted()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
-        return user.getReviewList().stream()
-                .filter(review -> !Boolean.TRUE.equals(review.getIsDeleted()))
-                .map(ReviewResponse::fromEntity)
-                .toList();
     }
 }
+

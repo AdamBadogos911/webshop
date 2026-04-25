@@ -13,17 +13,18 @@ public class OtherController {
     private final OtherService otherService;
 
     @GetMapping("/paymentMethods")
-    public ResponseEntity<?> getAllPaymentMethod() {
-        return ResponseEntity.ok(otherService.getAllPaymentMethod());
+    public ResponseEntity<Object> getAllPaymentMethod() {
+        return otherService.getAllPaymentMethod();
     }
 
     @GetMapping("/addressType")
-    public ResponseEntity<?> getAllAddressType() {
-        return ResponseEntity.ok(otherService.getAllAddressType());
+    public ResponseEntity<Object> getAllAddressType() {
+        return otherService.getAllAddressType();
     }
 
     @GetMapping("/brand")
-    public ResponseEntity<?> getAllBrand() {
-        return ResponseEntity.ok(otherService.getAllBrand());
+    public ResponseEntity<Object> getAllBrand() {
+        return otherService.getAllBrand();
     }
 }
+

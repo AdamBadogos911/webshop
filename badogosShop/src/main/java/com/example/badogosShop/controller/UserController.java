@@ -1,15 +1,16 @@
 package com.example.badogosShop.controller;
 
-import com.example.badogosShop.config.security.SecurityUtils;
-import com.example.badogosShop.dto.UserRegisterRequest;
 import com.example.badogosShop.dto.UserUpdate;
+import com.example.badogosShop.entity.User;
 import com.example.badogosShop.service.UserService;
-import com.fasterxml.jackson.databind.JsonNode;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.databind.JsonNode;
+
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -17,61 +18,46 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     private final UserService userService;
-    private final SecurityUtils securityUtils;
 
-    /**
-     * Login végpont.
-     * A hitelesítés HTTP Basic Auth-on keresztül történik (Spring Security BasicAuthenticationFilter),
-     * a JWT tokenek automatikusan generálódnak a JWTGeneratorFilter által a response header-ben.
-     * Ez a controller metódus csak a felhasználó adatait adja vissza + frissíti a lastLogin-t.
-     */
     @PostMapping("/login")
-    public ResponseEntity<?> login() {
-        String authenticatedEmail = securityUtils.getAuthenticatedEmail();
-        return ResponseEntity.ok(userService.login(authenticatedEmail));
+    private ResponseEntity<Object> login(@RequestBody JsonNode requestBody) {
+        return userService.login(requestBody.get("email").asText(null), requestBody.get("password").asText(null));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest request) {
-        userService.register(request);
-        return ResponseEntity.ok().build();
+    private ResponseEntity<Object> register(@RequestBody User newUser) {
+        return userService.register(newUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody UserUpdate updatedUser, @PathVariable("id") Integer id) {
-        return ResponseEntity.ok(userService.update(id, updatedUser));
+    private ResponseEntity<Object> update(@RequestBody UserUpdate updatedUser, @PathVariable("id") Integer id) {
+        return userService.update(id, updatedUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
-        userService.delete(id);
-        return ResponseEntity.ok().build();
+    private ResponseEntity<Object> delete(@PathVariable("id") Integer id) {
+        return userService.delete(id);
     }
 
     @PatchMapping("/pfp/{id}")
-    public ResponseEntity<?> changePfp(@RequestParam("image") MultipartFile newPfpImage, @PathVariable("id") Integer id) {
-        return ResponseEntity.ok(userService.changePfp(newPfpImage, id));
+    private ResponseEntity<Object> changePfp(@RequestParam("image") MultipartFile newPfpImage, @PathVariable("id") Integer id) {
+        return userService.changePfp(newPfpImage, id);
     }
 
-    @GetMapping("/verificationCode")
-    public ResponseEntity<?> getVerificationCode(@RequestParam("email") String email) {
-        userService.getVerificationCode(email);
-        return ResponseEntity.ok().build();
+    @GetMapping("/vCode")
+    private ResponseEntity<Object> getVerificationCode(@RequestParam("email") String email) {
+        return userService.getVerificationCode(email);
     }
 
     @PostMapping("/check")
-    public ResponseEntity<?> checkVerificationCode(@RequestBody JsonNode requestBody) {
-        String verificationCode = requestBody != null && requestBody.has("verificationCode") ? requestBody.get("verificationCode").asText(null) : null;
-        String email = requestBody != null && requestBody.has("email") ? requestBody.get("email").asText(null) : null;
-        return ResponseEntity.ok(userService.checkVerificationCode(verificationCode, email));
+    private ResponseEntity<Object> checkVerificationCode(@RequestBody JsonNode requestBody) {
+        return userService.checkVerificationCode(requestBody.get("verificationCode").asText(null), requestBody.get("email").asText(null));
     }
 
     @PatchMapping("/password")
-    public ResponseEntity<?> changePassword(@RequestBody JsonNode requestBody) {
-        String email = requestBody != null && requestBody.has("email") ? requestBody.get("email").asText(null) : null;
-        String verificationCode = requestBody != null && requestBody.has("verificationCode") ? requestBody.get("verificationCode").asText(null) : null;
-        String newPassword = requestBody != null && requestBody.has("newPassword") ? requestBody.get("newPassword").asText(null) : null;
-        userService.changePassword(email, verificationCode, newPassword);
-        return ResponseEntity.ok().build();
+    private ResponseEntity<Object> changePassword(@RequestBody JsonNode requestBody) {
+        return userService.changePassword(requestBody.get("email").asText(null), requestBody.get("newPassword").asText(null));
     }
+
 }
+

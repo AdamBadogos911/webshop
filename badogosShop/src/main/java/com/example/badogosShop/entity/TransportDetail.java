@@ -2,24 +2,25 @@ package com.example.badogosShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
 @Table(name = "transport_detail")
 @Getter
 @Setter
-@ToString(exclude = {"transportAddressType", "orderHistoryList", "savedDetails"})
+@ToString
 @NoArgsConstructor
+
 public class TransportDetail {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +29,7 @@ public class TransportDetail {
 
     @Column(name = "post_code")
     @NotNull
-    @Min(1000)
-    @Max(9999)
+    @Size(max = 4)
     private Integer postCode;
 
     @Column(name = "town")
@@ -44,11 +44,11 @@ public class TransportDetail {
 
     @Column(name = "house_number")
     @NotNull
-    @Min(1)
-    @Max(999)
+    @Size(max = 3)
     private Integer houseNumber;
 
     @Column(name = "other")
+    @Null
     private String other;
 
     @ManyToOne(cascade = {})
@@ -62,4 +62,6 @@ public class TransportDetail {
     @OneToMany(mappedBy = "savedTransportDetails", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnore
     private List<AddressUser> savedDetails;
+
+
 }

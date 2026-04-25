@@ -2,9 +2,10 @@ package com.example.badogosShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -12,8 +13,9 @@ import java.util.Date;
 @Table(name = "order_product")
 @Getter
 @Setter
-@ToString(exclude = {"orderProduct", "orderHistory"})
+@ToString
 @NoArgsConstructor
+
 public class OrderProduct {
 
     @Id
@@ -25,6 +27,7 @@ public class OrderProduct {
     private Date createdAt;
 
     @Column(name = "modified_at")
+    @Null
     private LocalDateTime modifiedAt;
 
     @Column(name = "amount")

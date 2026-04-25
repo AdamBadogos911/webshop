@@ -1,16 +1,11 @@
 package com.example.badogosShop.controller;
 
 import com.example.badogosShop.dto.ProductDto;
-import com.example.badogosShop.dto.ProductResponse;
 import com.example.badogosShop.service.ProductService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.data.domain.Page;
+import org.hibernate.type.descriptor.java.ObjectJavaType;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,51 +16,42 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/category/{id}")
-    public ResponseEntity<?> getProductsByCategory(Pageable pageable, @PathVariable("id") Integer categoryId) {
-        Page<ProductResponse> pages = productService.getProductsByCategory(pageable, categoryId);
-        HttpHeaders header = new HttpHeaders();
-        header.add("TotalPage", String.valueOf(pages.getTotalPages()));
-        header.add("TotalElements", String.valueOf(pages.getTotalElements()));
-        return ResponseEntity.ok().headers(header).body(pages.getContent());
+    public ResponseEntity<Object> getProductsByCategory(Pageable pageable, @PathVariable("id") Integer categoryId) {
+        return productService.getProductsByCategory(pageable, categoryId);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") Integer id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Object> deleteProduct(@PathVariable("id") Integer id) {
+        return productService.deleteProduct(id);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<Object> getAllProduct() {
+        return productService.getAllProduct();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(productService.getProductById(id));
+    public ResponseEntity<Object> getProductById(@PathVariable("id") Integer id) {
+        return productService.getProductById(id);
     }
 
     @GetMapping("/mostViewed")
-    public ResponseEntity<?> getMostViewedProducts() {
-        return ResponseEntity.ok(productService.getMostViewedProducts());
+    public ResponseEntity<Object> getMostViewedProducts() {
+        return productService.getMostViewedProducts();
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<?> addProduct(@Valid @RequestBody ProductDto product) {
-        return ResponseEntity.ok(productService.addProduct(product));
+    public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto) {
+        return productService.addProduct(productDto);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<?> updateProduct(@PathVariable("id") Integer id, @Valid @RequestBody ProductDto updatedProduct) {
-        return ResponseEntity.ok(productService.updateProduct(id, updatedProduct));
+    public ResponseEntity<Object> updateProduct(@PathVariable("id") Integer id, @RequestBody ProductDto updatedProduct) {
+        return productService.updateProduct(id, updatedProduct);
     }
 
-    @GetMapping("/statistic/{month}")
-    @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<?> getStatistic(@PathVariable("month") Integer monthNumber) {
-        return ResponseEntity.ok(productService.getStatistic(monthNumber));
+    @GetMapping("/search")
+    public ResponseEntity<Object> getProductBySearch(@RequestParam("searchTerm") String searchTerm) {
+        return productService.getProductBySearch(searchTerm);
     }
 }

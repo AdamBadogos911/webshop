@@ -1,104 +1,105 @@
 package com.example.badogosShop.service;
 
-import com.example.badogosShop.dto.CategoryRequest;
 import com.example.badogosShop.entity.Category;
-import com.example.badogosShop.exception.BusinessValidationException;
-import com.example.badogosShop.exception.ResourceNotFoundException;
 import com.example.badogosShop.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    @Cacheable("categories")
-    @Transactional(readOnly = true)
-    public List<Category> getAllCategory() {
-        return categoryRepository.findAll().stream()
-                .filter(c -> !Boolean.TRUE.equals(c.getIsDeleted()))
-                .toList();
+    public ResponseEntity<Object> getAllCategory() {
+        return null;
     }
 
-    @CacheEvict(cacheNames = {"categories", "mainCategories", "subCategories"}, allEntries = true)
-    public Category addCategory(CategoryRequest request) {
-        if (request.id() != null) {
-            throw new BusinessValidationException("invalidCategory");
-        }
-        Category category = new Category();
-        category.setName(request.name());
-
-        // Fix: mainCategoryId kezelése – alkategória létrehozás támogatása
-        if (request.mainCategoryId() != null) {
-            Category mainCategory = categoryRepository.findById(request.mainCategoryId()).orElse(null);
-            if (mainCategory == null || Boolean.TRUE.equals(mainCategory.getIsDeleted())) {
-                throw new ResourceNotFoundException("mainCategoryNotFound");
+    public ResponseEntity<Object> addCategory(Category newCategory) {
+        try {
+            if (newCategory == null) {
+                return ResponseEntity.status(422).build();
             }
-            category.setMainCategory(mainCategory);
-        }
 
-        return categoryRepository.save(category);
-    }
-
-    @CacheEvict(cacheNames = {"categories", "mainCategories", "subCategories"}, allEntries = true)
-    public Category updateCategory(CategoryRequest request) {
-        if (request.id() == null) {
-            throw new BusinessValidationException("invalidObject");
-        }
-        Category existing = categoryRepository.findById(request.id()).orElse(null);
-        if (existing == null || Boolean.TRUE.equals(existing.getIsDeleted())) {
-            throw new ResourceNotFoundException("categoryNotFound");
-        }
-        existing.setName(request.name());
-
-        // Fix: mainCategoryId kezelése – kategória áthelyezés támogatása
-        if (request.mainCategoryId() != null) {
-            Category mainCategory = categoryRepository.findById(request.mainCategoryId()).orElse(null);
-            if (mainCategory == null || Boolean.TRUE.equals(mainCategory.getIsDeleted())) {
-                throw new ResourceNotFoundException("mainCategoryNotFound");
+            if (newCategory.getId() != null) {
+                return ResponseEntity.status(415).body("invalidBrand");
+            } else {
+                return ResponseEntity.ok().body(categoryRepository.save(newCategory));
             }
-            existing.setMainCategory(mainCategory);
-        } else {
-            existing.setMainCategory(null);
-        }
 
-        return categoryRepository.save(existing);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
-    @CacheEvict(cacheNames = {"categories", "mainCategories", "subCategories"}, allEntries = true)
-    public void deleteCategory(Integer id) {
-        Category searchedCategory = categoryRepository.findById(id).orElse(null);
-        if (searchedCategory == null || Boolean.TRUE.equals(searchedCategory.getIsDeleted())) {
-            throw new ResourceNotFoundException("categoryNotFound");
+    public ResponseEntity<Object> updateCategory(Category updatedCategory) {
+        try {
+            if (updatedCategory == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            if (updatedCategory.getId() == null) {
+                return ResponseEntity.status(415).body("invalidObject");
+            } else {
+                return ResponseEntity.ok().body(categoryRepository.save(updatedCategory));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
-        searchedCategory.setIsDeleted(true);
-        searchedCategory.setDeletedAt(LocalDateTime.now());
-        categoryRepository.save(searchedCategory);
     }
 
-    @Cacheable("mainCategories")
-    @Transactional(readOnly = true)
-    public List<Category> getAllMainCategory() {
-        return categoryRepository.getAllMainCategory();
+    public ResponseEntity<Object> deleteCategory(Integer id) {
+        try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            Category searchedBrand = categoryRepository.findById(id).orElse(null);
+            if (searchedBrand == null) {
+                return ResponseEntity.notFound().build();
+            } else {
+
+                return ResponseEntity.ok().build();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
-    @Cacheable(value = "subCategories", key = "#mainCategoryId")
-    @Transactional(readOnly = true)
-    public List<Category> getAllSubCategoryFromMainCategory(Integer mainCategoryId) {
-        Category searchedMainCategory = categoryRepository.findById(mainCategoryId).orElse(null);
-        if (searchedMainCategory == null || Boolean.TRUE.equals(searchedMainCategory.getIsDeleted())) {
-            throw new ResourceNotFoundException("categoryNotFound");
+    public ResponseEntity<Object> getAllMainCategory() {
+        try {
+            return ResponseEntity.ok().body(categoryRepository.getAllMainCategory());
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
-        return categoryRepository.getAllSubCategoryFromMainCategory(mainCategoryId);
+    }
+
+    public ResponseEntity<Object> getAllSubCategoryFromMainCategory(Integer mainCategoryId) {
+        try {
+            System.out.println(mainCategoryId);
+            Category searchedMainCategory = categoryRepository.findById(mainCategoryId).orElse(null);
+            if (searchedMainCategory == null || searchedMainCategory.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+            List<Category> subCategories = categoryRepository.getAllSubCategoryFromMainCategory(mainCategoryId);
+            return ResponseEntity.ok().body(subCategories);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
