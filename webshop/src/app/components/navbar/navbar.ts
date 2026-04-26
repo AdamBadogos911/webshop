@@ -17,14 +17,6 @@ export class Navbar {
   handleNavbar() {
     this.navbarIsOpen = true;
     this.openNavBar.emit(this.navbarIsOpen);
-    document.body.style.overflow = 'hidden';
-  }
-
-  closeNavbar() {
-    this.navbarIsOpen = false;
-    this.openNavBar.emit(this.navbarIsOpen);
-
-    document.body.style.overflow = 'auto';
   }
 
   navigateWithUserIcon() {

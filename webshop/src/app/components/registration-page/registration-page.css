@@ -53,21 +53,6 @@ a:hover {
   text-decoration: dotted underline;
 }
 
-#password.shadow {
-  margin-bottom: 0;
-}
-
-#forgotPassword {
-  color: black;
-  text-decoration: underline;
-  font-size: smaller;
-  margin: 10px;
-}
-
-#forgotPassword:hover {
-  text-decoration: dotted underline;
-}
-
 #registerButton {
   color: black;
   text-decoration: underline;
