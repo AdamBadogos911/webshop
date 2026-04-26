@@ -20,7 +20,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public ResponseEntity<Object> getAllCategory() {
-        return null;
+        return ResponseEntity.ok(categoryRepository.findAll().stream().filter(c -> !c.getIsDeleted()).toList());
     }
 
     public ResponseEntity<Object> addCategory(Category newCategory) {

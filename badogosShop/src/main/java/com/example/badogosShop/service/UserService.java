@@ -75,7 +75,7 @@ public class UserService {
                 return ResponseEntity.internalServerError().build();
             }
 
-            newUser.setPfpPath("http://localhost:8080/pfp/default.png");
+            newUser.setPfpPath("http://localhost:8080/images/pfp/default.png");
             return ResponseEntity.ok().build();
         }
 
@@ -131,14 +131,14 @@ public class UserService {
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                String filePath = "images/pfp/" + searchedUser.getId() + newPfpImage.getOriginalFilename();
+                String filePath = "src/images/pfp/" + searchedUser.getId() + newPfpImage.getOriginalFilename();
 
                 try {
                     FileOutputStream fout = new FileOutputStream(filePath);
                     fout.write(newPfpImage.getBytes());
                     fout.close();
 
-                    searchedUser.setPfpPath("http://localhost:8080/pfp/" + searchedUser.getId() + newPfpImage.getOriginalFilename());
+                    searchedUser.setPfpPath("http://localhost:8080/images/pfp/" + searchedUser.getId() + newPfpImage.getOriginalFilename());
                 } catch (Exception e) {
                     return ResponseEntity.internalServerError().body("fileUploadError");
                 }

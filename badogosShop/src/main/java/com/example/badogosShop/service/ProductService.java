@@ -116,7 +116,8 @@ public class ProductService {
                 new Details(newProductDto.weightInKg(), newProductDto.material(), newProductDto.lengthInCm(), newProductDto.heightInCm(), newProductDto.widthInCm(), newProductDto.size(), newProductDto.isSet()),
                 newProductDto.stockKeepingUnit(),
                 newProductDto.description(),
-                searchedCategory);
+                searchedCategory
+        );
 
         return ResponseEntity.ok().body(productRepository.save(newProduct));
     }

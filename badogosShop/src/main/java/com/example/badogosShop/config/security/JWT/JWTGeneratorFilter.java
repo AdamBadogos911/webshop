@@ -29,11 +29,15 @@ public class JWTGeneratorFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Authentication givenAuthentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Generálás");
+
         if (givenAuthentication != null) {
+            System.out.println("givenAuthentication != null");
             UserDetails principal = (UserDetails) givenAuthentication.getPrincipal();
             String jwt = jwtService.createJwtToken((UserDetails) givenAuthentication.getPrincipal());
             System.out.println(jwt);
             response.setHeader("Bearer ", jwt);
+            System.out.println(generateRefreshToken(principal.getUsername()));
             response.setHeader("refreshToken", generateRefreshToken(principal.getUsername()));
         }
 
@@ -42,7 +46,7 @@ public class JWTGeneratorFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return !request.getServletPath().equals("/users/login");
+        return !request.getServletPath().equals("/user/login");
     }
 
     private String generateRefreshToken(String email){
@@ -52,8 +56,8 @@ public class JWTGeneratorFilter extends OncePerRequestFilter {
             String refreshTokenAsString = mapper.writeValueAsString(refreshToken);
             return Base64.getUrlEncoder().encodeToString(refreshTokenAsString.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
+            System.out.println("Ajjajmeg");
             return null;
         }
     }
 }
-
