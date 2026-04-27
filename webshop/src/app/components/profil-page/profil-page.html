@@ -1,10 +1,10 @@
-<div class="container-fluid" style="height: 80vh;">
+<div class="container-fluid main">
   <div class="row h-100">
     <div class="col-lg-4 d-flex flex-column align-items-center">
       <button class="w-50 my-2" (click)="selectContent('profilPage')">Saját profil</button>
       <button class="w-50 my-2" (click)="selectContent('orderHistory')">Rendeléseim</button>
       <button class="w-50 my-2" (click)="selectContent('reviews')">Véleményeim</button>
-      <button class="w-50 my-2" (click)="deleteUser()">Fiók törlése</button>
+      <button class="w-50 my-2 bg-danger" (click)="deleteUser()">Fiók törlése</button>
     </div>
     <div class="col-lg-8 h-100 d-flex flex-column justify-content-between">
       <div class="container-fluid">
@@ -16,7 +16,7 @@
               </label>
               <h1>Üdv, {{userService.user?.lastName}} {{userService.user?.firstName}}</h1>
             </div>
-            <button (click)="logout()">Kijelentkezés</button>
+            <button (click)="logout()" class="bg-danger">Kijelentkezés</button>
           </div>
         </div>
       </div>

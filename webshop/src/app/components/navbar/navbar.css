@@ -1,5 +1,5 @@
 .container-fluid {
-  height: 63px;
+  height: fit-content;
 }
 
 nav {
@@ -9,14 +9,10 @@ nav {
 
 #search {
   text-align: left;
-  width: 350px;
+  width: 300px;
+  height: 40px;
 }
 
-#search input {
-  border-radius: 30px;
-  border: none;
-
-}
 
 .navbar {
   width: 100vw;
@@ -78,9 +74,4 @@ li:hover {
 
 #logo {
   height: 35px;
-}
-
-#searchBar {
-  border-radius: 30px;
-  border: none;
 }

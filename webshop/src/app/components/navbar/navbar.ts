@@ -1,5 +1,5 @@
 import { Component, inject, output } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from "@angular/router";
 import { UserService } from '../../services/user-service';
 
 @Component({
@@ -10,20 +10,20 @@ import { UserService } from '../../services/user-service';
 })
 export class Navbar {
   userService = inject(UserService);
-  navbarIsOpen: boolean = false;
-  openNavBar = output<boolean>();
-  router = inject(Router);
+  navbarIsOpen: boolean = false
+  openNavBar = output<boolean>()
+  router = inject(Router)
 
   handleNavbar() {
-    this.navbarIsOpen = true;
-    this.openNavBar.emit(this.navbarIsOpen);
+    this.navbarIsOpen = true
+    this.openNavBar.emit(this.navbarIsOpen)
   }
 
   navigateWithUserIcon() {
     if (this.userService.user == null) {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"])
     } else {
-      this.router.navigate(['/profile']);
+      this.router.navigate(["/profile"])
     }
   }
 }

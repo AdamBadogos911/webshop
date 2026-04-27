@@ -20,8 +20,8 @@
             </li>}
           </ul>
           <form class="d-flex" role="search">
-            <input id="searchBar" class="form-control me-2" type="search" placeholder="Keresés">
-            <button class="icon-button" (click)="navigateWithUserIcon()">
+            <input class="form-control me-2" type="search" placeholder="Keresés" id="search">
+            <button type="button" class="icon-button" (click)="navigateWithUserIcon()">
               <span>{{userService.user?.firstName}}</span>
               <span class="material-symbols-outlined">
                 person
