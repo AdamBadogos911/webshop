@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 27, 2026 at 12:00 PM
+-- Generation Time: Apr 27, 2026 at 06:42 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1664,7 +1664,7 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (5, '3/8\" Racsni Króm, gumírozott markolattal', '3/8\" Racsni Króm, gumírozott markolattal', 2500, 0, '2025-11-19 09:07:05', '2025-12-04 09:34:05', NULL, 0, 2, 5, '888888885', 3, 21, 0),
 (6, '1/2\" Racsni Króm, gumírozott markolattal', '1/2\" Racsni Króm, gumírozott markolattal', 3000, 0, '2025-11-19 09:09:07', '2025-12-04 09:34:05', NULL, 0, 300, 6, '888888886', 3, 21, 0),
 (7, '1/4-es 5,5 cm-es racsnitoldó', '1/4-es racsni toldó 5,5 cm-es hosszal', 1350, 0, '2025-11-19 09:09:07', '2025-12-22 19:46:49', NULL, 0, 100, 7, '888888887', 3, 2, 11),
-(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', 3, 2, 20),
+(8, '1/4\" 7.5 cm-es racsnitoldó', '1/4\"-es 7.5 cm-es racsnitoldó', 1500, 0, '2025-11-19 09:10:55', '2025-12-22 20:05:57', NULL, 0, 110, 8, '888888888', 3, 2, 21),
 (9, '1/4\" 10 cm-es racsnitoldó', '1/4\" 10 cm-es racsnitoldó', 1700, 0, '2025-11-19 09:10:55', '2025-12-22 20:07:32', NULL, 0, 10, 9, '888888889', 3, 2, 0),
 (10, '1/4\" 15 cm-es racsnitoldó', '1/4\" 15 cm-es racsnitoldó', 2100, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 10, '8888888810', 3, 2, 0),
 (11, '1/4\" 23 cm-es racsnitoldó', '1/4\" 23 cm-es racsnitoldó', 2300, 0, '2025-12-22 20:10:49', NULL, NULL, 0, 100, 11, '8888888811', 3, 2, 0),
@@ -1762,7 +1762,7 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (103, 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.4mm-es  ', 2300, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 103, '88888888103', 3, 19, 0),
 (104, 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 'Fűnyíró damil 50 méteres műanyag 2.7mm-es  ', 2900, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 104, '88888888104', 3, 19, 0),
 (105, 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 'Fűnyíró damil 50 méteres műanyag 3mm-es  ', 3400, 0, '2026-02-02 12:21:16', NULL, NULL, 0, 100, 105, '88888888104', 3, 19, 0),
-(106, 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 101, 106, '88888888106', 3, 20, 12),
+(106, 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 'Fűnyíró damil alumíniumos 15 méteres 1.6mm-es  ', 700, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 101, 106, '88888888106', 3, 20, 14),
 (107, 'Fűnyíró damil alumíniumos 15 méteres 2mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2mm-es ', 900, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 107, '88888888107', 3, 20, 2),
 (108, 'Fűnyíró damil alumíniumos 15 méteres 2.4mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2.4mm-es ', 1200, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 108, '88888888108', 3, 20, 1),
 (109, 'Fűnyíró damil alumíniumos 15 méteres 2.7mm-es ', 'Fűnyíró damil alumíniumos 15 méteres 2.7mm-es ', 1500, 0, '2026-02-09 12:06:17', NULL, NULL, 0, 100, 109, '88888888109', 3, 20, 0),
@@ -1842,18 +1842,19 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (183, 'Dugófej 1/2\" 6 lapos 16-os', 'Dugófej 1/2\" 6 lapos 16-os', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 183, '88888888183', 3, 39, 0),
 (184, 'Dugófej 1/2\" 6 lapos 17-es', 'Dugófej 1/2\" 6 lapos 17-es', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 184, '88888888184', 3, 39, 0),
 (185, 'Dugófej 1/2\" 6 lapos 18-as', 'Dugófej 1/2\" 6 lapos 18-as', 900, 0, '2026-04-03 07:32:11', NULL, NULL, 0, 100, 185, '88888888185', 3, 39, 0),
-(186, 'Védőkesztyű 11 PURE BLACK PRO', 'Poliuretán (PU) bevonatú kesztyű.\r\nKötött poliészterből készült PVC pöttyökkel.\r\nPoliészter kötöttáruból készült - 13-as öltés\r\n. Vágás- és szakadásálló.', 1200, 0, '2026-04-27 11:20:29', NULL, NULL, 0, 100, 187, '88888888187', 3, 38, 0),
-(187, 'Védőkesztyű 9 NITROX WHITE', 'Védőkesztyű 9 NITROX WHITE', 1200, 0, '2026-04-27 11:20:29', NULL, NULL, 0, 100, 188, '88888888188', 3, 38, 0),
-(188, 'Védőkesztyű 10 WINTER FOX', 'Védőkesztyű 10 WINTER FOX, latex, vastag', 1400, 0, '2026-04-27 11:20:29', NULL, NULL, 0, 100, 189, '88888888189', 3, 38, 0),
-(189, 'Védőkesztyű 9 TERMO GRIP GREEN', 'Védőkesztyű 9 TERMO GRIP GREEN', 1100, 0, '2026-04-27 11:20:29', NULL, NULL, 0, 100, 190, '88888888190', 3, 38, 0),
-(190, 'Bőr védőkesztyű 10\"', 'Bőr védőkesztyű 10\" WHITE CE EN 420', 2300, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 191, '88888888191', 3, 37, 0),
-(191, 'Védőkesztyű, kecskebőr ', 'Védőkesztyű, kecskebőr CORK TERMO10,5, thermo béléssel', 3000, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 192, '88888888192', 3, 37, 0),
-(192, 'Kecskebőr védőkesztyű 11-es ', 'Kecskebőr védőkesztyű 11-es méret WHITEBIRD CORE *A', 2500, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 193, '88888888193', 3, 37, 0),
-(193, 'Kecskebőr védőkesztyű 10\"', 'Kecskebőr védőkesztyű 10\" RED CE EN 388', 2500, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 194, '88888888194', 3, 37, 0),
-(194, 'Fémvágókorong 125x1,0mmx22,2mm CATA', 'A CATA korongok a rendkívül kopásálló szemcséknek köszönhetően biztosítják a magas minőséget.\r\n\r\nalumínium-oxidból készült. A nagy vágási teljesítmény biztosítása érdekében a CATA tárcsák üvegszálas szövettel vannak megerősítve.\r\n\r\nszintetikus gyanta kötőanyagként, amely megköti a korong csiszolóanyagát. Lapos acél vágókorong. Vágásra tervezték:\r\n\r\nkemény és lágy acél, öntöttvas, acélöntvények, alumínium rudak, szelvények, csövek, lemezek, vékony profilok és lemezek formájában,\r\n\r\nfémrudak és huzalok keresztmetszetű vágása.', 160, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 195, '88888888195', 3, 44, 0),
-(195, 'Szegmenses csiszolótárcsa betonhoz 125 mm/22,2 mm szimpla Z-alak', 'Speciális, nagyon nagy gyémánttal ellátott gyémántcsiszolókorong, amelyet beton, látszóbeton, tégla, térkő, klinker, pórusbeton és kerámialapok felületeinek tisztítására és egyenetlenségeinek csiszolására használnak.\r\n\r\n• A 125 mm átmérőjű gyémánt csiszolókorong betonfelületek sarokcsiszolóval történő csiszolására szolgál.\r\n\r\n• A gyémánt fazékkorong hosszú élettartamát kiváló műszaki paraméterek biztosítják.\r\n\r\n• A modern hőkezelési eljárások és a speciális felületkezelés csökkentik a tárcsa kopását és javítják a tartósságot.\r\n\r\n• Az 5 mm magas gyémánt lehetővé teszi a korong hosszú távú használatát anélkül, hogy újra kellene cserélni.\r\n\r\n• A korong ideális egyenetlenségek eltávolítására, nagy betonfelületek alakítására és csiszolására.', 4000, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 196, '88888888196', 3, 43, 0),
-(196, 'Csiszoló korong 125x6.4mm RAPID', '- fém csiszolótárcsa\r\n- tárcsa külső átmérője: 125 mm\r\n- furat átmérője: 22,2 mm\r\n- tárcsa vastagsága: 6,4 mm\r\n- alkalmazás: kemény szénacél köszörülés, ideális fémlemez csiszolására', 450, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 197, '88888888197', 3, 43, 0),
-(197, 'Gyémántcsiszoló korong 125x5x22,2 (Turbo, menet nélküli) Marpol', 'Gyémánt kés turbó betoncsiszoláshoz.\r\n- a tárcsa külső átmérője: 125mm\r\n- gyémánt magasság: 5mm', 4000, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 198, '88888888198', 3, 43, 0);
+(186, '1/2 19', '1/2 19', 1200, 0, '2026-04-27 11:20:29', NULL, NULL, 0, 100, 186, '88888888186', 3, 38, 0),
+(187, 'Védőkesztyű 11 PURE BLACK PRO', 'Poliuretán (PU) bevonatú kesztyű.\r\nKötött poliészterből készült PVC pöttyökkel.\r\nPoliészter kötöttáruból készült - 13-as öltés\r\n. Vágás- és szakadásálló.', 1200, 0, '2026-04-27 11:20:29', NULL, NULL, 0, 100, 187, '88888888187', 3, 38, 0),
+(188, 'Védőkesztyű 9 NITROX WHITE', 'Védőkesztyű 9 NITROX WHITE', 1200, 0, '2026-04-27 11:20:29', NULL, NULL, 0, 100, 188, '88888888188', 3, 38, 0),
+(189, 'Védőkesztyű 10 WINTER FOX', 'Védőkesztyű 10 WINTER FOX, latex, vastag', 1400, 0, '2026-04-27 11:20:29', NULL, NULL, 0, 100, 189, '88888888189', 3, 38, 0),
+(190, 'Védőkesztyű 9 TERMO GRIP GREEN', 'Védőkesztyű 9 TERMO GRIP GREEN', 1100, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 190, '88888888190', 3, 38, 0),
+(191, 'Bőr védőkesztyű 10\"', 'Bőr védőkesztyű 10\" WHITE CE EN 420', 2300, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 191, '88888888191', 3, 37, 0),
+(192, 'Védőkesztyű, kecskebőr ', 'Védőkesztyű, kecskebőr CORK TERMO10,5, thermo béléssel', 3000, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 192, '88888888192', 3, 37, 0),
+(193, 'Kecskebőr védőkesztyű 11-es ', 'Kecskebőr védőkesztyű 11-es méret WHITEBIRD CORE *A', 2500, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 193, '88888888193', 3, 37, 0),
+(194, 'Kecskebőr védőkesztyű 10\"', 'Kecskebőr védőkesztyű 10\" RED CE EN 388', 2500, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 194, '88888888194', 3, 37, 0),
+(195, 'Fémvágókorong 125x1,0mmx22,2mm CATA', 'A CATA korongok a rendkívül kopásálló szemcséknek köszönhetően biztosítják a magas minőséget.\r\n\r\nalumínium-oxidból készült. A nagy vágási teljesítmény biztosítása érdekében a CATA tárcsák üvegszálas szövettel vannak megerősítve.\r\n\r\nszintetikus gyanta kötőanyagként, amely megköti a korong csiszolóanyagát. Lapos acél vágókorong. Vágásra tervezték:\r\n\r\nkemény és lágy acél, öntöttvas, acélöntvények, alumínium rudak, szelvények, csövek, lemezek, vékony profilok és lemezek formájában,\r\n\r\nfémrudak és huzalok keresztmetszetű vágása.', 460, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 195, '88888888195', 3, 44, 0),
+(196, 'Szegmenses csiszolótárcsa betonhoz 125 mm/22,2 mm szimpla Z-alak', 'Speciális, nagyon nagy gyémánttal ellátott gyémántcsiszolókorong, amelyet beton, látszóbeton, tégla, térkő, klinker, pórusbeton és kerámialapok felületeinek tisztítására és egyenetlenségeinek csiszolására használnak.\r\n\r\n• A 125 mm átmérőjű gyémánt csiszolókorong betonfelületek sarokcsiszolóval történő csiszolására szolgál.\r\n\r\n• A gyémánt fazékkorong hosszú élettartamát kiváló műszaki paraméterek biztosítják.\r\n\r\n• A modern hőkezelési eljárások és a speciális felületkezelés csökkentik a tárcsa kopását és javítják a tartósságot.\r\n\r\n• Az 5 mm magas gyémánt lehetővé teszi a korong hosszú távú használatát anélkül, hogy újra kellene cserélni.\r\n\r\n• A korong ideális egyenetlenségek eltávolítására, nagy betonfelületek alakítására és csiszolására.', 4000, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 196, '88888888196', 3, 43, 0),
+(197, 'Csiszoló korong 125x6.4mm RAPID', '- fém csiszolótárcsa\r\n- tárcsa külső átmérője: 125 mm\r\n- furat átmérője: 22,2 mm\r\n- tárcsa vastagsága: 6,4 mm\r\n- alkalmazás: kemény szénacél köszörülés, ideális fémlemez csiszolására', 450, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 197, '88888888197', 3, 43, 0),
+(198, 'Gyémántcsiszoló korong 125x5x22,2 (Turbo, menet nélküli) Marpol', 'Gyémánt kés turbó betoncsiszoláshoz.\r\n- a tárcsa külső átmérője: 125mm\r\n- gyémánt magasság: 5mm', 4000, 0, '2026-04-27 17:35:20', NULL, NULL, 0, 100, 198, '88888888198', 3, 43, 0);
 
 -- --------------------------------------------------------
 
@@ -2290,7 +2291,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
 
 --
 -- AUTO_INCREMENT for table `product_image`
