@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 27, 2026 at 11:53 AM
+-- Generation Time: Apr 27, 2026 at 12:00 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.3.1
 
@@ -1310,7 +1310,9 @@ INSERT INTO `category` (`id`, `name`, `category_id`, `is_deleted`, `deleted_at`)
 (39, 'Dugófej 1/2\"', 6, 0, NULL),
 (40, 'Dugófej 1/4\"', 6, 0, NULL),
 (41, 'Dugófej 3/8\"', 6, 0, NULL),
-(42, 'Dugófej 3/4\"', 6, 0, NULL);
+(42, 'Dugófej 3/4\"', 6, 0, NULL),
+(43, 'Csiszolókorong', 11, 0, NULL),
+(44, 'Vágókorong', 11, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1848,10 +1850,10 @@ INSERT INTO `product` (`id`, `name`, `description`, `price`, `discount`, `create
 (191, 'Védőkesztyű, kecskebőr ', 'Védőkesztyű, kecskebőr CORK TERMO10,5, thermo béléssel', 3000, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 192, '88888888192', 3, 37, 0),
 (192, 'Kecskebőr védőkesztyű 11-es ', 'Kecskebőr védőkesztyű 11-es méret WHITEBIRD CORE *A', 2500, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 193, '88888888193', 3, 37, 0),
 (193, 'Kecskebőr védőkesztyű 10\"', 'Kecskebőr védőkesztyű 10\" RED CE EN 388', 2500, 0, '2026-04-27 11:27:48', NULL, NULL, 0, 100, 194, '88888888194', 3, 37, 0),
-(194, 'Fémvágókorong 125x1,0mmx22,2mm CATA', 'A CATA korongok a rendkívül kopásálló szemcséknek köszönhetően biztosítják a magas minőséget.\r\n\r\nalumínium-oxidból készült. A nagy vágási teljesítmény biztosítása érdekében a CATA tárcsák üvegszálas szövettel vannak megerősítve.\r\n\r\nszintetikus gyanta kötőanyagként, amely megköti a korong csiszolóanyagát. Lapos acél vágókorong. Vágásra tervezték:\r\n\r\nkemény és lágy acél, öntöttvas, acélöntvények, alumínium rudak, szelvények, csövek, lemezek, vékony profilok és lemezek formájában,\r\n\r\nfémrudak és huzalok keresztmetszetű vágása.', 160, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 195, '88888888195', 3, 11, 0),
-(195, 'Szegmenses csiszolótárcsa betonhoz 125 mm/22,2 mm szimpla Z-alak', 'Speciális, nagyon nagy gyémánttal ellátott gyémántcsiszolókorong, amelyet beton, látszóbeton, tégla, térkő, klinker, pórusbeton és kerámialapok felületeinek tisztítására és egyenetlenségeinek csiszolására használnak.\r\n\r\n• A 125 mm átmérőjű gyémánt csiszolókorong betonfelületek sarokcsiszolóval történő csiszolására szolgál.\r\n\r\n• A gyémánt fazékkorong hosszú élettartamát kiváló műszaki paraméterek biztosítják.\r\n\r\n• A modern hőkezelési eljárások és a speciális felületkezelés csökkentik a tárcsa kopását és javítják a tartósságot.\r\n\r\n• Az 5 mm magas gyémánt lehetővé teszi a korong hosszú távú használatát anélkül, hogy újra kellene cserélni.\r\n\r\n• A korong ideális egyenetlenségek eltávolítására, nagy betonfelületek alakítására és csiszolására.', 4000, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 196, '88888888196', 3, 11, 0),
-(196, 'Csiszoló korong 125x6.4mm RAPID', '- fém csiszolótárcsa\r\n- tárcsa külső átmérője: 125 mm\r\n- furat átmérője: 22,2 mm\r\n- tárcsa vastagsága: 6,4 mm\r\n- alkalmazás: kemény szénacél köszörülés, ideális fémlemez csiszolására', 450, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 197, '88888888197', 3, 11, 0),
-(197, 'Gyémántcsiszoló korong 125x5x22,2 (Turbo, menet nélküli) Marpol', 'Gyémánt kés turbó betoncsiszoláshoz.\r\n- a tárcsa külső átmérője: 125mm\r\n- gyémánt magasság: 5mm', 4000, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 198, '88888888198', 3, 11, 0);
+(194, 'Fémvágókorong 125x1,0mmx22,2mm CATA', 'A CATA korongok a rendkívül kopásálló szemcséknek köszönhetően biztosítják a magas minőséget.\r\n\r\nalumínium-oxidból készült. A nagy vágási teljesítmény biztosítása érdekében a CATA tárcsák üvegszálas szövettel vannak megerősítve.\r\n\r\nszintetikus gyanta kötőanyagként, amely megköti a korong csiszolóanyagát. Lapos acél vágókorong. Vágásra tervezték:\r\n\r\nkemény és lágy acél, öntöttvas, acélöntvények, alumínium rudak, szelvények, csövek, lemezek, vékony profilok és lemezek formájában,\r\n\r\nfémrudak és huzalok keresztmetszetű vágása.', 160, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 195, '88888888195', 3, 44, 0),
+(195, 'Szegmenses csiszolótárcsa betonhoz 125 mm/22,2 mm szimpla Z-alak', 'Speciális, nagyon nagy gyémánttal ellátott gyémántcsiszolókorong, amelyet beton, látszóbeton, tégla, térkő, klinker, pórusbeton és kerámialapok felületeinek tisztítására és egyenetlenségeinek csiszolására használnak.\r\n\r\n• A 125 mm átmérőjű gyémánt csiszolókorong betonfelületek sarokcsiszolóval történő csiszolására szolgál.\r\n\r\n• A gyémánt fazékkorong hosszú élettartamát kiváló műszaki paraméterek biztosítják.\r\n\r\n• A modern hőkezelési eljárások és a speciális felületkezelés csökkentik a tárcsa kopását és javítják a tartósságot.\r\n\r\n• Az 5 mm magas gyémánt lehetővé teszi a korong hosszú távú használatát anélkül, hogy újra kellene cserélni.\r\n\r\n• A korong ideális egyenetlenségek eltávolítására, nagy betonfelületek alakítására és csiszolására.', 4000, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 196, '88888888196', 3, 43, 0),
+(196, 'Csiszoló korong 125x6.4mm RAPID', '- fém csiszolótárcsa\r\n- tárcsa külső átmérője: 125 mm\r\n- furat átmérője: 22,2 mm\r\n- tárcsa vastagsága: 6,4 mm\r\n- alkalmazás: kemény szénacél köszörülés, ideális fémlemez csiszolására', 450, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 197, '88888888197', 3, 43, 0),
+(197, 'Gyémántcsiszoló korong 125x5x22,2 (Turbo, menet nélküli) Marpol', 'Gyémánt kés turbó betoncsiszoláshoz.\r\n- a tárcsa külső átmérője: 125mm\r\n- gyémánt magasság: 5mm', 4000, 0, '2026-04-27 11:51:15', NULL, NULL, 0, 100, 198, '88888888198', 3, 43, 0);
 
 -- --------------------------------------------------------
 
@@ -2258,7 +2260,7 @@ ALTER TABLE `cart_product`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `details`
