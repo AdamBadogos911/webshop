@@ -49,7 +49,7 @@ export class ProductEditor implements OnInit {
       widthInCm: new FormControl(this.product() != null ? this.product()?.detail.widthInCm : "", []),
       size: new FormControl(this.product() != null ? this.product()?.detail.size : "", []),
       isSet: new FormControl(this.product() != null ? this.product()?.detail.isSet : false, []),
-      stockKeepingUnit: new FormControl(this.product() != null ? this.product()?.stockKeepingUnit : "", [Validators.required]),
+      stockKeepingUnit: new FormControl(this.product() != null ? this.product()?.stockKeepingUnit : "", []),
       description: new FormControl(this.product() != null ? this.product()?.description : "", [Validators.required]),
       category: new FormControl(this.product() != null ? this.product()?.category.id : "", [Validators.required]),
     })
