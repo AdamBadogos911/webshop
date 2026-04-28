@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -119,7 +120,12 @@ public class ProductService {
                 searchedCategory
         );
 
-        return ResponseEntity.ok().body(productRepository.save(newProduct));
+        Product savedProduct = productRepository.save(newProduct);
+
+        String randomPart = String.format("%08d", ThreadLocalRandom.current().nextInt(0, 100_000_000));
+        savedProduct.setCikkszam(randomPart + savedProduct.getId());
+
+        return ResponseEntity.ok().body(productRepository.save(savedProduct));
     }
 
     public ResponseEntity<Object> updateProduct(Integer id, ProductDto updatedProductDto) {

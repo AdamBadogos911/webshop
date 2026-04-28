@@ -36,6 +36,9 @@ import java.util.List;
 })
 public class Product {
 
+    @Column(name = "cikkszam", unique = true)
+    private String cikkszam;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
