@@ -123,7 +123,7 @@ public class ProductService {
         Product savedProduct = productRepository.save(newProduct);
 
         String randomPart = String.format("%08d", ThreadLocalRandom.current().nextInt(0, 100_000_000));
-        savedProduct.setCikkszam(randomPart + savedProduct.getId());
+        savedProduct.setStockKeepingUnit(randomPart + savedProduct.getId());
 
         return ResponseEntity.ok().body(productRepository.save(savedProduct));
     }

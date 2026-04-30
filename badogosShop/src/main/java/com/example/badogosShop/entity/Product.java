@@ -36,13 +36,14 @@ import java.util.List;
 })
 public class Product {
 
-    @Column(name = "cikkszam", unique = true)
-    private String cikkszam;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
+    @Column(name = "stock_keeping_unit", unique = true)
+    @NotNull
+    private String stockKeepingUnit;
 
     @Column(name = "name")
     @NotNull
@@ -79,11 +80,6 @@ public class Product {
     @Column(name = "amount")
     @NotNull
     private Integer amount;
-
-    @Column(name = "stock_keeping_unit")
-    @NotNull
-    @Size(max = 255)
-    private String stockKeepingUnit;
 
     @Column(name = "view_count")
     private Long viewCount;
