@@ -21,3 +21,8 @@ button {
   border: none;
   color: white;
 }
+
+button:hover {
+  background-color: #2C3E50;
+  cursor: pointer;
+}

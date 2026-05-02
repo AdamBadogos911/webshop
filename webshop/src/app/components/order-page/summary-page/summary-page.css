@@ -18,3 +18,8 @@ button {
 table {
   background-color: #B7B7B7;
 }
+
+button:hover {
+  background-color: #2C3E50;
+  cursor: pointer;
+}

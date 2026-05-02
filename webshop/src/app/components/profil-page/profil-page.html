@@ -24,12 +24,6 @@
         @if (selectedContent == 'profilPage') {
           <div class="container-fluid">
             <div class="row">
-              <div class="col-lg-12 d-flex justify-content-end align-items-center">
-                <button (click)="handleUpdate()" [disabled]="isEdit && updateForm.invalid">Edit</button>
-              </div>
-            </div>
-
-            <div class="row">
               <div class="col-lg-12">
                 @if(isEdit) {
                   <form class="container-fluid" [formGroup]="updateForm">
@@ -65,6 +59,11 @@
                   <p><span class="fw-bold">E-mail:</span> {{userService.user?.email}}</p>
                   <p><span class="fw-bold">Telefonszám:</span> {{userService.user?.phoneNumber}}</p>
                 }
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 d-flex justify-content-end align-items-center">
+                <button (click)="handleUpdate()" [disabled]="isEdit && updateForm.invalid" id="edit">Adatok módosítása</button>
               </div>
             </div>
           </div>

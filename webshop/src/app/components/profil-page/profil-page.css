@@ -38,3 +38,8 @@ button:hover {
   background-color: #2C3E50;
   cursor: pointer;
 }
+
+#edit {
+  padding: 5px 10px;
+  width: fit-content;
+}

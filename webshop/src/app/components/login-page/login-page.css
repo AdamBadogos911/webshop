@@ -42,6 +42,11 @@ button {
   color: white;
 }
 
+button:hover {
+  background-color: #2C3E50;
+}
+
+
 a {
   color: black;
   text-decoration: underline;
