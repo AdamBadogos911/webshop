@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { Product } from '../../models/product.model';
 
 @Component({
@@ -14,5 +14,6 @@ export class ProductCard {
 
   navigateToDetails() {
     this.router.navigate(["productDetails", this.product()?.id])
+    window.scrollTo(0, 0)
   }
 }

@@ -1,3 +1,7 @@
+.container-fluid {
+  min-height: calc(100vh - 63px - 90px);
+}
+
 #buyButton {
   background-color: #48616D;
   border: none;

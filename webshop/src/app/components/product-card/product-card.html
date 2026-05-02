@@ -1,7 +1,7 @@
 <div class="container-fluid cardContainer d-flex flex-column justify-content-between" (click)="navigateToDetails()">
   <div class="row">
     <div class="kep col-lg-12 d-flex flex-column justify-content-center align-items-center">
-      <img [src]="product().images[0].imagePath" alt="Keszlet" class="img-fluid my-4">
+      <img [src]="product().images[0]?.imagePath" alt="Keszlet" class="img-fluid my-4">
       @if (product().brand.name.toString() == "non"){
         <h4 class="w-100 text-lg-start text-center">{{product().name}}</h4>
       } @else {

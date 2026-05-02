@@ -21,8 +21,10 @@ export class CartPage implements OnInit {
   highlightedProducts: Product[] = []
 
   ngOnInit(): void {
-    this.cartService.getCartByUserId(this.userService.user?.id!).subscribe({
+    console.log(this.userService.user?.id)
+    this.cartService.getCartByUserId(14).subscribe({
       next: (response) => {
+        console.log(response)
         this.cartService.usersCart = response;
 
         if (this.cartService.usersCart.cartProductList.length == 0) {

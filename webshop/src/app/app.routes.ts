@@ -28,7 +28,7 @@ export const routes: Routes = [
   { path: "adminPage", component: AdminPage, canActivate: [UserGuard, AdminGuard] },
 
   {
-    path: "orderPage", component: OrderPage, canActivate: [UserGuard], children: [
+    path: "orderPage", component: OrderPage, canActivate: [], children: [
       { path: "cart", component: CartPage },
       { path: "transportDetails", component: TransportDetails },
       { path: "billingDetails", component: BillingDetails },

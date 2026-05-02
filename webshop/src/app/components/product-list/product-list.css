@@ -1,3 +1,7 @@
+.container-fluid {
+  min-height: calc(100vh - 63px - 70px);
+}
+
 .products {
   background-color: rgba(gray, black, black, 0.9);
   position: fixed;

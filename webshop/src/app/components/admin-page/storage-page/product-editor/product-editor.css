@@ -6,7 +6,7 @@
 
 #secondContainer {
   width: 1600px;
-  height: 550px;
+  height: 350px !important;
   background-color: #8D8D8D;
   border-radius: 12px;
 }
@@ -28,5 +28,5 @@ button {
   background-color: #48616D;
   border: none;
   padding: 10px 20px;
-  cursor: pointer;
+  color: white !important;
 }
