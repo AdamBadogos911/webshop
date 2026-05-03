@@ -22,7 +22,7 @@ export class CartPage implements OnInit {
 
   ngOnInit(): void {
     console.log(this.userService.user?.id)
-    this.cartService.getCartByUserId(14).subscribe({
+    this.cartService.getCartByUserId(this.userService.user?.id!).subscribe({
       next: (response) => {
         console.log(response)
         this.cartService.usersCart = response;
