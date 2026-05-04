@@ -74,6 +74,7 @@
                 <h2>Korábbi rendeléseid:</h2>
               </div>
             </div>
+            @if (orderHistories.length != 0) {
             <div class="row">
               <div class="col-lg-12 col-md-12 col-sm-12">
                 @for (orderHistory of orderHistories; track $index) {
@@ -81,6 +82,13 @@
                 }
               </div>
             </div>
+          } @else {
+            <div class="row">
+              <div class="col-lg-12">
+                <p>Még nem adtál le rendelést.</p>
+              </div>
+            </div>
+          }
           </div>
         }
         @else if (selectedContent == 'reviews') {
