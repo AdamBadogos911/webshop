@@ -7,6 +7,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 5px;
   min-height: 100px;
+  background-color: #8D8D8D;
+  color: white;
 }
 
 a, p, span {
@@ -42,4 +44,8 @@ button:hover {
 #edit {
   padding: 5px 10px;
   width: fit-content;
+}
+
+h2, h3 {
+  color: white;
 }

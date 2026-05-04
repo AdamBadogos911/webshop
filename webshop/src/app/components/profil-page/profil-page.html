@@ -70,13 +70,13 @@
         } @else if (selectedContent == 'orderHistory') {
           <div class="container-fluid">
             <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="col-lg-12">
                 <h2>Korábbi rendeléseid:</h2>
               </div>
             </div>
             @if (orderHistories.length != 0) {
             <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="col-lg-12">
                 @for (orderHistory of orderHistories; track $index) {
                   <app-order-card [orderHistory]="orderHistory" />
                 }
@@ -93,13 +93,21 @@
         }
         @else if (selectedContent == 'reviews') {
           <div class="container-fluid">
+            @if (reviewList.length != 0) {
             <div class="row">
               <div class="col-lg-12">
                 @for (review of reviewList; track $index) {
                   <app-review-card [review]="review" [parentComponent]="'profilPage'" />
                 }
               </div>
-            </div>
+            </div>}
+            @else {
+              <div class="row">
+                <div class="col-lg-12">
+                  <h3>Még nem írtál véleményt.</h3>
+                </div>
+              </div>
+            }
           </div>
         }
       </div>

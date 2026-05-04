@@ -1,6 +1,7 @@
 p {
   min-width: fit-content;
   justify-content: center;
+  color: black;
 }
 
 .row {
